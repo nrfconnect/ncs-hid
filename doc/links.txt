@@ -1,0 +1,46 @@
+.. ### This page lists links used in HID Add-on docs.
+       Links are grouped by source URL.
+       Links not separated by blank line are related to one another.
+
+
+.. ### Source: fwupd.org & lvfs.readthedocs.io
+
+.. _`LVFS`: https://fwupd.org/lvfs
+.. _`LVFS Getting an Account`: https://lvfs.readthedocs.io/en/latest/apply.html
+.. _`LVFS metadata`: https://lvfs.readthedocs.io/en/latest/metainfo.html
+.. _`LVFS Uploading Firmware`: https://lvfs.readthedocs.io/en/latest/upload.html
+.. _`LVFS testing`: https://lvfs.readthedocs.io/en/latest/testing.html
+.. _`LVFS building fwupd`: https://lvfs.readthedocs.io/en/latest/custom-plugin.html#building-fwupd
+
+.. ### Source: github.com
+
+.. _`HIDAPI library`: https://github.com/libusb/hidapi
+.. _`HIDAPI releases`: https://github.com/libusb/hidapi/releases
+
+.. _`pyhidapi Python wrapper`: https://github.com/apmorton/pyhidapi
+
+.. _`fwupd`: https://github.com/fwupd/fwupd
+.. _`nordic-hid.quirk`: https://github.com/fwupd/fwupd/tree/main/plugins/nordic-hid/nordic-hid.quirk
+
+.. ### Source: google.com
+
+.. _`Works With ChromeBook (WWCB)`: https://www.google.com/chromebook/workswithchromebook
+
+.. _`Fast Pair`: https://developers.google.com/nearby/fast-pair/specifications/introduction
+.. _`Verifying Fast Pair`: https://developers.google.com/nearby/fast-pair/fast-pair-certification-guideline
+
+.. ### Source: www.nordicsemi.com
+
+.. _`nRF Desktop reference design page`: https://www.nordicsemi.com/Products/Reference-designs/nRF-Desktop
+
+.. _`nRF Connect for Mobile`: https://www.nordicsemi.com/Software-and-Tools/Development-Tools/nRF-Connect-for-mobile
+
+.. _`nRF Connect Device Manager`: https://www.nordicsemi.com/Products/Development-tools/nrf-connect-device-manager
+
+.. _`CAF LED effect API`: https://nrfconnectdocs.nordicsemi.com/ncs/|ncs_version_number|/nrf/doxygen/html/group__led__effect__CAF.html
+
+.. ### Source: *.microsoft.com
+
+.. _`Windows Hardware Lab Kit`: https://docs.microsoft.com/en-us/windows-hardware/test/hlk/
+
+.. _`Swift Pair`: https://learn.microsoft.com/en-us/windows-hardware/design/component-guidelines/bluetooth-swift-pair
