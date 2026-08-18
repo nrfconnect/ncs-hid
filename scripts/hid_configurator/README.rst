@@ -252,9 +252,9 @@ Use the following syntax to display the list of modules that can have device run
 
 .. note::
   The list contains all the configurable modules used by nRF Desktop devices.
-  Make sure that the selected module and option combination is supported by the configured device using ``show`` command.
+  Make sure that the selected module and option combination is supported by the configured device using the ``show`` command.
 
-Use the following syntax to display list of options for the given module that can have device runtime options configured:
+Use the following syntax to display the list of options for the given module that can have device runtime options configured:
 
 .. parsed-literal::
     :class: highlight

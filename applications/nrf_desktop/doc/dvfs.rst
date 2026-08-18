@@ -90,7 +90,7 @@ Failing frequency change requests can be caused by:
 * Another frequency change request being in progress on sysctrl - error ``-EBUSY``.
   In that case, the module will retry the request after a timeout specified by the :option:`CONFIG_DESKTOP_DVFS_RETRY_BUSY_TIMEOUT_MS` Kconfig option.
   The default timeout value is 1 ms.
-* The nrfs DVFS service being not yet initialized - error ``-EAGAIN``.
+* The nrfs DVFS service not yet initialized - error ``-EAGAIN``.
   In that case, the nRF Desktop DVFS module will retry the request after a timeout specified by the :option:`CONFIG_DESKTOP_DVFS_RETRY_INIT_TIMEOUT_MS` Kconfig option.
   The default timeout value is 500 ms.
 * Other errors are not retried.

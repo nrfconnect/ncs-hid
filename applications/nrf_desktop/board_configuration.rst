@@ -56,7 +56,7 @@ nRF52832 Desktop Mouse (``nrf52dmouse``)
 
 Sample mouse, keyboard or dongle (``nrf52840dk/nrf52840``)
       * The configuration uses the nRF52840 DK.
-      * The build types allow to build the application as mouse, keyboard or dongle.
+      * The build types allow to build the application as a mouse, keyboard, or dongle.
       * Inputs are simulated based on the hardware button presses.
       * The configuration with the B0 bootloader is set as default.
       * The board supports ``debug`` :ref:`nrf_desktop_bluetooth_guide_fast_pair` configuration that acts as a mouse (``fast_pair`` file suffix).

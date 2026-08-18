@@ -7,7 +7,7 @@ Configuration channel
    :local:
    :depth: 2
 
-The configuration channel lets you exchange data between the host computer and an nRF Desktop's HID device.
+The configuration channel allows exchanging data between the host computer and an nRF Desktop HID device.
 On the logical level, it creates a bridge between the application modules and the corresponding part of the host script.
 If there are more compatible devices connected to the host, you can select which device will receive data.
 The configuration channel allows a dongle type device to act as a proxy for Bluetooth® LE Peripheral devices.
@@ -193,7 +193,7 @@ Module discovery operations
   * ``CONFIG_STATUS_GET_HWID`` - Obtain a unique Hardware ID of the device.
     The Hardware ID is represented as 8 bytes.
   * ``CONFIG_STATUS_GET_BOARD_NAME`` - Obtain the device's board name.
-    The board name is part of the Zephyr board target name (:kconfig:option:`CONFIG_BOARD`) from a beginning to the first underscore (``/``) character.
+    The board name is part of the Zephyr board target name (:kconfig:option:`CONFIG_BOARD`) from the beginning to the first slash (``/``) character.
     For example, the ``nrf52840gmouse/nrf52840`` board target would return ``nrf52840gmouse`` as the board name.
     See :ref:`app_boards_names` for more information.
 

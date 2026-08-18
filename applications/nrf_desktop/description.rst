@@ -370,7 +370,7 @@ Depending on the development kit you use, you need to select the respective conf
          :header: heading
          :rows: nrf52840dk_nrf52840, nrf52833dk_nrf52833, nrf52833dk_nrf52820, nrf5340dk_nrf5340_cpuapp, nrf54l15dk_nrf54l15_cpuapp, nrf54l15dk_nrf54l10_cpuapp, nrf54l15dk_nrf54l05_cpuapp, nrf54lm20dk_nrf54lm20a_cpuapp, nrf54lm20dk_nrf54lm20b_cpuapp, nrf54ls05dk_nrf54ls05b_cpuapp, nrf54h20dk_nrf54h20_cpuapp
 
-      Depending on the configuration, a DK may act either as mouse, keyboard or dongle.
+      Depending on the configuration, a DK may act either as a mouse, keyboard, or dongle.
       For information about supported configurations for each board, see the :ref:`nrf_desktop_board_configuration_files` section.
 
 ..
@@ -1086,7 +1086,7 @@ You can build and test the application in various configurations.
    The following procedure refers to the scenario where the gaming mouse (nRF52840 Gaming Mouse) and the keyboard (nRF52832 Desktop Keyboard) are connected simultaneously to the dongle (nRF52840 USB Dongle).
 
    You can perform similar tests with nRF52, nRF53, or nRF54 Series DKs.
-   Depending on the selected build type, the DK can act either as HID peripheral or HID dongle.
+   Depending on the selected build type, the DK can act either as a HID peripheral or HID dongle.
 
 After building the application with or without :ref:`specifying the build type <nrf_desktop_selecting_build_types>`, test the nRF Desktop application by performing the following steps:
 
@@ -1233,7 +1233,7 @@ After building the application, test the nRF Desktop by performing the following
 Windows Hardware Lab Kit tests
 ------------------------------
 
-The nRF Desktop devices have passed the tests from official playlist required for compatibility with Windows 10 by Windows Hardware Compatibility Program (:file:`HLK Version 1903 CompatPlaylist x86 x64 ARM64.xml`).
+The nRF Desktop devices have passed the tests from the official playlist required for compatibility with Windows 10 by Windows Hardware Compatibility Program (:file:`HLK Version 1903 CompatPlaylist x86 x64 ARM64.xml`).
 The tests were conducted using `Windows Hardware Lab Kit`_.
 
 Dependencies

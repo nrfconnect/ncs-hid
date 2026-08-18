@@ -72,7 +72,7 @@ USB Start of Frame (SOF) synchronization
 The module receives a HID input report as :c:struct:`hid_report_event` and submits the report to the USB stack.
 The module informs that the HID report was sent using :c:struct:`hid_report_sent_event`.
 
-* If the :option:`CONFIG_DESKTOP_USB_HID_REPORT_SENT_ON_SOF` Kconfig option is disabled, the :c:struct:`hid_report_sent_event` is instantly submitted when a HID report is sent over a USB during USB poll (on USB endpoint read).
+* If the :option:`CONFIG_DESKTOP_USB_HID_REPORT_SENT_ON_SOF` Kconfig option is disabled, the :c:struct:`hid_report_sent_event` is instantly submitted when a HID report is sent over USB during a USB poll (on USB endpoint read).
   This approach results in shorter HID data latency as a HID report pipeline is not used.
   However, the USB peripheral might not provide a HID report during a USB poll if two subsequent USB polls for HID data happen in quick succession.
   USB polls for HID data are not guaranteed to be evenly spaced in time.
@@ -85,7 +85,7 @@ The module informs that the HID report was sent using :c:struct:`hid_report_sent
   In the case of :ref:`nrf_desktop_hid_mouse_report_handling`, enabling the USB SOF synchronization also synchronizes motion sensor sampling with the USB SOF instead of USB polls (motion sensor sampling is synchronized to :c:struct:`hid_report_sent_event`).
   This synchronization ensures that the sensor is sampled more evenly.
 
-The :option:`CONFIG_DESKTOP_USB_HID_REPORT_SENT_ON_SOF` Kconfig option is enabled by default on devices (such as the nRF54H20 SoC) that use an UDC driver with High-Speed support (:kconfig:option:`CONFIG_UDC_DRIVER_HAS_HIGH_SPEED_SUPPORT`) to mitigate a negative impact of jitter related to USB polls.
+The :option:`CONFIG_DESKTOP_USB_HID_REPORT_SENT_ON_SOF` Kconfig option is enabled by default on devices (such as the nRF54H20 SoC) that use a UDC driver with High-Speed support (:kconfig:option:`CONFIG_UDC_DRIVER_HAS_HIGH_SPEED_SUPPORT`) to mitigate a negative impact of jitter related to USB polls.
 The negative impact of the jitter is more visible for USB High-Speed.
 
 .. _nrf_desktop_usb_state_hid_class_instance:

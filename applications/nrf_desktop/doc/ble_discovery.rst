@@ -88,5 +88,5 @@ Peripheral verification
 If the connected peripheral does not provide one of the required GATT Characteristics, the central disconnects.
 The same actions are taken if the peripheral's VID and PID value combination is unknown to the central.
 
-The nRF Desktop central works only with predefined subset of peripherals.
+The nRF Desktop central works only with a predefined subset of peripherals.
 The mentioned peripherals must be described in the :file:`ble_discovery_def.h` file.

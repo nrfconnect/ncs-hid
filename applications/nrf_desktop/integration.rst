@@ -207,7 +207,7 @@ The nRF Desktop application selects a sensor using the configuration options def
 Add the new sensor as a new choice option.
 
 The :ref:`nrf_desktop_motion` of the nRF Desktop application has access to several sensor attributes.
-These attributes are used to modify the sensor behavior in runtime.
+These attributes are used to modify the sensor behavior at runtime.
 Since the names of the attributes differ for each sensor, the :ref:`nrf_desktop_motion` uses a generic abstraction of them.
 You can translate the new sensor-specific attributes to a generic abstraction by modifying the :file:`configuration/common/motion_sensor.h` file.
 

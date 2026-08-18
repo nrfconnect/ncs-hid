@@ -41,7 +41,7 @@ By default, the nRF Desktop devices use a predefined format of HID reports.
 The common HID report map is defined in the :file:`configuration/common/hid_report_desc.c` file.
 
 The selected role implies a set of related HID reports.
-For example, HID mouse automatically enables support for HID mouse report (:option:`CONFIG_DESKTOP_HID_REPORT_MOUSE_SUPPORT`).
+For example, a HID mouse automatically enables support for a HID mouse report (:option:`CONFIG_DESKTOP_HID_REPORT_MOUSE_SUPPORT`).
 You can manually enable support for additional HID reports if needed.
 If you select the ``other HID device`` peripheral type, you need to explicitly enable all of the needed HID input reports in the configuration (the reports are not automatically implied by this peripheral type).
 
@@ -123,7 +123,7 @@ The :option:`CONFIG_DESKTOP_BT` Kconfig option enables support for Bluetooth con
 The option is enabled by default.
 
 The nRF Desktop Bluetooth peripheral configuration (:option:`CONFIG_DESKTOP_BT_PERIPHERAL`) is automatically enabled for the nRF Desktop HID peripheral role (:option:`CONFIG_DESKTOP_ROLE_HID_PERIPHERAL`).
-The nRF Desktop Bluetooth central configuration (:option:`CONFIG_DESKTOP_BT_CENTRAL`) is automatically enabled for the nRF Desktop HID dongle role (:option:`CONFIG_DESKTOP_ROLE_HID_DONGLE`)
+The nRF Desktop Bluetooth central configuration (:option:`CONFIG_DESKTOP_BT_CENTRAL`) is automatically enabled for the nRF Desktop HID dongle role (:option:`CONFIG_DESKTOP_ROLE_HID_DONGLE`).
 
 The nRF Desktop Bluetooth configuration options perform the following:
 

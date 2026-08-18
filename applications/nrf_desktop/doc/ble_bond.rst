@@ -208,11 +208,11 @@ The following peer operations can be enabled:
 
 * :option:`CONFIG_DESKTOP_BLE_PEER_ERASE` - Bluetooth LE peer erase triggered at any time.
 * :option:`CONFIG_DESKTOP_BLE_PEER_ERASE_ON_START` - Erase advertising triggered by long press of the predefined button on system start.
-  This option can be used only by nRF Desktop peripheral.
+  This option can be used only by an nRF Desktop peripheral.
 * :option:`CONFIG_DESKTOP_BLE_PEER_SELECT` - Select Bluetooth LE peer.
-  This option can be used only by nRF Desktop peripheral.
+  This option can be used only by an nRF Desktop peripheral.
 * :option:`CONFIG_DESKTOP_BLE_NEW_PEER_SCAN_REQUEST` - Scan for new Bluetooth peers.
-  This option can be used only by nRF Desktop central.
+  This option can be used only by an nRF Desktop central.
 
 Peer control using a hardware selector
 ======================================

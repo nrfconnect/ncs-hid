@@ -32,7 +32,7 @@ Configuration
 You can enable the default implementation of the HID provider using the :option:`CONFIG_DESKTOP_HID_REPORT_PROVIDER_KEYBOARD` Kconfig option.
 This option is enabled by default if the device uses HID provider events (:option:`CONFIG_DESKTOP_HID_REPORT_PROVIDER_EVENT`) and supports HID keyboard reports (:option:`CONFIG_DESKTOP_HID_REPORT_KEYBOARD_SUPPORT`).
 The default implementation of the HID provider uses a predefined format of HID reports, which is aligned with the default HID report map in the common configuration (:option:`CONFIG_DESKTOP_HID_REPORT_DESC`).
-The module also provides HID boot keyboard input report if it is supported (:option:`CONFIG_DESKTOP_HID_BOOT_INTERFACE_KEYBOARD`).
+The module also provides HID boot keyboard input reports if supported (:option:`CONFIG_DESKTOP_HID_BOOT_INTERFACE_KEYBOARD`).
 
 Alternatively, you can substitute the module with a custom HID keyboard report provider implementation.
 Using the custom provider allows you to modify the sources of user input and the HID report format.

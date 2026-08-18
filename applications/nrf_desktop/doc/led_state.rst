@@ -72,4 +72,4 @@ The LED effects are defined in the :file:`caf/led_effect.h` file in the common c
 LED effect API
 **************
 
-.. doxygengroup:: led_effect_CAF
+See the `CAF LED effect API`_.
