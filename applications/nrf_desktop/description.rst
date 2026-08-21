@@ -951,7 +951,7 @@ For more information, see the :ref:`nrf_desktop_application_Kconfig` page.
 The nRF Desktop application can be used with various hardware boards.
 For more information about board support in the application, see :ref:`nrf_desktop_board_configuration`.
 
-The nRF Desktop application can be used together with the `nRF21540 EK` shield to benefit from an RF front-end module (FEM) for the 2.4 GHz range extension.
+You can use the nRF Desktop application with the nRF21540 EK shield to benefit from an RF front-end module (FEM) for the 2.4 GHz range extension.
 For more information, see  :ref:`nrf_desktop_nrf21540ek`.
 
 You can also configure the following feature in the nRF Desktop application:
