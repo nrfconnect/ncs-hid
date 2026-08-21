@@ -6,3 +6,6 @@
 build:
   kconfig: Kconfig
   cmake: .
+
+samples:
+  - applications
