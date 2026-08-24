@@ -1,7 +1,7 @@
 .. _hid_index:
 
-Welcome to the HID Add-on for |NCS|
-###################################
+|addon| for |NCS|
+#################
 
 .. contents::
    :local:
@@ -10,7 +10,7 @@ Welcome to the HID Add-on for |NCS|
 .. note::
    This is an add-on for :ref:`nRF Connect SDK <nrf:index>`.
 
-The add-on focuses on development of Human Interface Devices (HID) on Nordic Semiconductor SoCs.
+The add-on focuses on development of :term:`Human Interface Device (HID)` on Nordic Semiconductor SoCs.
 
 Human Interface Devices (HID) overview
 **************************************
@@ -33,8 +33,10 @@ See the subpages for detailed documentation.
    :glob:
    :caption: Subpages:
 
-   applications.rst
-   scripts.rst
-   glossary.rst
-   release_notes.rst
-   known_issues.rst
+   solution_overview
+   setup
+   ../applications/nrf_desktop/README
+   ../scripts/hid_configurator/README
+   glossary
+   release_notes
+   known_issues

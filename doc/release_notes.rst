@@ -3,7 +3,7 @@
 Release notes
 #############
 
-For a detailed list of new features for a specific HID Add-on release, refer to the following:
+For a detailed list of new features for a specific |addon| release, refer to the following:
 
 .. toctree::
    :maxdepth: 1
