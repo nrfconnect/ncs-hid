@@ -37,6 +37,7 @@
 .. ### Source: www.nordicsemi.com
 
 .. _`Installing the nRF Connect SDK`: https://nrfconnectdocs.nordicsemi.com/ncs/|ncs_version_number|/nrf/installation/install_ncs.html
+.. _`nRF Connect SDK known issues`: https://nrfconnectdocs.nordicsemi.com/ncs/latest/nrf/releases_and_maturity/known_issues.html
 .. _`nRF Connect for Visual Studio Code`: https://docs.nordicsemi.com/r/bundle/nrf-connect-vscode/page/index.html
 .. _`nRF Desktop reference design page`: https://www.nordicsemi.com/Products/Reference-designs/nRF-Desktop
 .. _`nRF Connect for Mobile`: https://www.nordicsemi.com/Software-and-Tools/Development-Tools/nRF-Connect-for-mobile
@@ -51,3 +52,7 @@
 .. ### Source: *.visualstudio.com
 
 .. _`Visual Studio Code`: https://code.visualstudio.com/
+
+.. ### Source: bugs.launchpad.net
+
+.. _`Ubuntu bug report`: https://bugs.launchpad.net/ubuntu/+source/bluez/+bug/2130724

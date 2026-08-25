@@ -18,9 +18,12 @@ HID_BASE = Path(manifest.repo_abspath)
 NRF_BASE = Path(manifest.get_projects(['nrf'])[0].abspath)
 ZEPHYR_BASE = Path(manifest.get_projects(['zephyr'])[0].abspath)
 
-sys.path.insert(0, str(HID_BASE / 'doc' / '_extensions'))
+# The add-on's own extensions must take precedence: page_filter is vendored here
+# so that it reads hid/doc/versions.json instead of the nRF Connect SDK copy,
+# which would populate the version filter with |NCS| releases.
 sys.path.insert(0, str(NRF_BASE / 'doc' / '_extensions'))
 sys.path.insert(0, str(ZEPHYR_BASE / 'doc' / '_extensions'))
+sys.path.insert(0, str(HID_BASE / 'doc' / '_extensions'))
 
 # Needed by options_from_kconfig extension which is not self contained
 sys.path.insert(0, str(ZEPHYR_BASE / 'scripts'))
@@ -68,6 +71,7 @@ extensions = [
     'sphinxcontrib.mscgen',
     'options_from_kconfig',
     'table_from_rows',
+    'page_filter',
     'zephyr.doxyrunner',
     'zephyr.doxybridge',
     'zephyr.external_content',
