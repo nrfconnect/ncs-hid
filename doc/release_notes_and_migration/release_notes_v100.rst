@@ -22,3 +22,6 @@ The initial release includes a copy of the following:
 
 * nRF Desktop HID reference design application.
 * HID configurator Python scripts.
+
+The nRF Desktop application does not support the Partition Manager.
+All of the application configurations define the memory layout in DTS.
