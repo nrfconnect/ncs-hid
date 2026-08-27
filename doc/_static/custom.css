@@ -1,0 +1,15 @@
+/* Center figure captions under their diagram. */
+.rst-content figure > figcaption > p {
+    max-width: 100%;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Cap tall diagrams so they do not force excessive scrolling. */
+.rst-content figure object[type="image/svg+xml"] {
+    max-width: min(100%, 1200px);
+    max-height: 1200px;
+    width: auto;
+    height: auto;
+}
