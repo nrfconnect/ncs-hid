@@ -1,7 +1,7 @@
 .. _hid_release_notes_addon_v100:
 
-Release notes for HID Add-on v1.0.0
-###################################
+Release notes for |addon| v1.0.0
+################################
 
 .. contents::
    :local:
@@ -15,7 +15,7 @@ For the list of potential issues, see the :ref:`hid_known_issues` page.
 Changelog
 *********
 
-This is an initial release of the HID Add-on.
+This is an initial release of the |addon|.
 This release is based on the |NCS| release v3.4.0.
 
 The initial release includes a copy of the following:

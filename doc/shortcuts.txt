@@ -1,7 +1,8 @@
-
 .. ### Generic shortcuts
 
 .. |NCS| replace:: nRF Connect SDK
+.. |addon| replace:: HID Add-on
+.. |nRFVSC| replace:: nRF Connect for VS Code extension
 .. |config| replace:: See :ref:`configure_application` for information about how to permanently or temporarily change the configuration.
 
 .. ### nRF Desktop shortcuts
