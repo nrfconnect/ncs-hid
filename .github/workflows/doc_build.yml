@@ -113,6 +113,13 @@ jobs:
           mv "${MONITOR}" "$PUBLISH"
           if [[ -f pr.txt ]]; then mv pr.txt "$PUBLISH"; fi
 
+      - name: Prepare PR comment
+        if: ${{ github.event_name == 'pull_request' }}
+        working-directory: ncs/hid
+        run: |
+          echo "You can find the documentation preview for this PR [here](${{ vars.NCS_DOC_PR_HOSTING_URL }}addons/addon-hid/PR-${{ github.event.number }}/)." \
+          > publish/comment.txt
+
       - name: Store
         if: ${{ !contains(github.event.pull_request.labels.*.name, 'external') || contains(github.event.pull_request.labels.*.name, 'CI-trusted-author') }}
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0

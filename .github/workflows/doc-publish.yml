@@ -1,0 +1,28 @@
+name: Documentation Publish
+
+on:
+  workflow_run:
+    workflows: ["Documentation Build"]
+    types:
+      - completed
+
+permissions:
+  actions: read
+  contents: read
+  pull-requests: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    if: ${{ github.repository == 'nrfconnect/sdk-hid' && github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Publish
+        uses: nrfconnect/action-docpublish@f3e4ee63779fb629bbdd48243349ef2843ff6b0b
+        with:
+          doc-subdir: addons/addon-hid
+          doc-zip-name: 'hid-addon*.zip'
+          workflow: doc_build.yml
+          storage-url: ${{ vars.NCS_DOC_STORAGE_URL }}
+          storage-url-pr: ${{ vars.NCS_DOC_PR_STORAGE_URL }}
+          storage-sas: ${{ secrets.NCS_DOC_SAS_MAIN }}
+          storage-pr-sas: ${{ secrets.NCS_DOC_SAS_PRS }}

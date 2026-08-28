@@ -1,0 +1,24 @@
+name: Documentation Remove
+
+on:
+  pull_request_target:
+    types: [closed]
+    branches:
+      - main
+      - 'v*-branch'
+
+permissions:
+  contents: read
+
+# errors are suppressed because not all PRs create docs
+jobs:
+  remove:
+    runs-on: ubuntu-24.04
+    if: ${{ github.repository == 'nrfconnect/sdk-hid' }}
+    steps:
+      - name: Try removal of PR-docs
+        env:
+          AZCOPY_CONCURRENCY_VALUE: 3000
+          SAS_TOKEN: ${{ secrets.NCS_DOC_SAS_PRS }}
+        run: |
+          azcopy rm "${{ vars.NCS_DOC_PR_STORAGE_URL }}addons/addon-hid/PR-${{ github.event.number }}?$SAS_TOKEN" --recursive=true || true
