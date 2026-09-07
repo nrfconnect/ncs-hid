@@ -19,7 +19,6 @@ See the subpages for detailed documentation on the application and its modules:
    description
    application_kconfig
    board_configuration
-   nRF21540ek_support
    memory_layout
    bluetooth
    bootloader_dfu

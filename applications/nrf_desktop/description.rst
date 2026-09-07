@@ -165,8 +165,7 @@ The application uses dynamic allocation to:
 
 * Create the Application Event Manager events.
   For more information, see the :ref:`app_event_manager` page.
-* Temporarily store the HID-related data in the :ref:`nrf_desktop_hid_state` and :ref:`nrf_desktop_hid_forward`.
-  For more information, see the documentation pages of these modules.
+* Temporarily store the HID-related data in the :ref:`nrf_desktop_hid_state`.
 
 When configuring heap, make sure that the values for the following options match the typical event size and the system needs:
 
@@ -377,24 +376,15 @@ The application supports the following build types:
      - ``release_fast_pair``
      - ``nrf54l15dk/nrf54l05/cpuapp``
      - Release version of the application with `Fast Pair`_ support.
-   * - Dongle
-     - ``dongle``
-     - ``nrf5340dk/nrf5340/cpuapp``
-     - Debug version of the application that lets you generate the application with the dongle role.
    * - Keyboard
      - ``keyboard``
-     - ``nrf5340dk/nrf5340/cpuapp``
-     - Debug version of the application that lets you generate the application with the keyboard role.   * - MCUboot SMP
+     - ``nrf54l15dk/nrf54l15/cpuapp``
+     - Debug version of the application that lets you generate the application with the keyboard role.
+   * - MCUboot SMP
      - ``mcuboot_smp``
      - ``nrf54l15dk/nrf54l10/cpuapp``
      - | Debug version of the application that enables MCUmgr with DFU support and offers support for the MCUboot DFU procedure over SMP.
-       | See the :ref:`nrf_desktop_bootloader_background_dfu` section for more information.   * - Triple Bluetooth LE connection
-     - ``3bleconn``
-     - ``nrf5340dk/nrf5340/cpuapp``
-     - Debug version of the application with the support for up to three simultaneous Bluetooth LE connections.   * - Release quadruple LLPM connection
-     - ``release_4llpmconn``
-     - ``nrf5340dk/nrf5340/cpuapp``
-     - Release version of the application with the support for up to four simultaneous Bluetooth LE connections, in Low Latency Packet Mode.
+       | See the :ref:`nrf_desktop_bootloader_background_dfu` section for more information.
    * - LLVM
      - ``llvm``
      - ``nrf54lm20dk/nrf54lm20a/cpuapp``
@@ -521,51 +511,7 @@ The assignments of hardware interface elements depend on the device type.
       The following predefined button is assigned to peer control operations for an nRF54 Series DK.
 
       Button 0
-         * If the DK acts as a dongle:
-
-            * Long-press the **Button 0** to initialize peer erase.
-              When **LED1** starts blinking rapidly, double-press to confirm the operation.
-              After the confirmation, all the Bluetooth bonds are removed for the dongle.
-            * Short-press to start scanning for both bonded and non-bonded Bluetooth Peripherals.
-              After the forced scan timeout, the scan is interrupted if another peripheral connected to the dongle is active.
-
-              .. note::
-                 |led_note|
-
-            * |nRF_Desktop_cancel_operation|
-
-         * If the DK acts as a peripheral:
-
-            * Press the **Button 0** before the DK is powered up with the on/off switch.
-              Long-press to initialize and confirm the peer erase.
-              |nRF_Desktop_confirmation_effect|
-
-              .. note::
-                 |led_note|
-
-            * |nRF_Desktop_cancel_operation|
-
-   .. tab:: nRF53 DK
-
-      The following predefined button is assigned to peer control operations for an nRF53 Series DK.
-
-      Button 1
-         * If the DK acts as a dongle:
-
-            * Long-press the **Button 1** to initialize peer erase.
-              When **LED2** starts blinking rapidly, double-press to confirm the operation.
-              After the confirmation, all the Bluetooth bonds are removed for the dongle.
-            * Short-press to start scanning for both bonded and non-bonded Bluetooth Peripherals.
-              After the forced scan timeout, the scan is interrupted if another peripheral connected to the dongle is active.
-
-              .. note::
-                 |led_note|
-
-         * |nRF_Desktop_cancel_operation|
-
-      * If the DK acts as a peripheral:
-
-         * Press the **Button 1** before the DK is powered up with the on/off switch.
+         * Press the **Button 0** before the DK is powered up with the on/off switch.
            Long-press to initialize and confirm the peer erase.
            |nRF_Desktop_confirmation_effect|
 
@@ -587,10 +533,6 @@ This system state LED is kept lit when the device is active.
    .. tab:: nRF54 DK
 
       **LED0** is used for the system state indication.
-
-   .. tab:: nRF53 DK
-
-      **LED1** is used for the system state indication.
 
 ..
 
@@ -656,9 +598,6 @@ For more information, see the :ref:`nrf_desktop_application_Kconfig` page.
 
 The nRF Desktop application can be used with various hardware boards.
 For more information about board support in the application, see :ref:`nrf_desktop_board_configuration`.
-
-You can use the nRF Desktop application with the nRF21540 EK shield to benefit from an RF front-end module (FEM) for the 2.4 GHz range extension.
-For more information, see  :ref:`nrf_desktop_nrf21540ek`.
 
 You can also configure the following feature in the nRF Desktop application:
 
@@ -789,14 +728,12 @@ Testing
 You can build and test the application in various configurations.
 
 .. note::
-   You can perform tests with nRF53 or nRF54 Series DKs.
-   Depending on the selected build type, the DK can act either as a HID peripheral or HID dongle.
+   You can perform tests with nRF54 Series DKs.
 
 After building the application with or without :ref:`specifying the build type <nrf_desktop_selecting_build_types>`, test the nRF Desktop application by performing the following steps:
 
 1. Program the required firmware to the device.
 #. Power up the DK.
-#. If the configuration acts as a dongle, plug it to the USB port and wait for the Bluetooth connection to be established.
 #. Move the mouse or press keys on the keyboard.
    The input is reflected on the host.
 
@@ -871,7 +808,7 @@ See the following list of possible scenarios and best practices:
   Set parameters are not enforced, meaning that the HID host may still eventually use a value greater than the maximum connection interval requested by a peripheral.
 * Radio frequency (RF) noise can negatively affect the HID report rate for wireless connections.
   If a HID report fails to be delivered in a given Bluetooth LE LLPM connection event, it is retransmitted in the subsequent connection event, which effectively reduces the report rate.
-  By avoiding congested RF channels, the :ref:`nrf_desktop_ble_qos` helps to achieve better connection quality and a higher report rate.
+  By avoiding congested RF channels, a peripheral can achieve better connection quality and a higher report rate.
 * For the USB device connected directly, the applicable options will vary depending on the used USB stack:
 
   * If you use the USB legacy stack, you can configure your preferred USB HID poll interval using the :kconfig:option:`CONFIG_USB_HID_POLL_INTERVAL_MS` Kconfig option.

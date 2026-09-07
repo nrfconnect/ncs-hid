@@ -36,12 +36,6 @@ nRF Desktop board configuration files
 
 The nRF Desktop application comes with configuration files for the following reference designs:
 
-Sample dongle (``nrf5340dk/nrf5340``)
-      * The application is configured to act as a dongle that forwards data from both mouse and keyboard.
-      * Bluetooth uses Nordic Semiconductor's SoftDevice link layer without LLPM and is configured to act as a central.
-        Input data comes from Bluetooth and is retransmitted to USB.
-      * The configuration with the B0 bootloader is set as default.
-
 Sample mouse or keyboard (``nrf54l15dk/nrf54l05/cpuapp``)
       * The configuration :ref:`emulates the nRF54L05 SoC <zephyr:nrf54l15dk_nrf54l05>` on the nRF54L15 DK.
       * The build types allow to build the application as a mouse or a keyboard.
