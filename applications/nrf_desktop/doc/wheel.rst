@@ -9,6 +9,8 @@ Wheel module
 
 The wheel module is responsible for generating events related to the rotation of the mouse wheel.
 
+.. include:: includes/unsupported_platform_note.txt
+
 Module events
 *************
 

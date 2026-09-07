@@ -10,6 +10,8 @@ Motion module
 The motion module is responsible for generating events related to movement.
 The movement can be detected using the motion sensor, but it can also be sourced from GPIO pins or simulated.
 
+.. include:: includes/unsupported_platform_note.txt
+
 Module events
 *************
 

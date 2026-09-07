@@ -94,6 +94,27 @@ Since the application architecture is uniform and the code is shared, the set of
 A different set of modules is enabled when the application is working as a mouse, keyboard, or dongle.
 In other words, not all of the :ref:`nrf_desktop_app_internal_modules` need to be enabled for a given reference design.
 
+Modules without reference board configuration
+-----------------------------------------------
+
+Some application modules are kept in the codebase as part of the full nRF Desktop design, even though none of the reference board configurations currently maintained in the repository enable them.
+These modules were previously used by nRF52 Series reference designs.
+Each affected module documentation page includes a note when the module has no enabled reference configuration.
+
+The following modules currently have no enabled reference board configuration:
+
+* :ref:`nrf_desktop_battery_charger`
+* :ref:`nrf_desktop_battery_meas`
+* :ref:`nrf_desktop_ble_passkey`
+* :ref:`nrf_desktop_ble_qos`
+* :ref:`nrf_desktop_fn_keys`
+* :ref:`nrf_desktop_led_stream`
+* :ref:`nrf_desktop_motion`
+* :ref:`nrf_desktop_passkey`
+* :ref:`nrf_desktop_qos`
+* :ref:`nrf_desktop_selector`
+* :ref:`nrf_desktop_wheel`
+
 Gaming mouse module set
 -----------------------
 

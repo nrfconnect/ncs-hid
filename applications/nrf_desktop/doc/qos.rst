@@ -13,6 +13,8 @@ The module can be used only by an nRF Desktop peripheral with the SoftDevice Lin
 The module is made available in case the peripheral is meant to be paired with a third-party dongle.
 In such case, the vendor can use the Quality of Service data provided by the nRF Desktop peripheral to improve the link quality.
 
+.. include:: includes/unsupported_platform_note.txt
+
 .. note::
    There is no need to enable the Quality of Service module if you want to pair the peripheral device with the nRF Desktop dongle.
    The dongle does not depend on the service provided by the Quality of Service module on peripheral devices.

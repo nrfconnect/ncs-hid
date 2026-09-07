@@ -9,6 +9,8 @@ Bluetooth LE passkey module
 
 Use the Bluetooth® LE passkey module to enable pairing based on passkey for increased security.
 
+.. include:: includes/unsupported_platform_note.txt
+
 Module events
 *************
 

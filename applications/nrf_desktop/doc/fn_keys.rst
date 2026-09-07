@@ -9,6 +9,8 @@ Function key module
 
 The Function key module applies the Fn key modifier to activate special functions assigned to dual-purpose keys.
 
+.. include:: includes/unsupported_platform_note.txt
+
 Module events
 *************
 

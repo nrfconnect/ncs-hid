@@ -9,6 +9,8 @@ Battery charger module
 
 The battery charger module is responsible for battery charging control.
 
+.. include:: includes/unsupported_platform_note.txt
+
 Module events
 *************
 

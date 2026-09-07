@@ -11,6 +11,8 @@ Use the Bluetooth® LE Quality of Service (QoS) module to achieve better connect
 The module can be used by both an nRF Desktop peripheral and an nRF Desktop central with the SoftDevice Link Layer (:kconfig:option:`CONFIG_BT_LL_SOFTDEVICE`).
 However, only the Bluetooth central can update the Bluetooth LE channel map that is in use.
 
+.. include:: includes/unsupported_platform_note.txt
+
 Module events
 *************
 

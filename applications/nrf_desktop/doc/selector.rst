@@ -10,6 +10,8 @@ Selector module
 The selector module is used to send a ``selector_event`` that informs about the current selector state.
 The module uses hardware selectors (:file:`selector_hw.c`).
 
+.. include:: includes/unsupported_platform_note.txt
+
 Module events
 *************
 
