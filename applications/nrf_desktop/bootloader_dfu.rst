@@ -24,7 +24,6 @@ The nRF Desktop application can use one of the following bootloaders:
   B0 is a small, simple, and secure bootloader that allows the application to boot directly from one of the application slots, thus increasing the speed of the direct firmware upgrade (DFU) process.
   B0 is supported on the SoCs from the following series:
 
-  * nRF52 Series
   * nRF53 Series (supports only application core DFU)
 
   This bootloader can be used only for the :ref:`background DFU <nrf_desktop_bootloader_background_dfu>` through the :ref:`nrf_desktop_config_channel` and :ref:`nrf_desktop_dfu`.
@@ -33,7 +32,6 @@ The nRF Desktop application can use one of the following bootloaders:
 **MCUboot**
   MCUboot is supported on the SoCs from the following series:
 
-  * nRF52 Series
   * nRF53 Series
   * nRF54 Series
 
@@ -180,14 +178,12 @@ The pin is configured with the ``mcuboot-button0`` alias.
 The ``mcuboot-led0`` alias can be used to define the LED activated in the serial recovery mode.
 You must select the ``CONFIG_MCUBOOT_INDICATION_LED`` Kconfig option to enable the LED.
 By default, both the GPIO pin and the LED are defined in the board's DTS file.
-See :file:`boards/nordic/nrf52833dongle/nrf52833dongle_nrf52833.dts` for an example of board's DTS file used by the nRF Desktop application.
 
-For an example of a bootloader Kconfig configuration file defined by the application, see the MCUboot bootloader ``debug`` configuration defined for nRF52833 dongle (:file:`applications/nrf_desktop/configuration/nrf52833dongle_nrf52833/images/mcuboot/prj.conf`).
+For an example of a bootloader Kconfig file defined by the application, see the MCUboot bootloader configuration defined for one of the nRF Desktop boards.
 
 .. note::
   The nRF Desktop devices use either the serial recovery DFU with a single application slot or the background DFU.
   Both mentioned firmware upgrade methods are not used simultaneously by any of the configurations.
-  For example, the ``nrf52840dk/nrf52840`` board in ``mcuboot_smp`` file suffix uses only the background DFU and does not enable the serial recovery feature.
 
 .. _nrf_desktop_configuring_mcuboot_bootloader_ram_load:
 

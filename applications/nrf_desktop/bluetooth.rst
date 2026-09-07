@@ -207,7 +207,7 @@ Apart from that, the following changes are applied in configurations that suppor
 * The fast and slow advertising intervals defined in the :ref:`nrf_desktop_ble_adv` are aligned with Fast Pair expectations.
 * The Bluetooth advertising filter accept list (:kconfig:option:`CONFIG_CAF_BLE_ADV_FILTER_ACCEPT_LIST`) is disabled to allow Fast Pair Seekers other than the bonded one to connect outside of the pairing mode.
 * The security failure timeout (:option:`CONFIG_DESKTOP_BLE_SECURITY_FAIL_TIMEOUT_S`) is longer to prevent disconnections during the Fast Pair procedure.
-* Passkey authentication (:option:`CONFIG_DESKTOP_BLE_ENABLE_PASSKEY`) is disabled on the keyboard.
+* Passkey authentication is not used in the preconfigured nRF Desktop.
   Currently, Fast Pair does not support devices that use a screen or keyboard for Bluetooth authentication.
 * TX power correction value (:kconfig:option:`CONFIG_BT_ADV_PROV_TX_POWER_CORRECTION_VAL`) is configured to align the TX power included in the advertising data with the Fast Pair expectations.
 
