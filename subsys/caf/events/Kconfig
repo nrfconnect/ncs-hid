@@ -1,0 +1,34 @@
+#
+# Copyright (c) 2026 Nordic Semiconductor ASA
+#
+# SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
+#
+
+menu "Event options"
+
+config CAF_BLE_COMMON_EVENTS_EXTENSION
+	bool "BLE common event extensions"
+	depends on CAF_BLE_COMMON_EVENTS
+	default y
+	help
+	  Enable HID add-on extensions for CAF BLE common events not yet
+	  available in the used NCS release.
+
+config CAF_BLE_SCI_CONN_RATE_EVENTS
+	bool "BLE SCI connection rate events"
+	depends on CAF_BLE_COMMON_EVENTS_EXTENSION
+	depends on CAF_BLE_STATE_EXTENSION
+	depends on BT_SHORTER_CONNECTION_INTERVALS
+	default y
+	help
+	  Enable support for BLE SCI connection rate events.
+
+	  Provided by the HID add-on until available in the used NCS release.
+
+config CAF_INIT_LOG_BLE_SCI_CONN_RATE_EVENTS
+	bool "Log BLE peer connection rate events"
+	depends on CAF_BLE_SCI_CONN_RATE_EVENTS
+	depends on LOG
+	default y
+
+endmenu

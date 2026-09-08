@@ -1,0 +1,26 @@
+#
+# Copyright (c) 2026 Nordic Semiconductor ASA
+#
+# SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
+#
+
+menu "HID add-on CAF extensions"
+	depends on CAF
+
+config CAF_EXTENSION
+	bool "HID add-on CAF extensions"
+	default y
+	help
+	  CAF extensions provided by the HID add-on until available in the
+	  used NCS release.
+	  These features are already available in NCS main and ported
+	  here for early access.
+
+if CAF_EXTENSION
+
+rsource "events/Kconfig"
+rsource "modules/Kconfig"
+
+endif # CAF_EXTENSION
+
+endmenu

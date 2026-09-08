@@ -1,0 +1,21 @@
+#
+# Copyright (c) 2026 Nordic Semiconductor ASA
+#
+# SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
+#
+
+config CAF_BLE_STATE_EXTENSION
+	bool "CAF BLE state extension module"
+	depends on CAF_BLE_STATE
+	default y
+	help
+	  Register additional Bluetooth connection callbacks and submit CAF
+	  extension events not yet available in the used NCS release.
+
+if CAF_BLE_STATE_EXTENSION
+
+module = CAF_BLE_STATE_EXTENSION
+module-str = CAF BLE state extension
+source "subsys/logging/Kconfig.template.log_config"
+
+endif # CAF_BLE_STATE_EXTENSION
