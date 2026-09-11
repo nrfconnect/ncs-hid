@@ -15,6 +15,7 @@
 #define MODULE ble_conn_params
 #include <caf/events/module_state_event.h>
 #include <caf/events/ble_common_event.h>
+#include <caf/events/ble_common_event_extension.h>
 #include "ble_event.h"
 
 #include "usb_event.h"
