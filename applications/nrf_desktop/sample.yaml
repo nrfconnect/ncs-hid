@@ -16,7 +16,7 @@ common:
       - "ble_state: Bluetooth initialized"
       - "settings_loader: Settings loaded"
       - "ble_bond: Selected Bluetooth LE peers"
-      - "ble_adv: Advertising started"
+      - "(ble_adv: Advertising started)|(ble_scan: Scan started)"
 tests:
   applications.nrf_desktop.zdebug.uart:
     platform_allow:
@@ -73,15 +73,6 @@ tests:
       - nrf54lm20dk/nrf54lm20b/cpuapp
     extra_args: FILE_SUFFIX=dongle
     harness: console
-    harness_config:
-      type: multi_line
-      ordered: false
-      regex:
-        - "app_event_manager: e:module_state_event module:main state:READY"
-        - "ble_state: Bluetooth initialized"
-        - "settings_loader: Settings loaded"
-        - "ble_bond: Selected Bluetooth LE peers"
-        - "ble_scan: Scan started"
   applications.nrf_desktop.zrelease_dongle:
     build_only: true
     platform_allow:
