@@ -121,6 +121,7 @@ Sample mouse or LLPM dongle (``nrf54lm20dk/nrf54lm20a/cpuapp``, ``nrf54lm20dk/nr
         Configurations in this bootloader mode use the same security features as direct-xip mode (``MCUBOOT+XIP``), including hardware cryptography, signature type, and public key storage.
         The application code is executed from the RAM in this mode to improve the HID report rate over USB.
         For more details on the RAM load mode, see the MCUboot :ref:`nrf_desktop_configuring_mcuboot_bootloader_ram_load` documentation section.
+      * The ``dongle`` and ``release_dongle`` configurations act as a Bluetooth LE central dongle that forwards HID reports from connected peripherals to the host over USB High-Speed.
 
 Sample mouse or keyboard (``nrf54ls05dk/nrf54ls05a/cpuapp``, ``nrf54ls05dk/nrf54ls05b/cpuapp``)
       * The configuration uses the nRF54LS05 DK.

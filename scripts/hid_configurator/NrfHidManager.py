@@ -9,8 +9,7 @@ NORDIC_VID = 0x1915
 
 class NrfHidManager:
     TYPE2BOARDLIST = {
-        # nRF54LM20 dongle: add 'nrf54lm20dk' below when dongle configuration is added.
-        'dongle' : [],
+        'dongle' : ['nrf54lm20dk'],
         'keyboard' : ['nrf54l15dk', 'nrf54ls05dk'],
         'mouse' : ['nrf54l15dk', 'nrf54lm20dk', 'nrf54ls05dk'],
     }
