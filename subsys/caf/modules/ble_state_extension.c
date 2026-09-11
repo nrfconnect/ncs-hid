@@ -41,9 +41,9 @@ static int register_conn_cbs(void)
 {
 	static struct bt_conn_cb conn_callbacks;
 
-	if (IS_ENABLED(CONFIG_CAF_BLE_SCI_CONN_RATE_EVENTS)) {
-		conn_callbacks.conn_rate_changed = conn_rate_changed;
-	}
+#if CONFIG_CAF_BLE_SCI_CONN_RATE_EVENTS
+	conn_callbacks.conn_rate_changed = conn_rate_changed;
+#endif
 
 	bt_conn_cb_register(&conn_callbacks);
 
