@@ -397,6 +397,14 @@ The application supports the following build types:
      - ``release_fast_pair``
      - ``nrf54l15dk/nrf54l05/cpuapp``
      - Release version of the application with `Fast Pair`_ support.
+   * - Dongle
+     - ``dongle``
+     - ``nrf54lm20dk/nrf54lm20b/cpuapp``
+     - Debug version of the application that lets you generate the application with the dongle role.
+   * - Release dongle
+     - ``release_dongle``
+     - ``nrf54lm20dk/nrf54lm20b/cpuapp``
+     - Release version of the application that acts as a Bluetooth LE LLPM dongle bridging radio connected HID peripherals.
    * - Keyboard
      - ``keyboard``
      - ``nrf54l15dk/nrf54l15/cpuapp``
@@ -406,6 +414,14 @@ The application supports the following build types:
      - ``nrf54l15dk/nrf54l10/cpuapp``
      - | Debug version of the application that enables MCUmgr with DFU support and offers support for the MCUboot DFU procedure over SMP.
        | See the :ref:`nrf_desktop_bootloader_background_dfu` section for more information.
+   * - Dongle quadruple LLPM connection
+     - ``dongle_4llpmconn``
+     - ``nrf54lm20dk/nrf54lm20b/cpuapp``
+     - Debug version of the application with the support for up to four simultaneous Bluetooth LE connections, in Low Latency Packet Mode.
+   * - Release dongle quadruple LLPM connection
+     - ``release_dongle_4llpmconn``
+     - ``nrf54lm20dk/nrf54lm20b/cpuapp``
+     - Release version of the application with support for up to four simultaneous Bluetooth LE connections in Low Latency Packet Mode.
    * - LLVM
      - ``llvm``
      - ``nrf54lm20dk/nrf54lm20a/cpuapp``

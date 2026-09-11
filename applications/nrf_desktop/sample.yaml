@@ -56,6 +56,36 @@ tests:
       - nrf54l15dk/nrf54l10/cpuapp
     extra_args:
       - FILE_SUFFIX=fast_pair
+  applications.nrf_desktop.zdebug_dongle_4llpmconn.uart:
+    platform_allow:
+      - nrf54lm20dk/nrf54lm20a/cpuapp
+      - nrf54lm20dk/nrf54lm20b/cpuapp
+    extra_configs:
+      - CONFIG_CLOCK_CONTROL_NRF=n
+    integration_platforms:
+      - nrf54lm20dk/nrf54lm20b/cpuapp
+    harness: console
+    extra_args: FILE_SUFFIX=dongle_4llpmconn
+  applications.nrf_desktop.zdebug_dongle.uart:
+    extra_configs:
+      - CONFIG_CLOCK_CONTROL_NRF=n
+    platform_allow:
+      - nrf54lm20dk/nrf54lm20a/cpuapp
+      - nrf54lm20dk/nrf54lm20b/cpuapp
+    integration_platforms:
+      - nrf54lm20dk/nrf54lm20b/cpuapp
+    harness: console
+    extra_args: FILE_SUFFIX=dongle
+  applications.nrf_desktop.zrelease_dongle:
+    build_only: true
+    extra_configs:
+      - CONFIG_CLOCK_CONTROL_NRF=n
+    platform_allow:
+      - nrf54lm20dk/nrf54lm20a/cpuapp
+      - nrf54lm20dk/nrf54lm20b/cpuapp
+    integration_platforms:
+      - nrf54lm20dk/nrf54lm20b/cpuapp
+    extra_args: FILE_SUFFIX=release_dongle
   applications.nrf_desktop.zdebug_keyboard.uart:
     platform_allow:
       - nrf54l15dk/nrf54l10/cpuapp
@@ -110,6 +140,16 @@ tests:
       - nrf54ls05dk/nrf54ls05a/cpuapp
     extra_args:
       - FILE_SUFFIX=release_fast_pair
+  applications.nrf_desktop.zrelease_dongle_4llpmconn:
+    build_only: true
+    extra_configs:
+      - CONFIG_CLOCK_CONTROL_NRF=n
+    platform_allow:
+      - nrf54lm20dk/nrf54lm20a/cpuapp
+      - nrf54lm20dk/nrf54lm20b/cpuapp
+    integration_platforms:
+      - nrf54lm20dk/nrf54lm20b/cpuapp
+    extra_args: FILE_SUFFIX=release_dongle_4llpmconn
   applications.nrf_desktop.zdebug.llvm.uart:
     toolchain_allow: llvm
     integration_platforms:
