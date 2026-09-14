@@ -22,6 +22,11 @@
 .. _`fwupd`: https://github.com/fwupd/fwupd
 .. _`nordic-hid.quirk`: https://github.com/fwupd/fwupd/tree/main/plugins/nordic-hid/nordic-hid.quirk
 
+.. ### Source: bluetooth.com
+
+.. _`HID Service Specification`: https://www.bluetooth.com/specifications/specs/hid-service-specification/
+.. _`HID Over GATT Profile Specification`: https://www.bluetooth.com/specifications/specs/hid-over-gatt-profile-hogp/
+
 .. ### Source: google.com
 
 .. _`Works With ChromeBook (WWCB)`: https://www.google.com/chromebook/workswithchromebook

@@ -51,7 +51,7 @@ HID SCI support
 The :option:`CONFIG_DESKTOP_HIDS_SCI_ENABLE` option selects :kconfig:option:`CONFIG_BT_HIDS_SCI` and the required Bluetooth LE Host and Controller features for support of shorter connection intervals.
 The option cannot be used together with :kconfig:option:`CONFIG_CAF_BLE_USE_LLPM`.
 It depends on Bluetooth Controller support for shorter connection intervals.
-By default, the GATT pool sizes defined in :file:`Kconfig.ble` and the maximum number of HIDS attributes defined in :file:`src/modules/Kconfig.hids` are automatically aligned to nRF Desktop application needs, including HID SCI support.
+By default, the GATT pool sizes defined in the :file:`Kconfig.ble` file and the maximum number of HIDS attributes defined in the :file:`src/modules/Kconfig.hids` file are automatically aligned to the needs of the nRF Desktop application, including HID SCI support.
 If you need adjustments, for example due to changing the set of supported HID reports, make sure that these values remain sufficient.
 
 HID subscriber configuration
@@ -131,7 +131,7 @@ HID control point
 =================
 
 The connected Bluetooth host can write to the HID control point characteristic to inform about host suspend or exit suspend, or to request a HID SCI (Shorter Connection Intervals) mode change.
-The HID Service application module translates these writes into dedicated application events:
+The HID Service application module translates these writes into the following dedicated application events:
 
 * :c:struct:`hid_host_suspend_event` - Submitted when the host enters or exits suspend.
   The :c:member:`hid_host_suspend_event.suspended` field indicates whether the host entered or exited suspend.

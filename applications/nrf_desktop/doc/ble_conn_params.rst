@@ -36,7 +36,7 @@ Enable the :option:`CONFIG_DESKTOP_BLE_USB_MANAGED_CI` Kconfig option to reduce 
 The option is enabled by default.
 For standard (non-SCI) connections, use the :option:`CONFIG_DESKTOP_BLE_USB_MANAGED_CI_VALUE` Kconfig option to set the connection interval used in suspended state (100 ms by default) and the :option:`CONFIG_DESKTOP_BLE_USB_MANAGED_LATENCY_VALUE` Kconfig option to set the peripheral latency used in suspended state (``1`` by default).
 For HID SCI connections, the module requests the appropriate HID SCI mode instead.
-See the :ref:`nrf_desktop_ble_conn_params_usb_managed_ci` section in the Implementation details for more information.
+See the :ref:`nrf_desktop_ble_conn_params_usb_managed_ci` section for more information.
 
 Implementation details
 **********************
@@ -82,7 +82,7 @@ When USB is disconnected or becomes active, the module restores the connection p
 HID SCI connections
 -------------------
 
-For connections that use HID SCI, the module does not update connection parameters directly, as such behavior would break the `HID Over GATT Profile Specification`_.
+For connections that use HID SCI, the module does not update connection parameters directly, as such behavior would not comply with the `HID Over GATT Profile Specification`_.
 Instead, it requests an appropriate HID SCI mode from the peripheral:
 
 * On USB suspend, the module requests the LOW_POWER HID SCI mode.
@@ -94,7 +94,7 @@ If a peer switches out of the LOW_POWER mode while USB is suspended (for example
 
 .. note::
    Make sure that the configured peripheral's LOW_POWER HID SCI connection parameters allow for the dongle's current to remain under the required limit of 2.5 mA while USB is suspended.
-   The LOW_POWER HID SCI mode parameters configured in nrf_desktop meet this requirement.
+   The LOW_POWER HID SCI mode parameters configured in the nRF Desktop application meet this requirement.
 
 .. _nrf_desktop_ble_conn_params_hid_sci:
 
@@ -102,7 +102,7 @@ HID SCI
 =======
 
 When the :option:`CONFIG_DESKTOP_HID_FORWARD_HID_SCI_ENABLE` Kconfig option is enabled, the |ble_conn_params| sets the promptless :option:`CONFIG_DESKTOP_BLE_CONN_PARAMS_HID_SCI_ENABLE` Kconfig option.
-With this option set, the module sets default connection rate parameters on module initialization using :c:func:`bt_conn_le_conn_rate_set_defaults`.
+With this option set, the module sets the default connection rate parameters on module initialization using the :c:func:`bt_conn_le_conn_rate_set_defaults` function.
 
 For HID SCI connections, the module does not perform the standard connection parameter update.
 Instead, it controls the connection parameters by requesting appropriate HID SCI modes from the peripheral, as required by the `HID Over GATT Profile Specification`_.
