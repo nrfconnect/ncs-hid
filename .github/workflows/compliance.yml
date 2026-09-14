@@ -35,7 +35,7 @@ jobs:
           cache-dependency-path: ./ncs/zephyr/scripts/ci/package-lock.json
 
       - name: Install Node dependencies
-        run: npm --prefix ./ncs/zephyr/scripts/ci ci
+        run: npm --prefix ./ncs/zephyr/scripts/ci ci --ignore-scripts
 
       - name: Run merge commits test
         env:
