@@ -186,7 +186,8 @@ The application uses dynamic allocation to:
 
 * Create the Application Event Manager events.
   For more information, see the :ref:`app_event_manager` page.
-* Temporarily store the HID-related data in the :ref:`nrf_desktop_hid_state`.
+* Temporarily store the HID-related data in the :ref:`nrf_desktop_hid_state` and :ref:`nrf_desktop_hid_forward`.
+  For more information, see the documentation pages of these modules.
 
 When configuring heap, make sure that the values for the following options match the typical event size and the system needs:
 
@@ -564,14 +565,29 @@ The assignments of hardware interface elements depend on the device type.
       The following predefined button is assigned to peer control operations for an nRF54 Series DK.
 
       Button 0
-         * Press the **Button 0** before the DK is powered up with the on/off switch.
-           Long-press to initialize and confirm the peer erase.
-           |nRF_Desktop_confirmation_effect|
+         * If the DK acts as a dongle:
 
-           .. note::
-              |led_note|
+            * Long-press the **Button 0** to initialize peer erase.
+              When **LED1** starts blinking rapidly, double-press to confirm the operation.
+              After the confirmation, all the Bluetooth bonds are removed for the dongle.
+            * Short-press to start scanning for both bonded and non-bonded Bluetooth Peripherals.
+              After the forced scan timeout, the scan is interrupted if another peripheral connected to the dongle is active.
 
-         * |nRF_Desktop_cancel_operation|
+              .. note::
+                 |led_note|
+
+            * |nRF_Desktop_cancel_operation|
+
+         * If the DK acts as a peripheral:
+
+            * Press the **Button 0** before the DK is powered up with the on/off switch.
+              Long-press to initialize and confirm the peer erase.
+              |nRF_Desktop_confirmation_effect|
+
+              .. note::
+                 |led_note|
+
+            * |nRF_Desktop_cancel_operation|
 
 ..
 
