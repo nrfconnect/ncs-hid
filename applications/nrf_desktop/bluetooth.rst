@@ -202,3 +202,17 @@ Apart from that, the following changes are applied in configurations that suppor
 * TX power correction value (:kconfig:option:`CONFIG_BT_ADV_PROV_TX_POWER_CORRECTION_VAL`) is configured to align the TX power included in the advertising data with the Fast Pair expectations.
 
 See :ref:`ug_bt_fast_pair` for detailed information about Fast Pair support in the |NCS|.
+
+.. _nrf_desktop_bluetooth_guide_central:
+
+Bluetooth Central
+*****************
+
+The nRF Desktop central must implement Bluetooth scanning and handle the GATT operations.
+The central must also control the Bluetooth connection parameters.
+These features are implemented by the following application modules:
+
+* :ref:`nrf_desktop_ble_scan` - Controls the Bluetooth scanning.
+* :ref:`nrf_desktop_ble_conn_params` - Controls the Bluetooth connection parameters and reacts on latency update requests received from the connected peripherals.
+* :ref:`nrf_desktop_ble_discovery` - Discovers and reads the GATT Characteristics from the connected peripheral.
+* :ref:`nrf_desktop_hid_forward` - Subscribes for HID reports from the Bluetooth Peripherals (HID over GATT) and forwards data using application events.
