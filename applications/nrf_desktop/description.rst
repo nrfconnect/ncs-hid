@@ -500,7 +500,7 @@ No additional software or drivers are required.
 The nRF Desktop dongle and supported DK configurations can send HID data through USB.
 When a DK is configured as a mouse with USB enabled, the device provides input through the USB connection when connected.
 
-The nRF Desktop dongle works as a bridge between the devices connected through standard Bluetooth LE or Low Latency Packet Mode and the host connected through USB.
+The nRF Desktop dongle works as a bridge between the devices connected through standard Bluetooth LE, Low Latency Packet Mode (LLPM), or Bluetooth with Shorter Connection Intervals (SCI) support, and the host connected through USB.
 It receives data wirelessly from the connected peripherals and forwards the data to the host.
 
 The nRF Desktop dongle is powered directly through USB.
@@ -530,11 +530,17 @@ Continuing the scanning in such scenario would cause report rate drop.
 The scanning starts automatically when one of the bonded peers disconnects.
 It also takes place periodically when a known peer is not connected.
 
-The peripheral connection can be based on standard Bluetooth LE connection parameters or on Bluetooth LE with Low Latency Packet Mode (LLPM).
+The peripheral connection can be based on standard Bluetooth LE connection parameters, on Bluetooth LE with Low Latency Packet Mode (LLPM), or on HID Shorter Connection Intervals (SCI).
 
 LLPM is a proprietary Bluetooth extension from Nordic Semiconductor.
 It can be used only if it is supported by both connected devices (desktop mice do not support it).
 LLPM enables sending data with high report rate (up to 1000 reports per second), which is not supported by the standard Bluetooth LE.
+
+HID SCI is a standardized mechanism defined in the `HID Over GATT Profile Specification`_.
+It can be used only if it is supported by both connected devices.
+For example, use the ``hid_sci`` and ``hid_sci_dongle`` build types to evaluate HID SCI on an nRF Desktop peripheral and dongle.
+HID SCI enables shorter Bluetooth LE connection intervals than the standard 7.5 ms minimum, which allows higher HID report rates and lower latency while remaining compliant with the Bluetooth specification.
+HID SCI cannot be used together with LLPM on the same device.
 
 .. _nrf_desktop_ble_peers:
 
@@ -853,6 +859,10 @@ See the following list of possible scenarios and best practices:
 * If two or more peripherals are connected through the dongle, and all of the devices support LLPM, the Bluetooth LE LLPM connection events split evenly among all of the peripherals connected through that dongle.
   It results in decreased HID report rate.
   For example, you should observe a 500 Hz HID report rate when both mouse and keyboard are connected through the dongle and a 1000 Hz rate when only the mouse is connected.
+* If two or more HID SCI peripherals are connected through the dongle, the minimum connection interval for each link is scaled by the number of connected HID SCI peripherals.
+  This keeps Bluetooth LE connection events evenly scheduled and predictable, but it also reduces the achievable HID report rate for each device.
+  For example, you should observe a 1333 Hz HID report rate when a single peripheral is connected through the dongle and a 666 Hz rate when two peripherals are connected.
+  For details, see the :ref:`nrf_desktop_ble_conn_params_hid_sci` section.
 * If a HID peripheral is connected through a dongle, the dongle's performance must be taken into account when measuring the report rate.
   Delays related to data forwarding on the dongle also result in reduced report rate.
 * If the device is connected through Bluetooth LE directly to the HID host, the host sets the Bluetooth LE connection interval.
