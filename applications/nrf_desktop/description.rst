@@ -461,12 +461,7 @@ These options are related to the functionalities discussed in this section.
 Turning devices on and off
 ==========================
 
-The nRF Desktop hardware reference designs are equipped with hardware switches to turn the device on and off.
-See the following figures for the exact location of these switches:
-
-.. tabs::
-
-..
+The nRF Desktop devices are equipped with on-board hardware switches to turn the device on and off.
 
 Connectability
 ==============
