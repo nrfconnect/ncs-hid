@@ -12,8 +12,8 @@
  * @defgroup caf_ble_common_event_extension CAF Bluetooth LE common event extension
  * @{
  *
- * HID add-on extensions for @ref caf_ble_common_event that are
- * not yet available in the used nRF Connect SDK release.
+ * HID add-on extensions for caf_ble_common_event that are not yet available in
+ * the used nRF Connect SDK release.
  */
 
 #include <zephyr/bluetooth/bluetooth.h>
