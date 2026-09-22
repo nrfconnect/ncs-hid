@@ -59,3 +59,7 @@ NCSDK-8304: HID configurator issues for peripherals connected over Bluetooth LE 
   In such case, the device will provide HID input reports, but it cannot be configured with the HID configurator.
 
   **Workaround:** Use BlueZ in version 5.56 or higher.
+
+.. note::
+   nRF Desktop application is also affected by the nRF Connect SDK's Fast Pair sample issue ``NCSDK-38735``.
+   See the :ref:`nrf:known_issues` for details.
