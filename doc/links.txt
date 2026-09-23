@@ -14,6 +14,8 @@
 
 .. ### Source: github.com
 
+.. _`HID Add-on GitHub repository`: https://github.com/nrfconnect/ncs-hid
+
 .. _`HIDAPI library`: https://github.com/libusb/hidapi
 .. _`HIDAPI releases`: https://github.com/libusb/hidapi/releases
 

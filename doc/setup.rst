@@ -28,92 +28,215 @@ To evaluate a HID peripheral that communicates with the host through a dongle, y
 
 For details about the configuration of each supported board, see the :ref:`nrf_desktop_board_configuration_files` section.
 
-Software requirements
-*********************
 
-To work with the |addon|, you need to install the |NCS|, including all its prerequisites and the |NCS| toolchain.
-Follow the `Installing the nRF Connect SDK`_ instructions, with the following exception:
+Get the |addon| code
+********************
+
+The |addon| is distributed as a Git repository and is managed through its own west manifest.
+The compatible |NCS| version is specified in the :file:`west.yml` file.
+Follow the `HID Add-on GitHub repository`_ link to browse the codebase.
+To get the |addon| code, pick your method from the following:
+
+* Use the `nRF Connect for Visual Studio Code`_ extension, which provides a convenient way to clone the add-on and compatible |NCS| version.
+* Clone the add-on repository and initialize west with the add-on manifest.
+* Extend your west manifest with Add-on as a project.
+* Clone the Add-on repository and add the Add-on as a Zephyr module through CMake or environment variable.
+* Switch the west manifest to the Add-on in an existing |NCS| workspace.
 
 .. tabs::
 
    .. group-tab:: |nRFVSC|
 
+      .. note::
+         Use this method when you wish to specifically evaluate nRF Desktop or other tools provided by the Add-on, but do not have the |NCS| setup yet.
+
+      Clone the |addon| code, together with the compatible |NCS|:
+
       1. Ensure you have installed `Visual Studio Code`_ and the `nRF Connect for Visual Studio Code`_ extension.
+      #. Follow the :ref:`nRF Connect SDK installation guide <nrf:install_ncs>` to install |NCS| prerequisites and toolchain |toolchain_ncs_id|.
+
+         .. note::
+            The compatible version of the |NCS| will be cloned with the |addon| repository in the following steps.
+            The version of |NCS| is fixed to the version of the |addon| and is hard-coded in the :file:`west.yml` file of the |addon|.
+
       #. Open the nRF Connect extension in Visual Studio Code by clicking its icon in the **Activity Bar**.
       #. In the extension's **Welcome View**, click :guilabel:`Create a new application`.
-      #. Select :guilabel:`Browse nRF Connect SDK Add-on Index`, then choose :guilabel:`HID`.
-      #. Select v1.0.0 of the |addon|.
+         The list of actions appears in Visual Studio Code's quick pick.
+      #. Click :guilabel:`Browse nRF Connect SDK Add-on Index`.
+         The list of available |NCS| add-ons appears in Visual Studio Code's quick pick.
+      #. Select **HID**.
+      #. Select the Add-on version to install.
+         Depending on the speed of your internet connection, the update might take some time.
 
-   .. group-tab:: Command line
+   .. group-tab:: Command line for local manifest
 
-      .. tabs::
+      .. note::
+         Use this method when you wish to specifically evaluate nRF Desktop or other tools provided by the Add-on, but do not have the |NCS| setup yet.
 
-         .. group-tab:: Initialize a new workspace
+      1. Follow the :ref:`nRF Connect SDK installation guide <nrf:install_ncs>` to install |NCS| prerequisites and toolchain |toolchain_ncs_id|.
 
-            1. Run the following command to initialize west with the |addon| v1.0.0, which also initializes the |NCS| v3.4.1:
+         .. note::
+            The compatible version of the |NCS| will be cloned with the |addon| repository in the following steps.
+            The version of |NCS| is fixed to the version of the |addon| and is hard-coded in the :file:`west.yml` file of the |addon|.
+
+      #. Launch the installed toolchain:
+
+         .. tabs::
+
+            .. group-tab:: Windows
 
                .. code-block:: console
 
-                  west init -m https://github.com/nrfconnect/sdk-hid --mr v1.0.0
+                  nrfutil sdk-manager toolchain launch --ncs-version |toolchain_ncs_id| --terminal
 
-            #. Update the |NCS| modules:
+            .. group-tab:: Linux
 
                .. code-block:: console
 
-                  west update
+                  nrfutil sdk-manager toolchain launch --ncs-version |toolchain_ncs_id| --shell
 
-         .. group-tab:: Include the add-on in an existing |NCS| workspace
+            .. group-tab:: macOS
 
-            1. Assuming you have an existing |NCS| workspace in the :file:`ncs` folder, run the following commands:
+               .. code-block:: console
 
-               a. Navigate to the workspace folder:
+                  nrfutil sdk-manager toolchain launch --ncs-version |toolchain_ncs_id| --shell
 
-                  .. code-block:: console
+      #. Initialize the |addon| repository using one of the following methods:
 
-                     cd ncs
+         .. tabs::
 
-               #. Clone the add-on repository into the :file:`hid` folder, which is the path expected by the add-on manifest:
+            .. tab:: Direct initialization (Recommended)
 
-                  .. code-block:: console
-
-                     git clone --branch v1.0.0 https://github.com/nrfconnect/sdk-hid hid
-
-               #. Set the manifest path to the add-on directory:
+               a. Initialize west with the remote manifest:
 
                   .. code-block:: console
 
-                     west config manifest.path hid
+                     west init -m https://github.com/nrfconnect/ncs-hid --mr v1.0.0
 
-               #. Update the |NCS| modules:
+            .. tab:: Manual cloning and initialization
 
-                  .. code-block:: console
-
-                     west update
-
-            2. Optionally, run these commands in case you need to work on the |NCS| without the add-on:
-
-               a. Configure the manifest path back to the |NCS| directory:
+               a. Clone the |addon| repository into the :file:`hid` folder, which is the path expected by the add-on manifest:
 
                   .. code-block:: console
 
-                     west config manifest.path nrf
+                     git clone --branch v1.0.0 https://github.com/nrfconnect/ncs-hid hid
 
-               #. Update |NCS| modules:
-
-                  .. code-block:: console
-
-                     west update
-
-               #. Check the current manifest path with the following command:
+               #. Initialize west with the local manifest:
 
                   .. code-block:: console
 
-                     west config manifest.path
+                     west init -l hid
 
-                  The output should be:
+      #. Update all repositories by running the following command:
 
-                  .. code-block:: console
+         .. code-block:: console
 
-                     nrf
+            west update
 
-                  This means that the current workspace is using the |NCS|.
+         Depending on the speed of your internet connection, the update might take some time.
+
+   .. group-tab:: Add-on as a manifest project
+
+      .. note::
+         Use this method when running a :ref:`zephyr:zephyr-workspace-app` or if you prefer to use a modification of the |NCS| manifest.
+
+      1. Add the |addon| repository as a project in the west manifest by including the following lines in your :file:`west.yml` under the ``projects`` key:
+
+         .. code-block:: yaml
+
+            - name: hid
+              url: https://github.com/nrfconnect/ncs-hid
+              revision: v1.0.0
+              import: true
+
+         If you have already included the |NCS| in your west manifest, remove it or replace the above ``import`` key with the mapping:
+
+         .. code-block:: yaml
+
+            import:
+               name-blocklist:
+               - nrf
+
+         Your west manifest must specify compatible versions of the |NCS| and Add-on.
+
+      #. Run ``west update`` to pull the |addon| repository.
+
+   .. group-tab:: Add-on as an extra Zephyr module
+
+      .. note::
+         Use this method if you have a former installation of the |NCS| and would like to evaluate or use the |addon| with that installation.
+         This method allows you to keep the |NCS| manifest unmodified.
+
+      Before using this approach, ensure that a compatible version of the |NCS| is installed.
+      To identify the compatible |NCS| version, check the :file:`west.yml` file of the |addon|.
+      Since west does not manage the Add-on in this setup, you are responsible for keeping the versions synchronized.
+
+      1. Clone the Add-on repository:
+
+         .. code-block:: console
+
+            git clone --branch v1.0.0 https://github.com/nrfconnect/ncs-hid
+
+      #. Set the CMake or environment variable ``EXTRA_ZEPHYR_MODULES`` to the Add-on code path.
+         Use absolute path to ensure proper path resolution.
+         Check the :ref:`zephyr:env_vars` documentation for different ways of setting environment variables in Zephyr.
+
+   .. group-tab:: Switch west manifest to the Add-on
+
+      .. note::
+         Use this method if you already have an |NCS| workspace and want west to use the |addon| :file:`west.yml` as the workspace manifest instead of the |NCS| one.
+         You can switch back to the |NCS| manifest at any time.
+
+      1. Assuming you have an existing |NCS| workspace in the :file:`ncs` folder, run the following commands:
+
+         a. Navigate to the workspace folder:
+
+            .. code-block:: console
+
+               cd ncs
+
+         #. Clone the add-on repository into the :file:`hid` folder, which is the path expected by the add-on manifest:
+
+            .. code-block:: console
+
+               git clone --branch v1.0.0 https://github.com/nrfconnect/ncs-hid hid
+
+         #. Set the manifest path to the add-on directory:
+
+            .. code-block:: console
+
+               west config manifest.path hid
+
+         #. Update the |NCS| modules:
+
+            .. code-block:: console
+
+               west update
+
+      2. Optionally, run these commands in case you need to work on the |NCS| without the add-on:
+
+         a. Configure the manifest path back to the |NCS| directory:
+
+            .. code-block:: console
+
+               west config manifest.path nrf
+
+         #. Update |NCS| modules:
+
+            .. code-block:: console
+
+               west update
+
+         #. Check the current manifest path with the following command:
+
+            .. code-block:: console
+
+               west config manifest.path
+
+            The output should be:
+
+            .. code-block:: console
+
+               nrf
+
+            This means that the current workspace is using the |NCS|.
