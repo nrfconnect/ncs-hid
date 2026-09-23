@@ -14,6 +14,7 @@ permissions:
 jobs:
   remove:
     runs-on: ubuntu-24.04
+    name: Documentation remove
     if: ${{ github.repository == 'nrfconnect/sdk-hid' }}
     steps:
       - name: Try removal of PR-docs
