@@ -145,7 +145,7 @@ HID control point
 =================
 
 The connected Bluetooth host can write to the HID control point characteristic to inform about host suspend or exit suspend, or to request a HID SCI (Shorter Connection Intervals) mode change.
-The HID Service application module translates these writes into the following dedicated application events:
+The HID Service application module translates these writes into dedicated application events:
 
 * :c:struct:`hid_host_suspend_event` - Submitted when the host enters or exits suspend.
   The :c:member:`hid_host_suspend_event.suspended` field indicates whether the host entered or exited suspend.

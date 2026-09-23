@@ -22,7 +22,6 @@ The nRF Desktop application can use one of the following bootloaders:
 **Secure Bootloader**
   In this documentation, the Secure Bootloader is referred as *B0*.
   B0 is a small, simple, and secure bootloader that allows the application to boot directly from one of the application slots, thus increasing the speed of the direct firmware upgrade (DFU) process.
-
   This bootloader can be used only for the :ref:`background DFU <nrf_desktop_bootloader_background_dfu>` through the :ref:`nrf_desktop_config_channel` and :ref:`nrf_desktop_dfu`.
   For more information about the B0, see the :ref:`bootloader` page.
 
@@ -174,8 +173,9 @@ The pin is configured with the ``mcuboot-button0`` alias.
 The ``mcuboot-led0`` alias can be used to define the LED activated in the serial recovery mode.
 You must select the ``CONFIG_MCUBOOT_INDICATION_LED`` Kconfig option to enable the LED.
 By default, both the GPIO pin and the LED are defined in the board's DTS file.
+See :file:`zephyr/boards/nordic/nrf54lm20dk/nrf54lm20_a_b_cpuapp_common.dtsi` for an example of board's DTS file used by the nRF Desktop application.
 
-For an example of a bootloader Kconfig file defined by the application, see the MCUboot bootloader configuration defined for one of the nRF Desktop boards.
+For an example of a bootloader configuration file defined by the application, see the MCUboot bootloader ``debug`` configuration defined for the nRF54LM20 DK (:file:`applications/nrf_desktop/configuration/nrf54lm20dk_nrf54lm20b_cpuapp/images/mcuboot/prj.conf`).
 
 .. note::
   The nRF Desktop devices use either the serial recovery DFU with a single application slot or the background DFU.
@@ -245,7 +245,7 @@ You must also assign the retention partition to the chosen DTS node ``zephyr,boo
    Place this RAM section at the very beginning of the physical RAM due to the dependency on the ``nrfutil device`` tool and its KMU provisioning functionality.
    For an example of the ``nrf_kmu_reserved_push_area`` DTS node definition, see the :file:`nrf/applications/nrf_desktop/configuration/nrf54lm20dk_nrf54lm20a_cpuapp/memory_map_ram_load.dtsi` file.
 
-   The KMU feature (:kconfig:option:`CONFIG_CRACEN_LIB_KMU`) is enabled by default for the nRF54L series.
+   The KMU feature (:kconfig:option:`CONFIG_CRACEN_LIB_KMU`) is enabled by default for the nRF54L Series devices.
 
 .. note::
    The RAM load mode of the MCUboot bootloader is not yet integrated in the :ref:`nrf_desktop_dfu_mcumgr`.

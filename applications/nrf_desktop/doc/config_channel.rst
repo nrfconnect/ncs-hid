@@ -7,7 +7,7 @@ Configuration channel
    :local:
    :depth: 2
 
-The configuration channel allows exchanging data between the host computer and an nRF Desktop HID device.
+The configuration channel lets you exchange data between the host computer and an nRF Desktop's HID device.
 On the logical level, it creates a bridge between the application modules and the corresponding part of the host script.
 If there are more compatible devices connected to the host, you can select which device will receive data.
 The configuration channel allows a dongle type device to act as a proxy for Bluetooth® LE Peripheral devices.

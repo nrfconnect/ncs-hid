@@ -109,7 +109,6 @@ The following modules currently have no enabled reference board configuration:
 * :ref:`nrf_desktop_ble_qos`
 * :ref:`nrf_desktop_fn_keys`
 * :ref:`nrf_desktop_led_stream`
-* :ref:`nrf_desktop_motion`
 * :ref:`nrf_desktop_passkey`
 * :ref:`nrf_desktop_qos`
 * :ref:`nrf_desktop_selector`
@@ -227,7 +226,7 @@ All of these reports use predefined report format and provide the given informat
 For example, the mouse motion is forwarded as HID mouse report.
 
 An nRF Desktop device supports the selected subset of the HID input reports.
-For example, the nRF Desktop keyboard reference design (an nRF54 Series DK keyboard configuration) supports HID keyboard report, HID consumer control report and HID system control report.
+For example, an nRF54L Series DK keyboard configuration supports HID keyboard report, HID consumer control report and HID system control report.
 
 As an example, the following section describes handling HID mouse report data.
 
@@ -287,7 +286,10 @@ The nRF Desktop supports the HID keyboard LED report.
 The report is used by the host to update the state of the keyboard LEDs, for example to indicate that the Caps Lock key is active.
 
 .. note::
-   Only the ``nrf54l15dk/nrf54l15/cpuapp`` in ``keyboard`` configuration has hardware LEDs that can be used to display the Caps Lock and Num Lock state.
+   Keyboard configurations on the nRF54L15 and nRF54LS05 DKs can display HID keyboard LED state using hardware LEDs.
+
+   * On the nRF54L15 DK, only Num Lock is mapped to a hardware LED.
+   * On the nRF54LS05 DK, both Num Lock and Caps Lock are mapped to hardware LEDs.
 
 The following diagrams show the HID output report data exchange between the application modules.
 
@@ -418,11 +420,6 @@ The application supports the following build types:
      - ``release_hid_sci``
      - ``nrf54l15dk/nrf54l15/cpuapp``
      - Release version of the application that acts as a mouse with HID Shorter Connection Intervals (SCI) support.
-   * - MCUboot SMP
-     - ``mcuboot_smp``
-     - ``nrf54l15dk/nrf54l10/cpuapp``
-     - | Debug version of the application that enables MCUmgr with DFU support and offers support for the MCUboot DFU procedure over SMP.
-       | See the :ref:`nrf_desktop_bootloader_background_dfu` section for more information.
    * - Dongle quadruple LLPM connection
      - ``dongle_4llpmconn``
      - ``nrf54lm20dk/nrf54lm20b/cpuapp``
@@ -484,17 +481,17 @@ Connection through USB
 The nRF Desktop devices use the USB HID class.
 No additional software or drivers are required.
 
-.. tabs::
+The nRF54LM20 DK Mouse and Dongle configurations support the HID data transmission through USB.
 
-   .. tab:: DK USB
+Mouse USB
+~~~~~~~~~
 
-      The DK functionality depends on the application configuration.
-      Depending on the selected configuration options, it can work as a mouse, keyboard, or a dongle.
+The gaming mouse can send HID data when connected through USB.
+When the device is connected both wirelessly and through USB at the same time, it provides input only through the USB connection.
+If the device is disconnected from USB, it automatically switches to sending the data wirelessly using Bluetooth LE.
 
-..
-
-The nRF Desktop dongle and supported DK configurations can send HID data through USB.
-When a DK is configured as a mouse with USB enabled, the device provides input through the USB connection when connected.
+Dongle USB
+~~~~~~~~~~
 
 The nRF Desktop dongle works as a bridge between the devices connected through standard Bluetooth LE, Low Latency Packet Mode (LLPM), or Bluetooth with Shorter Connection Intervals (SCI) support, and the host connected through USB.
 It receives data wirelessly from the connected peripherals and forwards the data to the host.
@@ -613,7 +610,7 @@ In case of a system error, the system state LED will start to blink rapidly for 
 Debugging
 =========
 
-Development kits can be programmed and debugged using a J-Link debugger connected to the DK.
+You can program and debug development kits using a J-Link debugger connected to the DK.
 
 ..
 
@@ -795,22 +792,48 @@ Testing
 You can build and test the application in various configurations.
 
 .. note::
-   You can perform tests with nRF54 Series DKs.
+   The following procedure refers to the scenario where the mouse (nRF54L15 DK) and the keyboard (nRF54L15 DK) are connected simultaneously to the dongle (nRF54LM20 DK).
+
+   Build the mouse using the default build type for the ``nrf54l15dk/nrf54l15/cpuapp`` board target, the keyboard using the ``keyboard`` build type for the same board target, and the dongle using the ``dongle`` or ``release_dongle`` build type for the ``nrf54lm20dk/nrf54lm20b/cpuapp`` board target.
+   See :ref:`nrf_desktop_requirements_build_types` for details.
 
 After building the application with or without :ref:`specifying the build type <nrf_desktop_selecting_build_types>`, test the nRF Desktop application by performing the following steps:
 
-1. Program the required firmware to the device.
-#. Power up the DK.
-#. Move the mouse or press keys on the keyboard.
+1. Program the required firmware to each device.
+
+   .. note::
+      On first programming of the nRF54L DKs, use ``west flash --recover`` to provision the MCUboot public key.
+      See `nRF54L MCUboot provisioning`_.
+
+#. Power on the mouse and keyboard DKs using the power switch.
+   **LED1** on the keyboard and **LED1** on the mouse start breathing.
+#. Connect the board acting as dongle to the USB port.
+   **LED1** on the dongle starts breathing.
+   This indicates that the dongle is scanning for peripherals.
+#. Wait for the establishment of the Bluetooth connection, which happens automatically.
+   After the Bluetooth connection is established, the LEDs stop breathing and remain turned on.
+   You can now use the devices simultaneously.
+
+   .. note::
+      You can manually start the scanning for new peripheral devices by short-pressing **Button 0** on the dongle.
+      This might be needed if the dongle does not connect with all the peripherals before scanning is interrupted by a timeout.
+
+#. Press the buttons on the mouse DK to simulate motion and press any button on the keyboard DK.
    The input is reflected on the host.
 
    .. note::
-      When a :ref:`configuration with debug features <nrf_desktop_requirements_build_types>` is enabled, for example logger and assertions, the mouse report rate can be significantly lower.
+      When a :ref:`configuration with debug features <nrf_desktop_requirements_build_types>` is enabled, for example logger and assertions, the gaming mouse report rate can be significantly lower.
 
       Make sure that you use the ``release`` configurations before testing the mouse report rate.
-#. Connect to the peripheral with an Android phone, a laptop, or any other Bluetooth Central.
+      For the ``release`` configurations, you should observe a 500-Hz report rate when both the mouse and the keyboard are connected and a 1000-Hz rate when only the mouse is connected.
 
-After the connection is established and the device is bonded, you can use the device with the connected host.
+#. Switch the Bluetooth peer on the mouse DK by short-pressing **Button 0** (see `User interface`_).
+   **LED1** starts blinking rapidly.
+#. Press **Button 0** twice quickly to confirm the selection.
+   After the confirmation, **LED1** starts breathing and the mouse starts the Bluetooth advertising.
+#. Connect to the mouse with an Android phone, a laptop, or any other Bluetooth Central.
+
+After the connection is established and the device is bonded, you can use the mouse with the connected device.
 
 .. _nrf_desktop_measuring_hid_report_rate:
 
@@ -879,7 +902,7 @@ See the following list of possible scenarios and best practices:
   Set parameters are not enforced, meaning that the HID host may still eventually use a value greater than the maximum connection interval requested by a peripheral.
 * Radio frequency (RF) noise can negatively affect the HID report rate for wireless connections.
   If a HID report fails to be delivered in a given Bluetooth LE LLPM connection event, it is retransmitted in the subsequent connection event, which effectively reduces the report rate.
-  By avoiding congested RF channels, a peripheral can achieve better connection quality and a higher report rate.
+  By avoiding congested RF channels, the :ref:`nrf_desktop_ble_qos` helps to achieve better connection quality and a higher report rate (currently not available on the supported boards).
 * For the USB device connected directly, the applicable options will vary depending on the used USB stack:
 
   * If you use the USB legacy stack, you can configure your preferred USB HID poll interval using the :kconfig:option:`CONFIG_USB_HID_POLL_INTERVAL_MS` Kconfig option.
@@ -914,10 +937,15 @@ Testing steps
 After building the application, test the nRF Desktop by performing the following steps:
 
 1. Program the device with the built firmware.
+
+   .. note::
+      On first programming of the nRF54L15 and nRF54LM20 DKs, use ``west flash --recover`` to provision the MCUboot public key.
+      See `nRF54L MCUboot provisioning`_.
+
 #. Connect the device to the computer using a preferred transport (Bluetooth LE, USB, dongle).
 #. Turn on the device.
    If you use the motion simulated module to generate the mouse movement, the device should automatically start to draw an octagon shape on the screen.
-   Otherwise, you need to constantly keep generating motion manually, for example, by moving your mouse.
+   Otherwise, you need to constantly keep generating motion manually, for example, by pressing the buttons on the mouse DK.
 #. Turn off the device to finalize test preparations.
 #. Launch selected HID report rate measurement tool.
 #. Turn back on the device.
@@ -927,7 +955,7 @@ After building the application, test the nRF Desktop by performing the following
 Windows Hardware Lab Kit tests
 ------------------------------
 
-The nRF Desktop devices have passed the tests from the official playlist required for compatibility with Windows 10 by Windows Hardware Compatibility Program (:file:`HLK Version 1903 CompatPlaylist x86 x64 ARM64.xml`).
+The nRF Desktop devices have passed the tests from official playlist required for compatibility with Windows 10 by Windows Hardware Compatibility Program (:file:`HLK Version 1903 CompatPlaylist x86 x64 ARM64.xml`).
 The tests were conducted using `Windows Hardware Lab Kit`_.
 
 Dependencies

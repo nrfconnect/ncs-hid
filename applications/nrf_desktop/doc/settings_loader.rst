@@ -43,7 +43,7 @@ The storage partition is located in the internal non-volatile memory.
 Settings load in a separate thread
 ==================================
 
-Enabling the :kconfig:option:`CONFIG_CAF_SETTINGS_LOADER_USE_THREAD` option is recommended for the nRF54L15 DK keyboard configuration.
+Enabling the :kconfig:option:`CONFIG_CAF_SETTINGS_LOADER_USE_THREAD` option is recommended for keyboard reference designs.
 The :ref:`caf_buttons` uses the system workqueue to scan the keyboard matrix.
 Loading the settings in the system workqueue context could block the workqueue and result in missing key presses on system reboot.
 
