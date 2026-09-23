@@ -16,6 +16,6 @@ if CAF_BLE_STATE_EXTENSION
 
 module = CAF_BLE_STATE_EXTENSION
 module-str = CAF BLE state extension
-source "subsys/logging/Kconfig.template.log_config"
+source "$(ZEPHYR_BASE)/subsys/logging/Kconfig.template.log_config"
 
 endif # CAF_BLE_STATE_EXTENSION

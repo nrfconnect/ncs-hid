@@ -45,6 +45,7 @@ See the subpages for detailed documentation.
    setup
    ../applications/nrf_desktop/README
    ../scripts/hid_configurator/README
+   libraries/caf/index
    glossary
    release_notes
    known_issues

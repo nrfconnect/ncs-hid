@@ -100,6 +100,8 @@ external_content_contents = [
     (HID_BASE, "samples/**/*.rst"),
     (HID_BASE, "tests/**/*.rst"),
     (HID_BASE, "lib/**/Kconfig"),
+    (HID_BASE, "subsys/**/Kconfig"),
+    (HID_BASE, "subsys/**/Kconfig.*"),
 ]
 
 # -- Options for doxyrunner plugin ---------------------------------------------

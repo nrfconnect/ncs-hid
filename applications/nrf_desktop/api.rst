@@ -49,6 +49,8 @@ USB events
 
 .. doxygengroup:: nrf_desktop_usb_event
 
+.. _nrf_desktop_caf_ble_common_event_extension:
+
 CAF Bluetooth LE common event extension
 ***************************************
 
