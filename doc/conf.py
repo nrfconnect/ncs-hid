@@ -124,7 +124,11 @@ doxyrunner_projects = {
 
 # -- Options for zephyr.doxybridge plugin ---------------------------------
 
-doxybridge_projects = {"hid": doxyrunner_projects["hid"]["outdir"]}
+doxybridge_projects = {
+    "hid": doxyrunner_projects["hid"]["outdir"]
+    "nrf": _doxyrunner_outdir,
+    "zephyr": Path(build_dir) / "html" / "zephyr" / "doxygen",
+    }
 
 # Options for table_from_rows --------------------------------------------------
 
