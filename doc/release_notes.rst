@@ -1,4 +1,4 @@
-.. _hid_release_notes:
+.. _release_notes:
 
 Release notes
 #############

@@ -1,4 +1,4 @@
-.. _hid_known_issues:
+.. _known_issues:
 
 Known issues
 ############
@@ -7,7 +7,7 @@ Known issues
    :local:
    :depth: 2
 
-Known issues listed on this page *and* tagged with the :ref:`latest release version <hid_release_notes>` are valid for the current state of development.
+Known issues listed on this page *and* tagged with the :ref:`latest release version <release_notes>` are valid for the current state of development.
 Use the drop-down filter to see known issues for previous releases and check if they are still valid.
 
 Items can have one or both of the following entries:

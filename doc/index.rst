@@ -1,4 +1,4 @@
-.. _hid_index:
+.. _index:
 
 |addon| for |NCS|
 #################
@@ -16,7 +16,7 @@ Examples of such devices are keyboards, mice, game controllers, and touchscreens
 The add-on combines device-side firmware, based on the nRF Desktop reference design, with host-side tools that configure and update the device at runtime.
 
 This page describes the parts of the solution and how they work together.
-For the requirements that you need to meet before you start, see the :ref:`hid_setup` page.
+For the requirements that you need to meet before you start, see the :ref:`setup` page.
 
 Solution components
 *******************

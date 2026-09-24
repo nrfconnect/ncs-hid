@@ -1,4 +1,4 @@
-.. _hid_glossary:
+.. _glossary:
 
 Glossary
 *********

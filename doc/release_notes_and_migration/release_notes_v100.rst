@@ -1,4 +1,4 @@
-.. _hid_release_notes_addon_v100:
+.. _release_notes_addon_v100:
 
 Release notes for |addon| v1.0.0
 ################################
@@ -10,7 +10,7 @@ Release notes for |addon| v1.0.0
 This page tracks changes and updates as compared to the latest official release.
 For more information, refer to the following section.
 
-For the list of potential issues, see the :ref:`hid_known_issues` page.
+For the list of potential issues, see the :ref:`known_issues` page.
 
 Changelog
 *********

@@ -1,4 +1,4 @@
-.. _hid_setup:
+.. _setup:
 
 Requirements and setup
 ######################

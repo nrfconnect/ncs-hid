@@ -1,4 +1,4 @@
-.. _hid_caf_extensions:
+.. _caf_extensions:
 
 CAF extensions in the HID add-on
 ================================
