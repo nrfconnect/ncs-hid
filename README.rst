@@ -6,16 +6,21 @@ HID Add-on for nRF Connect SDK
    :depth: 2
 
 A compact add-on that focuses on the development of Human Interface Devices (HID) on Nordic Semiconductor SoCs using the nRF Connect SDK.
+The add-on supports the nRF54L Series SoC.
 
 License
 *******
 
 Source files in this repository include SPDX license identifiers.
 
+Most of the files in this repository are licensed under ``LicenseRef-Nordic-5-Clause``.
+See the ``LICENSE`` file for the license text.
+
 Documentation
 *************
 
-The official HID Add-on documentation link will be added after the documentation is hosted.
+See the official `HID Add-on documentation <https://nrfconnectdocs.nordicsemi.com/addons/addon-hid/latest/index.html>`_.
+The documentation includes `repository setup instructions <https://nrfconnectdocs.nordicsemi.com/addons/addon-hid/latest/setup.html>`_ to simplify getting started.
 
 Support
 *******
