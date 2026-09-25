@@ -107,8 +107,8 @@ class NrfHidTransport:
             return None
 
         if data_len > len(data):
-            logging.error('Required data not present')
-            return None
+              logging.error('Required data not present')
+              return None
 
         if data_len == 0:
             event_data = None
