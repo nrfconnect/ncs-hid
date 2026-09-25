@@ -71,7 +71,6 @@ jobs:
             -e SysbuildKconfigBasicNoModules \
             -e LicenseAndCopyrightCheck \
             -e BinaryFiles \
-            -e GitLint \
             -e Ruff
 
       - name: upload-results
