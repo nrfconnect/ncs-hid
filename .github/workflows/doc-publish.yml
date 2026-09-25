@@ -15,7 +15,7 @@ jobs:
   publish:
     runs-on: ubuntu-24.04
     name: Documentation publish
-    if: ${{ github.repository == 'nrfconnect/sdk-hid' && github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.repository == 'nrfconnect/ncs-hid' && github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Publish
         uses: nrfconnect/action-docpublish@f3e4ee63779fb629bbdd48243349ef2843ff6b0b

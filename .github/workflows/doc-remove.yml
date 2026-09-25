@@ -15,7 +15,7 @@ jobs:
   remove:
     runs-on: ubuntu-24.04
     name: Documentation remove
-    if: ${{ github.repository == 'nrfconnect/sdk-hid' }}
+    if: ${{ github.repository == 'nrfconnect/ncs-hid' }}
     steps:
       - name: Try removal of PR-docs
         env:
