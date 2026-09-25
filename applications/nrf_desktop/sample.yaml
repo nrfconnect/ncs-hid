@@ -7,7 +7,7 @@ common:
   tags:
     - ci_build
     - sysbuild
-    - ci_applications_nrf_desktop
+    - ci_applications_nrf_desktop_nananananananananananananananananananaanananananannanananananananananananan
   harness_config:
     type: multi_line
     ordered: false
@@ -36,7 +36,7 @@ tests:
       - nrf54ls05dk/nrf54ls05a/cpuapp
       - nrf54ls05dk/nrf54ls05b/cpuapp
       - nrf54lc10dk/nrf54lc10a/cpuapp
-    harness: console
+       harness: console
   applications.hid.nrf_desktop.zdebug_fast_pair.gmouse.uart:
     platform_allow:
       - nrf54l15dk/nrf54l10/cpuapp
