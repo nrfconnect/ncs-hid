@@ -43,6 +43,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           path: ncs/hid
+          persist-credentials: false
 
       - name: Install system dependencies
         run: |
