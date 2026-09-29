@@ -1,0 +1,11 @@
+# This is the Jenkins ci variant of the .github/labler.yml
+
+"__EXCLUDE__":
+  - "**/*.md"
+  - "**/*.rst"
+
+"CI-test-hid":
+  - any:
+      - "!.github/**/*"
+      - "!doc/**/*"
+      - "!.editorconfig"
