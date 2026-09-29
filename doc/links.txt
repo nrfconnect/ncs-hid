@@ -31,8 +31,6 @@
 
 .. ### Source: google.com
 
-.. _`Works With ChromeBook (WWCB)`: https://www.google.com/chromebook/workswithchromebook
-
 .. _`Fast Pair`: https://developers.google.com/nearby/fast-pair/specifications/introduction
 .. _`Verifying Fast Pair`: https://developers.google.com/nearby/fast-pair/fast-pair-certification-guideline
 

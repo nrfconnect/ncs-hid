@@ -19,4 +19,4 @@ The glossary defines the key terms used throughout the documentation.
    LLPM (Low Latency Packet Mode)
       A proprietary Bluetooth extension from Nordic Semiconductor that enables 1 ms connection intervals.
       LLPM can be used only when it is supported by both connected devices.
-      In the nRF Desktop application, LLPM is used to achieve high HID report rates (up to 1000 reports in second), which is not supported by standard Bluetooth LE connection parameters.
+      In the nRF Desktop application, LLPM is used to achieve high HID report rates (up to 1000 reports in a second), which is not supported by standard Bluetooth LE connection parameters.
