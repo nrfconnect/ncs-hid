@@ -1,4 +1,5 @@
 .. _nrf_desktop_ble_state:
+.. _nrf_desktop_ble_state_extension:
 
 Bluetooth LE state module
 #########################
@@ -13,12 +14,19 @@ In nRF Desktop, the Bluetooth® LE state module is responsible for the following
 * Handling Zephyr connection callbacks (:c:struct:`bt_conn_cb`).
 * Propagating information about the connection state and parameters by using :ref:`app_event_manager` events.
 
+The |addon| extends the functionality of the :ref:`CAF Bluetooth LE state <nrf:caf_ble_state>` module through the :ref:`CAF BLE state extension module <caf_ble_state_extension>`.
+The documentation page contains information about both application modules.
+
 Module events
 *************
 
 .. include:: event_propagation.rst
     :start-after: table_ble_state_start
     :end-before: table_ble_state_end
+
+.. include:: event_propagation.rst
+    :start-after: table_ble_state_extension_start
+    :end-before: table_ble_state_extension_end
 
 .. note::
     |nrf_desktop_module_event_note|
