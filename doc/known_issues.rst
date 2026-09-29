@@ -61,5 +61,5 @@ NCSDK-8304: HID configurator issues for peripherals connected over Bluetooth LE 
   **Workaround:** Use BlueZ in version 5.56 or higher.
 
 .. note::
-   nRF Desktop application is also affected by the nRF Connect SDK's Fast Pair sample issue ``NCSDK-38735``.
+   nRF Desktop application is also affected by the nRF Connect SDK's Fast Pair and Bluetooth HID sample issues ``NCSDK-19942``, ``NCSDK-26669``, ``NCSDK-34682``, and ``NCSDK-38735``.
    See the :ref:`nrf:known_issues` for details.
