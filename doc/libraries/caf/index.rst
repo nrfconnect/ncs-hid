@@ -13,4 +13,5 @@ For the core CAF modules, see :ref:`nrf:lib_caf` in the |NCS| documentation.
    :caption: Subpages:
 
    config
+   events
    ble_state_extension

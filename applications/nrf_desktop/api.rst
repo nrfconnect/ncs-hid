@@ -48,16 +48,3 @@ USB events
 | Source file: :file:`applications/nrf_desktop/src/events/usb_event.c`
 
 .. doxygengroup:: nrf_desktop_usb_event
-
-.. _nrf_desktop_caf_ble_common_event_extension:
-
-CAF Bluetooth LE common event extension
-***************************************
-
-| Header file: :file:`include/caf/events/ble_common_event_extension.h`
-| Source file: :file:`subsys/caf/events/ble_common_event_extension.c`
-
-.. doxygengroup:: caf_ble_common_event_extension
-
-.. note::
-   The |addon| locally extends CAF Bluetooth LE common events to provide events that are not yet available in the used nRF Connect SDK release.

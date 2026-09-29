@@ -22,7 +22,7 @@ See the :ref:`caf_extensions_kconfig` page for the complete list of CAF extensio
 
 |config|
 
-For the API reference, see :ref:`CAF Bluetooth LE common event extension <nrf_desktop_caf_ble_common_event_extension>`.
+For the API reference, see :ref:`caf_extension_events`.
 
 Implementation details
 **********************
