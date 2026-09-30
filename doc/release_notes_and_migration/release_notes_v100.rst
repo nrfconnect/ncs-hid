@@ -11,7 +11,6 @@ The |addon| v1.0.0 is the first official release of the standalone HID Add-on fo
 It delivers the nRF Desktop HID reference design application, host-side HID configurator tools, and dedicated documentation for developing Human Interface Devices on nRF54L Series SoCs.
 
 This release is based on the |NCS| v3.4.1 release tag and toolchain.
-For the list of potential issues, see the :ref:`known_issues` page.
 
 Highlights
 **********
@@ -24,6 +23,11 @@ Release tag
 ***********
 
 The release tag for the |addon| manifest repository (``ncs-hid``) is **v1.0.0**.
+
+Known issues
+************
+
+For the list of issues valid for this release, navigate to `known issues page on the main branch`_ and select ``v1.0.0`` from the dropdown list.
 
 Changelog
 *********

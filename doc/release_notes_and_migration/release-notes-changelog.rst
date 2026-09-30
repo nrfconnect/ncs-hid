@@ -1,3 +1,5 @@
+:orphan:
+
 .. _release_notes_changelog:
 
 Changelog for |addon| v1.0.99
@@ -21,7 +23,7 @@ The most relevant changes that are present on the main branch of the |addon|, as
 Known issues
 ************
 
-For the list of potential issues, see the :ref:`known_issues` page.
+For the list of issues valid for this release, navigate to `known issues page on the main branch`_ and select the latest official tag from the dropdown list.
 
 Changelog
 *********

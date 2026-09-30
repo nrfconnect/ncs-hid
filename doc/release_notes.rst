@@ -10,4 +10,3 @@ For a detailed list of new features for a specific |addon| release, refer to the
    :caption: Release notes:
 
    release_notes_and_migration/release_notes_v100.rst
-   release_notes_and_migration/release-notes-changelog.rst

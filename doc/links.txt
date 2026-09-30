@@ -45,6 +45,7 @@
 .. _`nRF Connect for Mobile`: https://www.nordicsemi.com/Software-and-Tools/Development-Tools/nRF-Connect-for-mobile
 .. _`nRF Connect Device Manager`: https://www.nordicsemi.com/Products/Development-tools/nrf-connect-device-manager
 .. _`CAF LED effect API`: https://nrfconnectdocs.nordicsemi.com/ncs/|ncs_version_number|/nrf/doxygen/html/group__led__effect__CAF.html
+.. _`known issues page on the main branch`: https://nrfconnectdocs.nordicsemi.com/addons/addon-hid/latest/known_issues.html
 
 .. ### Source: *.microsoft.com
 
