@@ -93,3 +93,257 @@ Removed
   Memory layout is defined exclusively in devicetree.
   See :ref:`nrf_desktop_memory_layout`.
 * Deprecated HID event queue Kconfig options - ``CONFIG_DESKTOP_HID_REPORT_EXPIRATION`` and ``CONFIG_DESKTOP_HID_EVENT_QUEUE_SIZE`` were removed from application configurations.
+
+nRF Desktop performance measurements
+************************************
+
+The following tables summarize power consumption and HID report rate for the nRF Desktop application in this release.
+Measurements use ``release``, ``release_hid_sci``, and ``release_ram_load`` build types on nRF54L Series development kits.
+
+Power consumption
+=================
+
+Average current measured with a Power Profiler Kit II (PPK2) on selected nRF54L Series DKs.
+
+.. list-table::
+   :header-rows: 1
+
+   * - Build type
+     - Supply voltage
+     - Measurement state
+     - ``nrf54l15dk/nrf54l15/cpuapp``
+     - ``nrf54lc10dk/nrf54lc10a/cpuapp``
+     - ``nrf54lm20dk/nrf54lm20b/cpuapp``
+     - ``nrf54ls05dk/nrf54ls05b/cpuapp``
+   * - ``release_hid_sci``
+     - 1.8 V
+     - hid_sci_active
+     - 0.021 mA
+     - —
+     - 0.028 mA
+     - 0.023 mA
+   * - ``release_hid_sci``
+     - 1.8 V
+     - hid_sci_motion_simulated
+     - 4.51 mA
+     - —
+     - 4.75 mA
+     - 3.58 mA
+   * - ``release_hid_sci``
+     - 1.8 V
+     - hid_sci_suspended
+     - 0.0095 mA
+     - —
+     - 0.015 mA
+     - 0.012 mA
+   * - ``release_ram_load``
+     - 1.8 V
+     - ble_active
+     - —
+     - —
+     - 0.021 mA
+     - —
+   * - ``release_ram_load``
+     - 1.8 V
+     - ble_motion_simulated
+     - —
+     - —
+     - 0.62 mA
+     - —
+   * - ``release_ram_load``
+     - 1.8 V
+     - ble_suspended
+     - —
+     - —
+     - 0.02 mA
+     - —
+   * - ``release_ram_load``
+     - 1.8 V
+     - fast_advertising
+     - —
+     - —
+     - 0.29 mA
+     - —
+   * - ``release_ram_load``
+     - 1.8 V
+     - llpm_active
+     - —
+     - —
+     - 2.04 mA
+     - —
+   * - ``release_ram_load``
+     - 1.8 V
+     - llpm_motion_simulated
+     - —
+     - —
+     - 3.14 mA
+     - —
+   * - ``release_ram_load``
+     - 1.8 V
+     - llpm_suspended
+     - —
+     - —
+     - 0.049 mA
+     - —
+   * - ``release_ram_load``
+     - 1.8 V
+     - slow_advertising
+     - —
+     - —
+     - 0.11 mA
+     - —
+   * - ``release_ram_load``
+     - 1.8 V
+     - system_off
+     - —
+     - —
+     - 0.00046 mA
+     - —
+   * - ``release_ram_load``
+     - 1.8 V
+     - usb_mouse_active
+     - —
+     - —
+     - 6.12 mA
+     - —
+   * - ``release_ram_load``
+     - 1.8 V
+     - usb_mouse_simulated
+     - —
+     - —
+     - 6.12 mA
+     - —
+   * - ``release``
+     - 1.8 V
+     - ble_active
+     - 0.015 mA
+     - 0.016 mA
+     - 0.021 mA
+     - 0.017 mA
+   * - ``release``
+     - 1.8 V
+     - ble_motion_simulated
+     - 0.67 mA
+     - 0.66 mA
+     - 0.71 mA
+     - 0.58 mA
+   * - ``release``
+     - 1.8 V
+     - ble_suspended
+     - 0.015 mA
+     - 0.016 mA
+     - 0.021 mA
+     - 0.017 mA
+   * - ``release``
+     - 1.8 V
+     - fast_advertising
+     - 0.28 mA
+     - 0.29 mA
+     - 0.3 mA
+     - 0.27 mA
+   * - ``release``
+     - 1.8 V
+     - llpm_active
+     - 2.15 mA
+     - 2.19 mA
+     - 2.25 mA
+     - 1.81 mA
+   * - ``release``
+     - 1.8 V
+     - llpm_motion_simulated
+     - 3.69 mA
+     - 3.61 mA
+     - 3.84 mA
+     - 2.91 mA
+   * - ``release``
+     - 1.8 V
+     - llpm_suspended
+     - 0.043 mA
+     - 0.045 mA
+     - 0.051 mA
+     - 0.041 mA
+   * - ``release``
+     - 1.8 V
+     - slow_advertising
+     - 0.1 mA
+     - 0.1 mA
+     - 0.11 mA
+     - 0.094 mA
+   * - ``release``
+     - 1.8 V
+     - system_off
+     - 0.001 mA
+     - 0.0011 mA
+     - 0.00047 mA
+     - 0.0013 mA
+   * - ``release``
+     - 1.8 V
+     - usb_mouse_active
+     - —
+     - —
+     - 6.2 mA
+     - —
+   * - ``release``
+     - 1.8 V
+     - usb_mouse_simulated
+     - —
+     - —
+     - 6.28 mA
+     - —
+
+HID report rate
+===============
+
+Effective HID input report rate measured on a connected HID host.
+
+.. list-table::
+   :header-rows: 1
+
+   * - Build type
+     - Transport
+     - ``nrf54l15dk/nrf54l15/cpuapp``
+     - ``nrf54lc10dk/nrf54lc10a/cpuapp``
+     - ``nrf54lm20dk/nrf54lm20b/cpuapp``
+     - ``nrf54ls05dk/nrf54ls05b/cpuapp``
+   * - ``release_hid_sci``
+     - hid_sci
+     - 1330 Hz
+     - —
+     - 1333 Hz
+     - 1333 Hz
+   * - ``release_ram_load``
+     - ble
+     - —
+     - —
+     - 133 Hz
+     - —
+   * - ``release_ram_load``
+     - llpm
+     - —
+     - —
+     - 1000 Hz
+     - —
+   * - ``release_ram_load``
+     - usb
+     - —
+     - —
+     - 8000 Hz
+     - —
+   * - ``release``
+     - ble
+     - 133 Hz
+     - 133 Hz
+     - 133 Hz
+     - 133 Hz
+   * - ``release``
+     - llpm
+     - 999 Hz
+     - 998 Hz
+     - 1000 Hz
+     - 1000 Hz
+   * - ``release``
+     - usb
+     - —
+     - —
+     - 4032 Hz
+     - —
