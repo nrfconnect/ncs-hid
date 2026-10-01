@@ -82,28 +82,28 @@ For detailed information about every option, see the Kconfig help.
 Link Layer configuration options
 ================================
 
-The nRF Desktop devices use one of the following Link Layers:
+The nRF Desktop devices use the SoftDevice Link Layer (:kconfig:option:`CONFIG_BT_LL_SOFTDEVICE`).
+This Link Layer supports:
 
-* :kconfig:option:`CONFIG_BT_LL_SW_SPLIT`
-    This Link Layer does not support the Low Latency Packet Mode (LLPM) and has a lower memory usage, so it can be used by memory-limited devices.
+* Bluetooth Shorter Connection Intervals (SCI) required by HID Shorter Connection Intervals (HID SCI).
+  This enables connection intervals as short as 750 µs.
+* Low Latency Packet Mode (LLPM) - A proprietary Bluetooth extension from Nordic Semiconductor enabling 1000 µs connection intervals.
 
-* :kconfig:option:`CONFIG_BT_LL_SOFTDEVICE`
-    This Link Layer supports the Low Latency Packet Mode (LLPM).
-    It also supports Bluetooth Shorter Connection Intervals, which are required by HID Shorter Connection Intervals (HID SCI).
-    If you opt for this Link Layer and enable the :kconfig:option:`CONFIG_BT_CTLR_SDC_LLPM`, the :kconfig:option:`CONFIG_CAF_BLE_USE_LLPM` is also enabled by default and can be configured further:
+For the nRF Desktop central, make sure to also update the default max connection event length (:kconfig:option:`CONFIG_BT_CTLR_SDC_MAX_CONN_EVENT_LEN_DEFAULT`).
+The suggested values are:
 
-    * When :kconfig:option:`CONFIG_CAF_BLE_USE_LLPM` is enabled, set the value for :kconfig:option:`CONFIG_BT_CTLR_SDC_MAX_CONN_EVENT_LEN_DEFAULT` to ``3000``.
-
-      This is required by the nRF Desktop central and helps avoid scheduling conflicts with the Bluetooth Link Layer.
-      Such conflicts could lead to a drop in HID input report rate or a disconnection.
-      Because of this, if the nRF Desktop central supports LLPM and more than one simultaneous Bluetooth connection, it also uses 10 ms connection interval instead of 7.5 ms.
-      Setting the value of :kconfig:option:`CONFIG_BT_CTLR_SDC_MAX_CONN_EVENT_LEN_DEFAULT` to ``3000`` also enables the nRF Desktop central to exchange data with up to three standard Bluetooth LE peripherals during every connection interval (every 10 ms).
-
-    * When :kconfig:option:`CONFIG_CAF_BLE_USE_LLPM` is disabled, the device will use only standard Bluetooth LE connection parameters with the lowest available connection interval of 7.5 ms.
-
-      If the LLPM is disabled and more than two simultaneous Bluetooth connections are supported (:kconfig:option:`CONFIG_BT_MAX_CONN`), you can set the value for :kconfig:option:`CONFIG_BT_CTLR_SDC_MAX_CONN_EVENT_LEN_DEFAULT` to ``2500``.
-      With this value, the nRF Desktop central can exchange the data with up to three Bluetooth LE peripherals during every 7.5-ms connection interval.
-      Using the value of ``3000`` for more than two simultaneous Bluetooth LE connections will result in a lower HID input report rate.
+* ``750`` for configurations enabling HID SCI support (:option:`CONFIG_DESKTOP_HID_FORWARD_HID_SCI_ENABLE`).
+  This is needed to achieve a connection interval of 750 µs.
+* ``3000`` for configurations enabling the LLPM (:kconfig:option:`CONFIG_BT_CTLR_SDC_LLPM`).
+  For these configurations, the :kconfig:option:`CONFIG_CAF_BLE_USE_LLPM` is also enabled by default.
+  The value of ``3000`` allows to avoid scheduling conflicts in the Bluetooth Link Layer.
+  Such conflicts could lead to a drop in HID input report rate or a disconnection.
+  If the nRF Desktop central supports LLPM and more than one simultaneous Bluetooth connection, it also uses 10 ms connection interval instead of 7.5 ms.
+  Setting the value of :kconfig:option:`CONFIG_BT_CTLR_SDC_MAX_CONN_EVENT_LEN_DEFAULT` to ``3000`` also enables the nRF Desktop central to exchange data with up to three standard Bluetooth LE peripherals during every connection interval (every 10 ms).
+* ``2500`` for configurations without HID SCI nor LLPM support.
+  The central will use only standard Bluetooth LE connection parameters with the lowest available connection interval of 7.5 ms.
+  With this value, the nRF Desktop central can exchange the data with up to three Bluetooth LE peripherals during every 7.5-ms connection interval.
+  Using the value of ``3000`` for more than two simultaneous Bluetooth LE connections will result in a lower HID input report rate.
 
 .. _nrf_desktop_bluetooth_guide_modules:
 
