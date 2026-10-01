@@ -541,6 +541,7 @@ HID SCI is a standardized mechanism defined in the `HID Over GATT Profile Specif
 It can be used only if it is supported by both connected devices.
 For example, use the ``hid_sci`` and ``hid_sci_dongle`` build types to evaluate HID SCI on an nRF Desktop peripheral and dongle.
 HID SCI enables shorter Bluetooth LE connection intervals than the standard 7.5 ms minimum, which allows higher HID report rates and lower latency while remaining compliant with the Bluetooth specification.
+The nRF Desktop application uses the SoftDevice Link Layer and supports connection intervals as short as 750 µs.
 HID SCI cannot be used together with LLPM on the same device.
 
 .. _nrf_desktop_ble_peers:
@@ -800,26 +801,57 @@ Testing
 You can build and test the application in various configurations.
 
 .. note::
-   The following procedure refers to the scenario where the mouse (nRF54L15 DK) and the keyboard (nRF54L15 DK) are connected simultaneously to the dongle (nRF54LM20 DK).
+   The following sections use nRF54L15 DK and nRF54LM20 DK as example testing devices.
+   You can also test with other DKs supported by the nRF Desktop application.
 
-   Build the mouse using the default build type for the ``nrf54l15dk/nrf54l15/cpuapp`` board target, the keyboard using the ``keyboard`` build type for the same board target, and the dongle using the ``dongle`` or ``release_dongle`` build type for the ``nrf54lm20dk/nrf54lm20b/cpuapp`` board target.
+   The default build type uses :file:`prj.conf`.
+   Other build types are supported for a given device when the corresponding :file:`prj_<build_type>.conf` exists in the :file:`configuration/<board_name>/` directory.
+   For example, the :file:`configuration/nrf54l15dk_nrf54l15_cpuapp/prj_keyboard.conf` file introduces support for ``keyboard`` build type for the ``nrf54l15dk/nrf54l15/cpuapp`` board target.
+   See the :ref:`nrf_desktop_requirements_build_types` section for detailed description of the supported build types.
+
+Basic Bluetooth LE connection testing
+-------------------------------------
+
+See the following subsections for detailed testing steps for connection through a HID dongle and direct connection to a HID host.
+You can use debug configurations for initial testing.
+The debug configurations allow you to observe logs and validate the device's behavior through assertions.
+
+Debug features, such as logging or assertions, decrease the application's performance.
+Make sure to rely on release configurations for performance and power consumption testing.
+See the :ref:`nrf_desktop_measuring_hid_report_rate` section for details.
+
+.. note::
+   The application configurations used by the described test scenarios enable Low Latency Packet Mode (LLPM).
+   You can follow the same runtime testing steps with ``hid_sci`` build types to evaluate a Bluetooth LE HID Shorter Connection Intervals (SCI) connection.
+   For the direct connection testing, the HID host must also support HID SCI.
+   See the :ref:`nrf_desktop_ble` section for details.
+
+Connection through a HID dongle
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This section describes testing connection through a HID dongle.
+
+1. Build the mouse using the default build type for the ``nrf54l15dk/nrf54l15/cpuapp`` board target, the keyboard using the ``keyboard`` build type for the same board target, and the dongle using the ``dongle`` build type for the ``nrf54lm20dk/nrf54lm20b/cpuapp`` board target.
    See :ref:`nrf_desktop_requirements_build_types` for details.
-
-After building the application with or without :ref:`specifying the build type <nrf_desktop_selecting_build_types>`, test the nRF Desktop application by performing the following steps:
-
-1. Program the required firmware to each device.
+#. Program the required firmware to each device.
+   Power off each device right after programming so that you can power on the devices in the order described in the following steps.
 
    .. note::
-      On first programming of the nRF54L DKs, use ``west flash --recover`` to provision the MCUboot public key.
+      Use ``west flash --recover`` to clear settings (including Bluetooth LE bond data) from the non-volatile memory and provision the MCUboot public key.
       See `nRF54L MCUboot provisioning`_.
 
 #. Power on the mouse and keyboard DKs using the power switch.
    **LED1** on the keyboard and **LED1** on the mouse start breathing.
+   This indicates ongoing Bluetooth advertising.
 #. Connect the board acting as dongle to the USB port.
+   Make sure to connect both the USB port used by debugger (``DEBUGGER USB``) and by the nRF54LM20 SoC running nRF Desktop application (``nRF54LM20 USB``).
+   The first one is used to access UART logs.
+   The second one allows the HID dongle to forward user input to the host computer.
+#. Power on the dongle using the power switch.
    **LED1** on the dongle starts breathing.
    This indicates that the dongle is scanning for peripherals.
 #. Wait for the establishment of the Bluetooth connection, which happens automatically.
-   After the Bluetooth connection is established, the LEDs stop breathing and remain turned on.
+   After the Bluetooth connection is established, the LEDs stop breathing and remain lit.
    You can now use the devices simultaneously.
 
    .. note::
@@ -827,21 +859,49 @@ After building the application with or without :ref:`specifying the build type <
       This might be needed if the dongle does not connect with all the peripherals before scanning is interrupted by a timeout.
 
 #. Press the buttons on the mouse DK to simulate motion and press any button on the keyboard DK.
-   The input is reflected on the host.
+   The input is reflected on the host computer.
+
+Direct connection to a HID host
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This section describes testing direct connection to a HID host.
+
+1. Build the mouse using the default build type for the ``nrf54l15dk/nrf54l15/cpuapp`` board target or the keyboard using the ``keyboard`` build type for the same board target.
+   See :ref:`nrf_desktop_requirements_build_types` for details.
+#. Program the required firmware to the device.
 
    .. note::
-      When a :ref:`configuration with debug features <nrf_desktop_requirements_build_types>` is enabled, for example logger and assertions, the gaming mouse report rate can be significantly lower.
+      Use ``west flash --recover`` to clear settings (including Bluetooth LE bond data) from the non-volatile memory and provision the MCUboot public key.
+      See `nRF54L MCUboot provisioning`_.
 
-      Make sure that you use the ``release`` configurations before testing the mouse report rate.
-      For the ``release`` configurations, you should observe a 500-Hz report rate when both the mouse and the keyboard are connected and a 1000-Hz rate when only the mouse is connected.
+#. Observe that **LED1** on the device starts breathing.
+   This indicates ongoing Bluetooth advertising.
+#. Connect to the device with an Android phone, a laptop, or any other Bluetooth Central acting as a HID host.
+   Exact steps depend on the used HID host.
+   Generally, you can connect a new Bluetooth LE HID device in the **Bluetooth settings** menu.
+#. After the Bluetooth connection is established, the LED stops breathing and remains lit.
+   Press the buttons on the DK to simulate user input.
+   The input is reflected on the HID host.
 
-#. Switch the Bluetooth peer on the mouse DK by short-pressing **Button 0** (see `User interface`_).
-   **LED1** starts blinking rapidly.
-#. Press **Button 0** twice quickly to confirm the selection.
-   After the confirmation, **LED1** starts breathing and the mouse starts the Bluetooth advertising.
-#. Connect to the mouse with an Android phone, a laptop, or any other Bluetooth Central.
+.. note::
+   An nRF Desktop HID peripheral device with USB support can also provide user input through the USB.
+   Connect the DK to the HID host computer through the SoC's USB port to test this functionality.
 
-After the connection is established and the device is bonded, you can use the mouse with the connected device.
+Removing Bluetooth bonds
+------------------------
+
+An nRF Desktop HID device (either peripheral or dongle) pairs and bonds with the connected peer device over Bluetooth LE.
+This enables automatic reconnections and encryption of data sent wirelessly over Bluetooth LE.
+
+After reaching its configured bond limit, an nRF Desktop device cannot establish bonded connections with additional peer devices:
+
+* By default, an nRF Desktop peripheral (mouse or keyboard) connects and bonds with only one HID host (or HID dongle) for each used local identity.
+* By default, an nRF Desktop dongle connects and bonds with at least one nRF Desktop HID mouse and at least one nRF Desktop HID keyboard.
+  Most of the configurations allow for one mouse and one keyboard.
+
+The Bluetooth LE bonding information is stored in the non-volatile memory so it persists after reboots.
+To allow connecting and bonding with other peer devices, you need to erase Bluetooth LE bonds.
+See the `User interface`_ section for details.
 
 .. _nrf_desktop_measuring_hid_report_rate:
 
@@ -869,6 +929,7 @@ Building information
 
 Use the configuration with the ``release`` file suffix for the HID report rate measurement.
 Debug features, such as logging or assertions, decrease the application performance.
+Decreased performance can lead to lower HID mouse report rate or increased user input latency.
 
 .. note::
    You can run the application code from RAM instead of NVM to improve performance as code execution from the RAM is generally faster than from the NVM.
