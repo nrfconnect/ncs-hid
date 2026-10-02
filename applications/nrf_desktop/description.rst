@@ -853,7 +853,7 @@ This section describes testing connection through a HID dongle.
    **LED1** on the dongle starts breathing.
    This indicates that the dongle is scanning for peripherals.
 #. Wait for the establishment of the Bluetooth connection, which happens automatically.
-   After the Bluetooth connection is established, the LEDs stop breathing and remain lit.
+   After both Bluetooth connections are established, **LED1** on each device stops breathing and remains lit.
    You can now use the devices simultaneously.
 
    .. note::
@@ -886,8 +886,9 @@ This section describes testing direct connection to a HID host.
    The input is reflected on the HID host.
 
 .. note::
-   An nRF Desktop HID peripheral device with USB support can also provide user input through the USB.
-   Connect the DK to the HID host computer through the SoC's USB port to test this functionality.
+   An nRF Desktop HID peripheral device with USB support (for example nRF54LM20 DK) can also provide user input through the USB.
+   You can program a mouse configuration onto the nRF54LM20 DK and then connect the DK to the HID host computer through the SoC's USB port to test this functionality.
+   In case the DK is simultaneously connected to two HID hosts through USB and Bluetooth LE, only the HID host connected over USB will receive user input.
 
 Removing Bluetooth bonds
 ------------------------
@@ -900,10 +901,16 @@ After reaching its configured bond limit, an nRF Desktop device cannot establish
 * By default, an nRF Desktop peripheral (mouse or keyboard) connects and bonds with only one HID host (or HID dongle) for each used local identity.
 * By default, an nRF Desktop dongle connects and bonds with at least one nRF Desktop HID mouse and at least one nRF Desktop HID keyboard.
   Most of the configurations allow for one mouse and one keyboard.
+  You can use the ``dongle_4llpmconn`` and ``release_dongle_4llpmconn`` build types to test simultaneous connections with more than two HID peripherals.
+  These configurations are supported, for example, by the ``nrf54lm20dk/nrf54lm20b/cpuapp`` board target.
 
 The Bluetooth LE bonding information is stored in the non-volatile memory so it persists after reboots.
 To allow connecting and bonding with other peer devices, you need to erase Bluetooth LE bonds.
 See the `User interface`_ section for details.
+
+.. note::
+   The HID host also stores the Bluetooth LE bonding information in the non-volatile memory.
+   The bonding information persists until it's manually removed by the user.
 
 .. _nrf_desktop_measuring_hid_report_rate:
 
