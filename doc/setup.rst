@@ -7,12 +7,12 @@ Requirements and setup
    :local:
    :depth: 2
 
-This page outlines the requirements that you need to meet before you start working with the |addon|.
+This page outlines the requirements that you need to meet before you start working with the |hid_addon|.
 
 Hardware requirements
 *********************
 
-To use the |addon|, you need a development kit with an nRF54L Series SoC.
+To use the |hid_addon|, you need a development kit with an nRF54L Series SoC.
 The following table lists the supported hardware platforms and their board targets:
 
 .. table-from-rows:: /includes/sample_board_rows.txt
@@ -29,13 +29,13 @@ To evaluate a HID peripheral that communicates with the host through a dongle, y
 For details about the configuration of each supported board, see the :ref:`nrf_desktop_board_configuration_files` section.
 
 
-Get the |addon| code
-********************
+Get the |hid_addon| code
+************************
 
-The |addon| is distributed as a Git repository and is managed through its own west manifest.
+The |hid_addon| is distributed as a Git repository and is managed through its own west manifest.
 The compatible |NCS| version is specified in the :file:`west.yml` file.
 Follow the `HID Add-on GitHub repository`_ link to browse the codebase.
-To get the |addon| code, pick your method from the following:
+To get the |hid_addon| code, pick your method from the following:
 
 * Use the `nRF Connect for Visual Studio Code`_ extension, which provides a convenient way to clone the add-on and compatible |NCS| version.
 * Clone the add-on repository and initialize west with the add-on manifest.
@@ -50,14 +50,14 @@ To get the |addon| code, pick your method from the following:
       .. note::
          Use this method when you wish to specifically evaluate nRF Desktop or other tools provided by the Add-on, but do not have the |NCS| setup yet.
 
-      Clone the |addon| code, together with the compatible |NCS|:
+      Clone the |hid_addon| code, together with the compatible |NCS|:
 
       1. Ensure you have installed `Visual Studio Code`_ and the `nRF Connect for Visual Studio Code`_ extension.
       #. Follow the :ref:`nRF Connect SDK installation guide <nrf:install_ncs>` to install |NCS| prerequisites and toolchain |toolchain_ncs_id|.
 
          .. note::
-            The compatible version of the |NCS| will be cloned with the |addon| repository in the following steps.
-            The version of |NCS| is fixed to the version of the |addon| and is hard-coded in the :file:`west.yml` file of the |addon|.
+            The compatible version of the |NCS| will be cloned with the |hid_addon| repository in the following steps.
+            The version of |NCS| is fixed to the version of the |hid_addon| and is hard-coded in the :file:`west.yml` file of the |hid_addon|.
 
       #. Open the nRF Connect extension in Visual Studio Code by clicking its icon in the **Activity Bar**.
       #. In the extension's **Welcome View**, click :guilabel:`Create a new application`.
@@ -76,8 +76,8 @@ To get the |addon| code, pick your method from the following:
       1. Follow the :ref:`nRF Connect SDK installation guide <nrf:install_ncs>` to install |NCS| prerequisites and toolchain |toolchain_ncs_id|.
 
          .. note::
-            The compatible version of the |NCS| will be cloned with the |addon| repository in the following steps.
-            The version of |NCS| is fixed to the version of the |addon| and is hard-coded in the :file:`west.yml` file of the |addon|.
+            The compatible version of the |NCS| will be cloned with the |hid_addon| repository in the following steps.
+            The version of |NCS| is fixed to the version of the |hid_addon| and is hard-coded in the :file:`west.yml` file of the |hid_addon|.
 
       #. Launch the installed toolchain:
 
@@ -101,7 +101,7 @@ To get the |addon| code, pick your method from the following:
 
                   nrfutil sdk-manager toolchain launch --ncs-version |toolchain_ncs_id| --shell
 
-      #. Initialize the |addon| repository using one of the following methods:
+      #. Initialize the |hid_addon| repository using one of the following methods:
 
          .. tabs::
 
@@ -115,7 +115,7 @@ To get the |addon| code, pick your method from the following:
 
             .. tab:: Manual cloning and initialization
 
-               a. Clone the |addon| repository into the :file:`hid` folder, which is the path expected by the add-on manifest:
+               a. Clone the |hid_addon| repository into the :file:`hid` folder, which is the path expected by the add-on manifest:
 
                   .. code-block:: console
 
@@ -140,7 +140,7 @@ To get the |addon| code, pick your method from the following:
       .. note::
          Use this method when running a :ref:`zephyr:zephyr-workspace-app` or if you prefer to use a modification of the |NCS| manifest.
 
-      1. Add the |addon| repository as a project in the west manifest by including the following lines in your :file:`west.yml` under the ``projects`` key:
+      1. Add the |hid_addon| repository as a project in the west manifest by including the following lines in your :file:`west.yml` under the ``projects`` key:
 
          .. code-block:: yaml
 
@@ -159,16 +159,16 @@ To get the |addon| code, pick your method from the following:
 
          Your west manifest must specify compatible versions of the |NCS| and Add-on.
 
-      #. Run ``west update`` to pull the |addon| repository.
+      #. Run ``west update`` to pull the |hid_addon| repository.
 
    .. group-tab:: Add-on as an extra Zephyr module
 
       .. note::
-         Use this method if you have a former installation of the |NCS| and would like to evaluate or use the |addon| with that installation.
+         Use this method if you have a former installation of the |NCS| and would like to evaluate or use the |hid_addon| with that installation.
          This method allows you to keep the |NCS| manifest unmodified.
 
       Before using this approach, ensure that a compatible version of the |NCS| is installed.
-      To identify the compatible |NCS| version, check the :file:`west.yml` file of the |addon|.
+      To identify the compatible |NCS| version, check the :file:`west.yml` file of the |hid_addon|.
       Since west does not manage the Add-on in this setup, you are responsible for keeping the versions synchronized.
 
       1. Clone the Add-on repository:
@@ -184,7 +184,7 @@ To get the |addon| code, pick your method from the following:
    .. group-tab:: Switch west manifest to the Add-on
 
       .. note::
-         Use this method if you already have an |NCS| workspace and want west to use the |addon| :file:`west.yml` as the workspace manifest instead of the |NCS| one.
+         Use this method if you already have an |NCS| workspace and want west to use the |hid_addon| :file:`west.yml` as the workspace manifest instead of the |NCS| one.
          You can switch back to the |NCS| manifest at any time.
 
       1. Assuming you have an existing |NCS| workspace in the :file:`ncs` folder, run the following commands:

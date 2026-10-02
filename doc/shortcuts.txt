@@ -2,7 +2,8 @@
 
 .. |NCS| replace:: nRF Connect SDK
 .. |addon| replace:: HID Add-on
-.. |no_changes_yet_note| replace:: No changes since the latest |addon| release.
+.. |hid_addon| replace:: HID Add-on
+.. |no_changes_yet_note| replace:: No changes since the latest |hid_addon| release.
 .. |nRFVSC| replace:: nRF Connect for VS Code extension
 .. |config| replace:: See :ref:`configure_application` for information about how to permanently or temporarily change the configuration.
 

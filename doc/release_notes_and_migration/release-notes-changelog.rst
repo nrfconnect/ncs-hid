@@ -2,14 +2,14 @@
 
 .. _release_notes_changelog:
 
-Changelog for |addon| v1.0.99
-#############################
+Changelog for |hid_addon| v1.0.99
+#################################
 
 .. contents::
    :local:
    :depth: 2
 
-The most relevant changes that are present on the main branch of the |addon|, as compared to the latest official release, are tracked in this file.
+The most relevant changes that are present on the main branch of the |hid_addon|, as compared to the latest official release, are tracked in this file.
 
 .. note::
    This file is a work in progress and might not cover all relevant changes.
