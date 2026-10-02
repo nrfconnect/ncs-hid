@@ -24,6 +24,7 @@ ZEPHYR_BASE = Path(manifest.get_projects(['zephyr'])[0].abspath)
 sys.path.insert(0, str(NRF_BASE / 'doc' / '_extensions'))
 sys.path.insert(0, str(ZEPHYR_BASE / 'doc' / '_extensions'))
 sys.path.insert(0, str(HID_BASE / 'doc' / '_extensions'))
+sys.path.insert(0, str(HID_BASE / 'doc' / '_utils'))
 
 # Needed by options_from_kconfig extension which is not self contained
 sys.path.insert(0, str(ZEPHYR_BASE / 'scripts'))
@@ -220,3 +221,9 @@ intersphinx_mapping = {
 # -- rst_epilog: pre-expanded links.txt + shortcuts.txt ----------------------
 
 rst_epilog = build_rst_epilog(HID_BASE / "doc", SUBSTITUTIONS)
+
+
+def setup(app):
+    from kapa import add_kapa_search
+
+    add_kapa_search(app)
