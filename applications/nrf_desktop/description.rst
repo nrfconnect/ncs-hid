@@ -659,13 +659,13 @@ The assignments of hardware interface elements depend on the device type.
 LED indication
 ==============
 
-When available, the onboard LEDs provide user feedback about the device and Bluetooth peer state.
+When available, the onboard LEDs provide user feedback about the device, Bluetooth peer, and HID keyboard LED state.
 
 .. tabs::
 
    .. tab:: nRF54 DK
 
-      The nRF54 Series DK uses two onboard LEDs for user feedback:
+      The nRF54 Series DK uses onboard LEDs for user feedback as follows:
 
       **LED0** — system state
          Kept lit while the device is active.
@@ -677,6 +677,15 @@ When available, the onboard LEDs provide user feedback about the device and Blue
          The LED is kept lit while the device maintains a Bluetooth connection.
          The LED blinks rapidly while the device is waiting for user confirmation of a Bluetooth LE peer operation.
          See :ref:`nrf_desktop_ble_peers` for details about peer operations that change the LED effect.
+
+      When the device acts as a keyboard, the onboard LEDs indicate the HID keyboard LED states as follows:
+
+      **LED2** — Num Lock
+         Kept lit when Num Lock is enabled on the connected host.
+
+      **LED3** — Caps Lock
+         Kept lit when Caps Lock is enabled on the connected host.
+         Configured only by the nRF54LS05 DK.
 
 ..
 
