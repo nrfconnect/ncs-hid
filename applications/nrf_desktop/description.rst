@@ -621,38 +621,32 @@ The LED colors and effects are described in the :file:`led_state_def.h` file loc
 
 The assignments of hardware interface elements depend on the device type.
 
-.. tabs::
+The following predefined button is assigned to peer control operations for an nRF54 Series DK:
 
-   .. tab:: nRF54 DK
+Button 0
+   * If the DK acts as a dongle:
 
-      The following predefined button is assigned to peer control operations for an nRF54 Series DK.
+      * Long-press the **Button 0** to initialize peer erase.
+        When **LED1** starts blinking rapidly, double-press to confirm the operation.
+        After the confirmation, all the Bluetooth bonds are removed for the dongle.
+      * Short-press to start scanning for both bonded and non-bonded Bluetooth Peripherals.
+        After the forced scan timeout, the scan is interrupted if another peripheral connected to the dongle is active.
 
-      Button 0
-         * If the DK acts as a dongle:
+        .. note::
+           |led_note|
 
-            * Long-press the **Button 0** to initialize peer erase.
-              When **LED1** starts blinking rapidly, double-press to confirm the operation.
-              After the confirmation, all the Bluetooth bonds are removed for the dongle.
-            * Short-press to start scanning for both bonded and non-bonded Bluetooth Peripherals.
-              After the forced scan timeout, the scan is interrupted if another peripheral connected to the dongle is active.
+      * |nRF_Desktop_cancel_operation|
 
-              .. note::
-                 |led_note|
+   * If the DK acts as a peripheral:
 
-            * |nRF_Desktop_cancel_operation|
+      * Press the **Button 0** before the DK is powered up with the on/off switch.
+        Long-press to initialize and confirm the peer erase.
+        |nRF_Desktop_confirmation_effect|
 
-         * If the DK acts as a peripheral:
+        .. note::
+           |led_note|
 
-            * Press the **Button 0** before the DK is powered up with the on/off switch.
-              Long-press to initialize and confirm the peer erase.
-              |nRF_Desktop_confirmation_effect|
-
-              .. note::
-                 |led_note|
-
-            * |nRF_Desktop_cancel_operation|
-
-..
+      * |nRF_Desktop_cancel_operation|
 
 .. _nrf_desktop_led_indication:
 
@@ -661,33 +655,27 @@ LED indication
 
 When available, the onboard LEDs provide user feedback about the device, Bluetooth peer, and HID keyboard LED state.
 
-.. tabs::
+The nRF54 Series DK uses onboard LEDs for user feedback as follows:
 
-   .. tab:: nRF54 DK
+**LED0** — system state
+   Kept lit while the device is active.
+   After a system error, the LED will blink rapidly for some time before the device is reset.
 
-      The nRF54 Series DK uses onboard LEDs for user feedback as follows:
+**LED1** — Bluetooth peer state
+   Shows the Bluetooth connection and peer management state.
+   A breathing or blinking LED effect, depending on the DK, indicates ongoing peer search (either Bluetooth scanning or advertising).
+   The LED is kept lit while the device maintains a Bluetooth connection.
+   The LED blinks rapidly while the device is waiting for user confirmation of a Bluetooth LE peer operation.
+   See :ref:`nrf_desktop_ble_peers` for details about peer operations that change the LED effect.
 
-      **LED0** — system state
-         Kept lit while the device is active.
-         After a system error, the LED will blink rapidly for some time before the device is reset.
+When the device acts as a keyboard, the onboard LEDs indicate the HID keyboard LED states as follows:
 
-      **LED1** — Bluetooth peer state
-         Shows the Bluetooth connection and peer management state.
-         A breathing or blinking LED effect, depending on the DK, indicates ongoing peer search (either Bluetooth scanning or advertising).
-         The LED is kept lit while the device maintains a Bluetooth connection.
-         The LED blinks rapidly while the device is waiting for user confirmation of a Bluetooth LE peer operation.
-         See :ref:`nrf_desktop_ble_peers` for details about peer operations that change the LED effect.
+**LED2** — Num Lock
+   Kept lit when Num Lock is enabled on the connected host.
 
-      When the device acts as a keyboard, the onboard LEDs indicate the HID keyboard LED states as follows:
-
-      **LED2** — Num Lock
-         Kept lit when Num Lock is enabled on the connected host.
-
-      **LED3** — Caps Lock
-         Kept lit when Caps Lock is enabled on the connected host.
-         Configured only by the nRF54LS05 DK.
-
-..
+**LED3** — Caps Lock
+   Kept lit when Caps Lock is enabled on the connected host.
+   Configured only by the nRF54LS05 DK.
 
 .. _nrf_desktop_debugging:
 
