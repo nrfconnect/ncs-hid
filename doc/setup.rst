@@ -64,7 +64,7 @@ To get the |hid_addon| code, pick your method from the following:
          The list of actions appears in Visual Studio Code's quick pick.
       #. Click :guilabel:`Browse nRF Connect SDK Add-on Index`.
          The list of available |NCS| add-ons appears in Visual Studio Code's quick pick.
-      #. Select **HID**.
+      #. Select **HID Add-on**.
       #. Select the Add-on version to install.
          Depending on the speed of your internet connection, the update might take some time.
 
