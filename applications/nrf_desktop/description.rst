@@ -414,6 +414,10 @@ All build types except the HID SCI ones support Low Latency Packet Mode (LLPM).
      - ``keyboard``
      - ``nrf54l15dk/nrf54l15/cpuapp``
      - Debug version of the application that lets you generate the application with the keyboard role.
+   * - Release keyboard
+     - ``release_keyboard``
+     - ``nrf54l15dk/nrf54l05/cpuapp``
+     - Release version of the application that lets you generate the application with the keyboard role.
    * - HID SCI mouse
      - ``hid_sci``
      - ``nrf54l15dk/nrf54l15/cpuapp``
@@ -450,6 +454,14 @@ All build types except the HID SCI ones support Low Latency Packet Mode (LLPM).
      - ``llvm``
      - ``nrf54lm20dk/nrf54lm20a/cpuapp``
      - Debug version of the application with the support for the ``llvm`` toolchain.
+   * - RAM load
+     - ``ram_load``
+     - ``nrf54lm20dk/nrf54lm20b/cpuapp``
+     - Debug version of the application that uses the MCUboot bootloader in the :ref:`RAM load mode <nrf_desktop_configuring_mcuboot_bootloader_ram_load>` and executes the application code from RAM.
+   * - Release RAM load
+     - ``release_ram_load``
+     - ``nrf54lm20dk/nrf54lm20b/cpuapp``
+     - Release version of the application that uses the MCUboot bootloader in the :ref:`RAM load mode <nrf_desktop_configuring_mcuboot_bootloader_ram_load>` and executes the application code from RAM.
 
 .. note::
     Bootloader-enabled configurations with support for :ref:`serial recovery DFU <nrf_desktop_bootloader_serial_dfu>` or :ref:`background DFU <nrf_desktop_bootloader_background_dfu>` are set as default if they fit in the non-volatile memory.
