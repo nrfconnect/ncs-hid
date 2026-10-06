@@ -759,11 +759,11 @@ You can also configure the following feature in the nRF Desktop application:
 Building and running
 ********************
 
-.. |sample path| replace:: :file:`applications/nrf_desktop`
+.. |application path| replace:: :file:`applications/nrf_desktop`
 
 The nRF Desktop application is built the same way to any other |NCS| application or sample.
 
-.. include:: /includes/build_and_run.txt
+.. include:: /includes/application_build_and_run.txt
 
 Memory footprint usage
 ======================
