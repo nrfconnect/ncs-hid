@@ -16,7 +16,7 @@
 
 .. nrf54lm20dk_nrf54lm20a_cpuapp
 
-| :ref:`nRF54LM20 DK <nrf:ug_nrf54l>` | PCA10184 | :ref:`nrf54lm20dk <zephyr:nrf54lm20dk_nrf54lm20a>` | ``nrf54lm20dk/nrf54lm20a/cpuapp`` |
+| :ref:`nRF54LM20 DK (emulating nRF54LM20A) <nrf:ug_nrf54l>` | PCA10184 | :ref:`nrf54lm20dk <zephyr:nrf54lm20dk_nrf54lm20a>` | ``nrf54lm20dk/nrf54lm20a/cpuapp`` |
 
 .. nrf54lm20dk_nrf54lm20b_cpuapp
 
