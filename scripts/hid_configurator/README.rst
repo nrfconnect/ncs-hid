@@ -23,7 +23,7 @@ It can be used for the following purposes:
 Overview
 ********
 
-The script looks for nRF Desktop devices connected to the host through USB, Bluetooth®, or nRF Desktop dongle.
+The script looks for nRF Desktop devices connected to the host through USB, Bluetooth®, or an nRF Desktop dongle that uses Bluetooth LE (LLPM or HID SCI configurations).
 The devices are identified based on Vendor ID.
 
 The script exchanges data with the device using :ref:`nrf_desktop_config_channel`.
