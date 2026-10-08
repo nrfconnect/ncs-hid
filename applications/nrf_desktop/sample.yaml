@@ -18,7 +18,7 @@ common:
       - "ble_bond: Selected Bluetooth LE peers"
       - "(ble_adv: Advertising started)|(ble_scan: Scan started)"
 tests:
-  applications.hid.nrf_desktop.zdebug.uart:
+  ncs_hid.applications.nrf_desktop.zdebug:
     platform_allow:
       - nrf54l15dk/nrf54l05/cpuapp
       - nrf54l15dk/nrf54l10/cpuapp
@@ -37,7 +37,7 @@ tests:
       - nrf54ls05dk/nrf54ls05b/cpuapp
       - nrf54lc10dk/nrf54lc10a/cpuapp
     harness: console
-  applications.hid.nrf_desktop.zdebug_fast_pair.gmouse.uart:
+  ncs_hid.applications.nrf_desktop.zdebug_fast_pair.gmouse:
     platform_allow:
       - nrf54l15dk/nrf54l10/cpuapp
       - nrf54l15dk/nrf54l15/cpuapp
@@ -47,7 +47,7 @@ tests:
     extra_args:
       - FILE_SUFFIX=fast_pair
     harness: console
-  applications.hid.nrf_desktop.zdebug_hid_sci.uart:
+  ncs_hid.applications.nrf_desktop.zdebug_hid_sci:
     platform_allow:
       - nrf54l15dk/nrf54l05/cpuapp
       - nrf54l15dk/nrf54l10/cpuapp
@@ -64,7 +64,7 @@ tests:
       - nrf54ls05dk/nrf54ls05a/cpuapp
     extra_args: FILE_SUFFIX=hid_sci
     harness: console
-  applications.hid.nrf_desktop.zrelease_hid_sci:
+  ncs_hid.applications.nrf_desktop.zrelease_hid_sci:
     build_only: true
     platform_allow:
       - nrf54l15dk/nrf54l05/cpuapp
@@ -81,7 +81,7 @@ tests:
       - nrf54lm20dk/nrf54lm20b/cpuapp
       - nrf54ls05dk/nrf54ls05a/cpuapp
     extra_args: FILE_SUFFIX=release_hid_sci
-  applications.hid.nrf_desktop.zdebug_dongle_4llpmconn.uart:
+  ncs_hid.applications.nrf_desktop.zdebug_dongle_4llpmconn:
     platform_allow:
       - nrf54lm20dk/nrf54lm20a/cpuapp
       - nrf54lm20dk/nrf54lm20b/cpuapp
@@ -89,7 +89,7 @@ tests:
       - nrf54lm20dk/nrf54lm20b/cpuapp
     harness: console
     extra_args: FILE_SUFFIX=dongle_4llpmconn
-  applications.hid.nrf_desktop.zdebug_dongle.uart:
+  ncs_hid.applications.nrf_desktop.zdebug_dongle:
     platform_allow:
       - nrf54lm20dk/nrf54lm20a/cpuapp
       - nrf54lm20dk/nrf54lm20b/cpuapp
@@ -97,7 +97,7 @@ tests:
       - nrf54lm20dk/nrf54lm20b/cpuapp
     extra_args: FILE_SUFFIX=dongle
     harness: console
-  applications.hid.nrf_desktop.zrelease_dongle:
+  ncs_hid.applications.nrf_desktop.zrelease_dongle:
     build_only: true
     platform_allow:
       - nrf54lm20dk/nrf54lm20a/cpuapp
@@ -105,7 +105,7 @@ tests:
     integration_platforms:
       - nrf54lm20dk/nrf54lm20b/cpuapp
     extra_args: FILE_SUFFIX=release_dongle
-  applications.hid.nrf_desktop.zdebug_hid_sci_dongle.uart:
+  ncs_hid.applications.nrf_desktop.zdebug_hid_sci_dongle:
     platform_allow:
       - nrf54lm20dk/nrf54lm20a/cpuapp
       - nrf54lm20dk/nrf54lm20b/cpuapp
@@ -113,7 +113,7 @@ tests:
       - nrf54lm20dk/nrf54lm20b/cpuapp
     extra_args: FILE_SUFFIX=hid_sci_dongle
     harness: console
-  applications.hid.nrf_desktop.zrelease_hid_sci_dongle:
+  ncs_hid.applications.nrf_desktop.zrelease_hid_sci_dongle:
     build_only: true
     platform_allow:
       - nrf54lm20dk/nrf54lm20a/cpuapp
@@ -121,7 +121,7 @@ tests:
     integration_platforms:
       - nrf54lm20dk/nrf54lm20b/cpuapp
     extra_args: FILE_SUFFIX=release_hid_sci_dongle
-  applications.hid.nrf_desktop.zdebug_hid_sci_keyboard.uart:
+  ncs_hid.applications.nrf_desktop.zdebug_hid_sci_keyboard:
     platform_allow:
       - nrf54l15dk/nrf54l05/cpuapp
       - nrf54l15dk/nrf54l10/cpuapp
@@ -134,7 +134,7 @@ tests:
       - nrf54ls05dk/nrf54ls05a/cpuapp
     extra_args: FILE_SUFFIX=hid_sci_keyboard
     harness: console
-  applications.hid.nrf_desktop.zrelease_hid_sci_keyboard:
+  ncs_hid.applications.nrf_desktop.zrelease_hid_sci_keyboard:
     build_only: true
     platform_allow:
       - nrf54l15dk/nrf54l05/cpuapp
@@ -147,7 +147,7 @@ tests:
       - nrf54l15dk/nrf54l15/cpuapp
       - nrf54ls05dk/nrf54ls05a/cpuapp
     extra_args: FILE_SUFFIX=release_hid_sci_keyboard
-  applications.hid.nrf_desktop.zdebug_keyboard.uart:
+  ncs_hid.applications.nrf_desktop.zdebug_keyboard:
     platform_allow:
       - nrf54l15dk/nrf54l10/cpuapp
       - nrf54l15dk/nrf54l15/cpuapp
@@ -160,7 +160,7 @@ tests:
       - nrf54ls05dk/nrf54ls05b/cpuapp
     extra_args: FILE_SUFFIX=keyboard
     harness: console
-  applications.hid.nrf_desktop.zrelease_keyboard:
+  ncs_hid.applications.nrf_desktop.zrelease_keyboard:
     build_only: true
     platform_allow:
       - nrf54l15dk/nrf54l05/cpuapp
@@ -171,7 +171,7 @@ tests:
       - nrf54ls05dk/nrf54ls05a/cpuapp
       - nrf54ls05dk/nrf54ls05b/cpuapp
     extra_args: FILE_SUFFIX=release_keyboard
-  applications.hid.nrf_desktop.zrelease:
+  ncs_hid.applications.nrf_desktop.zrelease:
     build_only: true
     platform_allow:
       - nrf54l15dk/nrf54l05/cpuapp
@@ -189,7 +189,7 @@ tests:
       - nrf54ls05dk/nrf54ls05b/cpuapp
       - nrf54lc10dk/nrf54lc10a/cpuapp
     extra_args: FILE_SUFFIX=release
-  applications.hid.nrf_desktop.zrelease_fast_pair.gmouse:
+  ncs_hid.applications.nrf_desktop.zrelease_fast_pair.gmouse:
     build_only: true
     platform_allow:
       - nrf54l15dk/nrf54l05/cpuapp
@@ -200,7 +200,7 @@ tests:
       - nrf54ls05dk/nrf54ls05a/cpuapp
     extra_args:
       - FILE_SUFFIX=release_fast_pair
-  applications.hid.nrf_desktop.zrelease_dongle_4llpmconn:
+  ncs_hid.applications.nrf_desktop.zrelease_dongle_4llpmconn:
     build_only: true
     platform_allow:
       - nrf54lm20dk/nrf54lm20a/cpuapp
@@ -208,7 +208,7 @@ tests:
     integration_platforms:
       - nrf54lm20dk/nrf54lm20b/cpuapp
     extra_args: FILE_SUFFIX=release_dongle_4llpmconn
-  applications.hid.nrf_desktop.zdebug.llvm.uart:
+  ncs_hid.applications.nrf_desktop.zdebug.llvm:
     toolchain_allow: llvm
     integration_platforms:
       - nrf54lm20dk/nrf54lm20b/cpuapp
@@ -217,7 +217,7 @@ tests:
       - nrf54lm20dk/nrf54lm20b/cpuapp
     extra_args: FILE_SUFFIX=llvm
     harness: console
-  applications.hid.nrf_desktop.zdebug_ram_load.uart:
+  ncs_hid.applications.nrf_desktop.zdebug_ram_load:
     platform_allow:
       - nrf54lm20dk/nrf54lm20a/cpuapp
       - nrf54lm20dk/nrf54lm20b/cpuapp
@@ -225,7 +225,7 @@ tests:
       - nrf54lm20dk/nrf54lm20b/cpuapp
     extra_args: FILE_SUFFIX=ram_load
     harness: console
-  applications.hid.nrf_desktop.zrelease_ram_load:
+  ncs_hid.applications.nrf_desktop.zrelease_ram_load:
     build_only: true
     platform_allow:
       - nrf54lm20dk/nrf54lm20a/cpuapp
