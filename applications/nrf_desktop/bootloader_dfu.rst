@@ -193,9 +193,6 @@ Similarly to the direct-xip mode, the RAM load mode also relies on the image ver
 However, instead of booting the image from the NVM slot, the bootloader in the RAM load mode copies the image from the non-volatile memory (NVM) to the RAM and boots it from there.
 The application image is always built for the RAM address space in only one variant.
 
-.. caution::
-   Currently, this feature is only used in a limited context for the nRF54LM20 DK to improve performance.
-
 You can use the RAM load mode of the MCUboot bootloader to speed up the code execution for the application image, as code execution from the RAM is generally faster than from the NVM.
 This can improve the device performance during the activities that require high CPU usage.
 As an example, the nRF Desktop application uses the RAM load mode for the nRF54LM20 DK to improve the HID report rate over USB.
