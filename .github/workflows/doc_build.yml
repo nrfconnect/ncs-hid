@@ -72,7 +72,12 @@ jobs:
       - name: Build
         working-directory: ncs/hid/doc
         run: |
-          make html
+          KAPA_TAG=""
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]] || \
+             [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            KAPA_TAG="-t kapa"
+          fi
+          make html SPHINXOPTS="${KAPA_TAG}"
 
       - name: Check version
         run: |
