@@ -1,5 +1,3 @@
-:orphan:
-
 .. _release_notes_changelog:
 
 Changelog for |hid_addon| v1.0.99
