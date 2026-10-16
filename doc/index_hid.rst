@@ -37,6 +37,11 @@ HID configurator scripts
    You can also update device firmware through `Linux Vendor Firmware Service (LVFS) <LVFS_>`_ and `fwupd`_.
    See the :ref:`nrf_desktop_fwupd` documentation page for details.
 
+CAF buttons ISR module
+   The :ref:`caf_buttons_isr` is an alternative implementation of the :ref:`CAF buttons module <nrf:caf_buttons>` from the |NCS|.
+   It generates button press and release events with minimal latency using GPIO interrupts.
+   nRF Desktop peripheral configurations in the |hid_addon| can use this module instead of the standard scan-based buttons module to achieve lower click latency.
+
 See the subpages for detailed documentation.
 
 .. toctree::

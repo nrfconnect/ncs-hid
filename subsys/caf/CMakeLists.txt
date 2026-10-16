@@ -10,6 +10,10 @@ zephyr_library_sources_ifdef(CONFIG_CAF_BLE_STATE_EXTENSION
   modules/ble_state_extension.c
 )
 
+zephyr_library_sources_ifdef(CONFIG_CAF_BUTTONS_ISR
+  modules/buttons_direct_isr.c
+)
+
 zephyr_library_sources_ifdef(CONFIG_CAF_BLE_COMMON_EVENTS_EXTENSION
   events/ble_common_event_extension.c
 )

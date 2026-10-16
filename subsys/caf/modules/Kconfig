@@ -5,3 +5,4 @@
 #
 
 rsource "Kconfig.ble_state_extension"
+rsource "Kconfig.buttons_direct_isr"

@@ -23,8 +23,10 @@ Module events
 Implementation details
 **********************
 
-nRF Desktop uses the buttons module from :ref:`nrf:lib_caf` (CAF).
-See the :ref:`CAF button module <nrf:caf_buttons>` page for implementation details.
+nRF Desktop uses a buttons module from :ref:`nrf:lib_caf` (CAF).
+Currently, all of the configurations use the standard :ref:`CAF buttons module <nrf:caf_buttons>` from the |NCS|.
+To ensure lower latency, you can enable the :ref:`CAF buttons ISR module <caf_buttons_isr>` (:kconfig:option:`CONFIG_CAF_BUTTONS_ISR`).
+See the linked documentation pages for implementation details.
 
 Key ID
 ======

@@ -11,10 +11,14 @@ config CAF_EXTENSION
 	bool "HID add-on CAF extensions"
 	default y
 	help
-	  CAF extensions provided by the HID add-on until available in the
-	  used NCS release.
-	  These features are already available in NCS main and ported
-	  here for early access.
+	  CAF extensions provided by the HID add-on.
+
+	  The HID Add-on temporarily extends CAF until these features are
+	  available in the used nRF Connect SDK release. These features are already
+	  available in nRF Connect SDK main and ported here for early access.
+
+	  The add-on also provides the CAF Buttons ISR module that
+	  reduces click latency for gaming-grade HID devices.
 
 if CAF_EXTENSION
 

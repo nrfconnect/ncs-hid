@@ -1,0 +1,87 @@
+#
+# Copyright (c) 2026 Nordic Semiconductor ASA
+#
+# SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
+#
+
+menuconfig CAF_BUTTONS_ISR
+	bool "Buttons module (low button press latency)"
+	depends on !CAF_BUTTONS
+	select CAF_BUTTON_EVENTS
+	help
+	  Alternative implementation of CAF Buttons module from the NCS.
+	  Emit button press and release events with minimal latency.
+	  Debouncing is applied after press and release detection.
+	  Supports only directly connected buttons.
+	  Does not support keyboard matrix.
+
+if CAF_BUTTONS_ISR
+
+config CAF_BUTTONS_DEF_PATH
+	string "Configuration file"
+	default "buttons_def.h"
+	help
+	  Location of configuration file for buttons module.
+
+config CAF_BUTTONS_PM_EVENTS
+	bool "Power management events support"
+	depends on CAF_PM_EVENTS
+	default y
+
+config CAF_BUTTONS_PM_KEEP_ALIVE
+	bool "Generate keep alive power event on button press"
+	depends on CAF_POWER_MANAGER
+	select CAF_KEEP_ALIVE_EVENTS
+	default y
+	help
+	  Every button press would generate keep alive event.
+
+config CAF_BUTTONS_DEBOUNCE_INTERVAL
+	int "Interval used to debounce button release in ms"
+	default 2
+	help
+	  Does not affect button presses.
+
+config CAF_BUTTONS_POLARITY_INVERSED
+	bool "Inverse buttons polarity"
+	help
+	  When this option is enabled, button is pressed when the GPIO state
+	  is low.
+
+config CAF_BUTTONS_WQ
+	bool "Use dedicated workqueue for button debouncing works"
+	help
+	  Using a separate context might allow to avoid interfering with the
+	  system workqueue. Useful for example if button_event triggers start
+	  of critical path that executes in the system workqueue context.
+
+	  If the feature is enabled, the dedicated workqueue context is used
+	  also for the error work.
+
+	  The feature can be disabled to reduce memory footprint. Then the
+	  system workqueue is used as execution context for works handling
+	  button debouncing.
+
+if CAF_BUTTONS_WQ
+
+config CAF_BUTTONS_WQ_STACK_SIZE
+	int "Stack size of the dedicated workqueue"
+	default 1024
+	help
+	  In most of the cases, application can rely on the default stack size.
+	  The option can be used to finetune the stack size if needed.
+
+config CAF_BUTTONS_WQ_PRIO
+	int "Priority of the dedicated workqueue"
+	default -1
+	range -256 -1
+	help
+	  The current implementation supports only cooperative priorities.
+
+endif # CAF_BUTTONS_WQ
+
+module = CAF_BUTTONS
+module-str = caf module buttons
+source "subsys/logging/Kconfig.template.log_config"
+
+endif # CAF_BUTTONS_ISR
