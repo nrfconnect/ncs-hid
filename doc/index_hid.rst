@@ -37,6 +37,9 @@ HID configurator scripts
    You can also update device firmware through `Linux Vendor Firmware Service (LVFS) <LVFS_>`_ and `fwupd`_.
    See the :ref:`nrf_desktop_fwupd` documentation page for details.
 
+CAF extension modules
+   The :ref:`caf_extensions` extend the :ref:`nrf:lib_caf` (CAF) subsystem with features not yet available in the used |NCS| release.
+
 See the subpages for detailed documentation.
 
 .. toctree::
