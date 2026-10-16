@@ -41,11 +41,11 @@ config DESKTOP_INIT_LOG_BLE_DONGLE_PEER_EVENT
 	  Log Bluetooth dongle peer event in nRF Desktop application.
 
 config DESKTOP_INIT_LOG_CPU_LOAD_EVENT
-	bool "Log CPU load events"
-	depends on DESKTOP_CPU_MEAS_ENABLE
+	bool "Log CPU load event"
+	depends on DESKTOP_CPU_LOAD_EVENT
 	default y
 	help
-	  Log CPU load events in nRF Desktop application.
+	  Log CPU load event in nRF Desktop application.
 
 config DESKTOP_INIT_LOG_SELECTOR_EVENT
 	bool "Log selector events"

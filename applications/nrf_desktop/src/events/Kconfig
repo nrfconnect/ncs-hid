@@ -16,6 +16,11 @@ config DESKTOP_HOGP_EVENTS
 	help
 	  Enable HOGP events in nRF Desktop application.
 
+config DESKTOP_CPU_LOAD_EVENT
+	bool "CPU load event"
+	help
+	  The CPU load event contains CPU load in 0,001% units.
+
 rsource "Kconfig.log"
 
 endmenu

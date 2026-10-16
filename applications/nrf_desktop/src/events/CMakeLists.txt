@@ -22,7 +22,7 @@ target_sources_ifdef(CONFIG_DESKTOP_CONFIG_CHANNEL_ENABLE app PRIVATE
   ${CMAKE_CURRENT_SOURCE_DIR}/config_event.c
 )
 
-target_sources_ifdef(CONFIG_DESKTOP_CPU_MEAS_ENABLE app PRIVATE
+target_sources_ifdef(CONFIG_DESKTOP_CPU_LOAD_EVENT app PRIVATE
   ${CMAKE_CURRENT_SOURCE_DIR}/cpu_load_event.c
 )
 

@@ -10,19 +10,40 @@ config DESKTOP_CPU_MEAS_ENABLE
 	bool "Enable measuring CPU load"
 	select NRF_CPU_LOAD
 	help
-	  The CPU load is sent periodically using dedicated application event.
+	  The CPU load is periodically measured. Results are sent using a
+	  dedicated application event or logged using directly nRF Profiler API.
 
 if DESKTOP_CPU_MEAS_ENABLE
 
 config DESKTOP_CPU_MEAS_PERIOD
-	int "Time between subsequent CPU load events [ms]"
+	int "Time between subsequent CPU load measurements [ms]"
 	default 1000
 	range 1 4294000
 	help
-	  The CPU load event is submitted periodically by a delayed work.
-	  When the event is submitted, application module resets measurement.
+	  The CPU load is measured periodically by a delayed work. Application
+	  module resets measurement every time the result is provided.
+
 	  According to CPU load subsystem documentation, measurement must be
 	  reset at least every 4294 seconds. Otherwise results are invalid.
+
+config DESKTOP_CPU_MEAS_RESULT_NRF_PROFILER
+	bool "Provide results through nRF Profiler event"
+	depends on NRF_PROFILER
+	default y
+	help
+	  nRF Profiler API is used directly to emit the CPU load with minimal
+	  impact on performance.
+
+config DESKTOP_CPU_MEAS_RESULT_EVENT
+	bool "Provide results through a CPU load application event"
+	select DESKTOP_CPU_LOAD_EVENT
+	default y if !DESKTOP_CPU_MEAS_RESULT_NRF_PROFILER
+	help
+	  A dedicated Application Event Manager event (cpu_load_event) is
+	  submitted to inform about the CPU load.
+
+	  The option is disabled in case results are provided through nRF
+	  Profiler event to avoid impacting the CPU load.
 
 module = DESKTOP_CPU_MEAS
 module-str = CPU meas
