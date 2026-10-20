@@ -31,7 +31,9 @@ The following sections provide detailed lists of changes by component.
 Applications
 ============
 
-|no_changes_yet_note|
+* nRF Desktop:
+
+  * Added the ``ram_pwrdn`` module to gate unused SRAM on supported nRF54L application cores (:option:`CONFIG_DESKTOP_RAM_PWRDN`).
 
 Host tools
 ==========

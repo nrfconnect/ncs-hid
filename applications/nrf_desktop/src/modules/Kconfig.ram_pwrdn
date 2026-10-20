@@ -1,0 +1,34 @@
+#
+# Copyright (c) 2026 Nordic Semiconductor ASA
+#
+# SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
+#
+
+config DESKTOP_RAM_PWRDN_SOC
+	def_bool SOC_NRF54L05_CPUAPP || SOC_NRF54L10_CPUAPP || SOC_NRF54L15_CPUAPP || \
+		     SOC_NRF54LC10A_CPUAPP || SOC_NRF54LM20A_CPUAPP || SOC_NRF54LM20B_CPUAPP
+
+config DESKTOP_RAM_PWRDN
+	bool "Power down unused SRAM on supported nRF54L application cores"
+	depends on DESKTOP_RAM_PWRDN_SOC
+	select RAM_POWER_DOWN_LIBRARY
+	help
+	  Gate off unused SRAM after the main module is ready.
+
+	  Uses RAM_POWER_DOWN_LIBRARY (complete 32 KiB sections on nRF54L only).
+	  Within chosen zephyr,sram, gates the unused tail from the linked image
+	  RAM end through the node end; RAM load builds may
+	  also gate cpuapp_sram_unused_ram_region and the tail of
+	  cpuapp_sram_mcuboot_ram_region above the linked RAM end. Savings
+	  require RAM layout alignment with section boundaries.
+
+	  Supported on nRF54L05/10/15, nRF54LC10, and nRF54LM20. nRF54LS05 is
+	  excluded until the library defines RAM banks for that device.
+
+if DESKTOP_RAM_PWRDN
+
+module = DESKTOP_RAM_PWRDN
+module-str = nRF Desktop RAM power down
+source "subsys/logging/Kconfig.template.log_config"
+
+endif

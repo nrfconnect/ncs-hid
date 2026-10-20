@@ -15,6 +15,7 @@ config DESKTOP_COMMON_MODULES
 	default y
 	imply DESKTOP_SETTINGS_LOADER
 	imply DESKTOP_POWER_MANAGER
+	imply DESKTOP_RAM_PWRDN if DESKTOP_RAM_PWRDN_SOC
 
 config DESKTOP_LTO_DEFAULTS
 	bool
@@ -35,6 +36,30 @@ config DESKTOP_MCUBOOT_RAM_LOAD_MCUBOOT_RAM_START_ADDR
 	  does not overlap with the RAM region of the MCUboot image. The validation process
 	  assumes a specific RAM layout in DTS - you can refer to the following file as an example:
 	  ./configuration/nrf54lm20dk_nrf54lm20a_cpuapp/memory_map_ram_load.dtsi
+
+config DESKTOP_MCUBOOT_RAM_LOAD_MCUBOOT_RAM_SIZE
+	hex
+	depends on MCUBOOT_BOOTLOADER_MODE_RAM_LOAD
+	depends on $(dt_nodelabel_exists,cpuapp_sram_mcuboot_ram_region)
+	default $(dt_nodelabel_reg_size_hex,cpuapp_sram_mcuboot_ram_region)
+	help
+	  Size of the MCUboot RAM region in bytes (from cpuapp_sram_mcuboot_ram_region).
+
+config DESKTOP_RAM_LOAD_UNUSED_RAM_START_ADDR
+	hex
+	depends on MCUBOOT_BOOTLOADER_MODE_RAM_LOAD
+	depends on $(dt_nodelabel_exists,cpuapp_sram_unused_ram_region)
+	default $(dt_nodelabel_reg_addr_hex,cpuapp_sram_unused_ram_region)
+	help
+	  Start address of cpuapp_sram_unused_ram_region (absolute).
+
+config DESKTOP_RAM_LOAD_UNUSED_RAM_SIZE
+	hex
+	depends on MCUBOOT_BOOTLOADER_MODE_RAM_LOAD
+	depends on $(dt_nodelabel_exists,cpuapp_sram_unused_ram_region)
+	default $(dt_nodelabel_reg_size_hex,cpuapp_sram_unused_ram_region)
+	help
+	  Size of cpuapp_sram_unused_ram_region in bytes.
 
 config APP_EVENT_MANAGER_MAX_EVENT_CNT
 	default 64

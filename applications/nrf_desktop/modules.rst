@@ -59,6 +59,7 @@ These are valid for events that have many listeners or sources, and are gathered
    doc/power_manager.rst
    doc/nrf_profiler_sync.rst
    doc/qos.rst
+   doc/ram_pwrdn.rst
    doc/selector.rst
    doc/smp.rst
    doc/settings_loader.rst
