@@ -22,6 +22,8 @@ target_sources_ifdef(CONFIG_DESKTOP_BLE_QOS_ENABLE app PRIVATE ble_qos.c)
 
 target_sources_ifdef(CONFIG_DESKTOP_CONFIG_CHANNEL_ENABLE app PRIVATE info.c)
 
+target_sources_ifdef(CONFIG_DESKTOP_RAM_PWRDN app PRIVATE ram_pwrdn.c)
+
 target_sources_ifdef(CONFIG_DESKTOP_FACTORY_RESET app PRIVATE factory_reset.c)
 
 target_sources_ifdef(CONFIG_DESKTOP_FAST_PAIR app PRIVATE fast_pair.c)
