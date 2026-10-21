@@ -4,6 +4,21 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
  */
 
+/*
+ * nRF54L Series SoCs start at 64 MHz and may switch to 128 MHz during init.
+ * Zephyr sets 128 MHz at boot by default (SoC-level devicetree).
+ * 64 MHz is enough for 1000 Hz HID reporting and lowers power vs 128 MHz.
+ */
+
+
+&itm {
+	swo-ref-frequency = <64000000>;
+};
+
+&hfpll {
+	clock-frequency = <64000000>;
+};
+
 /* Debug build without MCUboot. */
 &cpuapp_rram {
 	/delete-node/ partitions;

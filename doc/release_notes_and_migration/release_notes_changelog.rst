@@ -31,7 +31,12 @@ The following sections provide detailed lists of changes by component.
 Applications
 ============
 
-|no_changes_yet_note|
+nRF Desktop application
+=======================
+
+* Set the CPU clock frequency to 64 MHz on nRF54L Series nRF Desktop board configurations.
+  The setting is in each board's ``memory_map*.dtsi`` files, included from application and MCUboot overlays for a given build type; both images must use the same CPU clock.
+  Both images run the CPU HFPLL at 64 MHz (instead of the Zephyr default of 128 MHz for nRF54L family SoCs).
 
 Host tools
 ==========
