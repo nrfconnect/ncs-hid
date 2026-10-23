@@ -9,7 +9,7 @@ menu "Bluetooth LE configuration"
 config DESKTOP_BT
 	bool "Support for Bluetooth connectivity"
 	default y
-	imply DESKTOP_BLE_STATE
+	imply DESKTOP_BLE_STATE_ENABLE
 	imply DESKTOP_BLE_BOND_ENABLE
 	select BT
 	select BT_SETTINGS

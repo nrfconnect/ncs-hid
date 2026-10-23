@@ -49,7 +49,7 @@ HID SCI support
 ---------------
 
 The :option:`CONFIG_DESKTOP_HIDS_SCI_ENABLE` option selects :kconfig:option:`CONFIG_BT_HIDS_SCI` and the required Bluetooth LE Host and Controller features for support of shorter connection intervals.
-The option cannot be used together with :kconfig:option:`CONFIG_CAF_BLE_USE_LLPM`.
+The option cannot be used together with :option:`CONFIG_DESKTOP_BLE_USE_LLPM`.
 It depends on Bluetooth Controller support for shorter connection intervals (:kconfig:option:`CONFIG_BT_CTLR_SHORTER_CONNECTION_INTERVALS_SUPPORT`).
 The SoftDevice Link Layer (:kconfig:option:`CONFIG_BT_LL_SOFTDEVICE`) is an example of a Bluetooth LE Link Layer with SCI support.
 

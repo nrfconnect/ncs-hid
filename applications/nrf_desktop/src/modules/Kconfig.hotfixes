@@ -8,7 +8,7 @@ menu "Hotfix set"
 
 config DESKTOP_HFCLK_LOCK_ENABLE
 	bool "Keep HF clock enabled [DEPRECATED]"
-	depends on CAF_BLE_USE_LLPM
+	depends on DESKTOP_BLE_USE_LLPM
 	select DEPRECATED
 	help
 	  The HF clock needs to be enabled during data transmission over BLE.

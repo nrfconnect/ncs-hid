@@ -6,7 +6,7 @@
 
 config CAF_BLE_STATE_EXTENSION
 	bool "CAF BLE state extension module"
-	depends on CAF_BLE_STATE
+	depends on CAF_BLE_STATE_SUPPORTED
 	default y
 	help
 	  Register additional Bluetooth connection callbacks and submit CAF

@@ -13,7 +13,7 @@ The device description module defines the custom GATT Service that contains:
 * Hardware ID (HW ID) of the peripheral.
 
 To support the LLPM, the peripheral must use the SoftDevice Link Layer.
-This means that you must enable both the :kconfig:option:`CONFIG_BT_LL_SOFTDEVICE` and the :kconfig:option:`CONFIG_CAF_BLE_USE_LLPM` Kconfig options.
+This means that you must enable both the :kconfig:option:`CONFIG_BT_LL_SOFTDEVICE` and the :option:`CONFIG_DESKTOP_BLE_USE_LLPM` Kconfig options.
 
 .. note::
    HID Shorter Connection Intervals (SCI) support is not part of the device description service.

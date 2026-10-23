@@ -441,7 +441,7 @@ static void scan_init(void)
 		.timeout = 400,
 	};
 
-	if (IS_ENABLED(CONFIG_CAF_BLE_USE_LLPM) && (CONFIG_BT_MAX_CONN >= 2)) {
+	if (IS_ENABLED(CONFIG_DESKTOP_BLE_USE_LLPM) && (CONFIG_BT_MAX_CONN >= 2)) {
 		cp.interval_min = 8;
 		cp.interval_max = 8;
 	} else {

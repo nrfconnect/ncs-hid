@@ -6,6 +6,12 @@
 
 target_sources_ifdef(CONFIG_DESKTOP_BLE_ADV_CTRL_ENABLE app PRIVATE ble_adv_ctrl.c)
 
+target_sources_ifdef(CONFIG_DESKTOP_BLE_STATE_ENABLE app PRIVATE ble_state.c)
+
+target_sources_ifdef(CONFIG_DESKTOP_BLE_STATE_PM app PRIVATE
+  ${ZEPHYR_NRF_MODULE_DIR}/subsys/caf/modules/ble_state_pm.c
+)
+
 target_sources_ifdef(CONFIG_DESKTOP_BLE_BOND_ENABLE app PRIVATE ble_bond.c)
 
 target_sources_ifdef(CONFIG_DESKTOP_BLE_ENABLE_PASSKEY app PRIVATE ble_passkey.c)

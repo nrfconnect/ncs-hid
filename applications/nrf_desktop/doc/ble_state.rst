@@ -14,7 +14,7 @@ In nRF Desktop, the Bluetooth® LE state module is responsible for the following
 * Handling Zephyr connection callbacks (:c:struct:`bt_conn_cb`).
 * Propagating information about the connection state and parameters by using :ref:`nrf:app_event_manager` events.
 
-The |addon| extends the functionality of the :ref:`CAF Bluetooth LE state <nrf:caf_ble_state>` module through the :ref:`CAF BLE state extension module <caf_ble_state_extension>`.
+The module's functionality is additionally extended through the :ref:`CAF BLE state extension module <caf_ble_state_extension>`.
 The documentation page contains information about both application modules.
 
 Module events
@@ -34,10 +34,12 @@ Module events
 Configuration
 *************
 
-nRF Desktop uses the Bluetooth LE state module from :ref:`nrf:lib_caf` (CAF).
-The :option:`CONFIG_DESKTOP_BLE_STATE` Kconfig option selects the :kconfig:option:`CONFIG_CAF_BLE_STATE` option.
+nRF Desktop uses an application-specific implementation of the Bluetooth LE state module.
+Currently, the implementation is functionally identical to the :ref:`CAF Bluetooth LE state <nrf:caf_ble_state>` module, with the exception of the Kconfig naming.
 
-For more information about the |ble_state| implementation, see the :ref:`CAF Bluetooth LE state <nrf:caf_ble_state>` page.
+.. note::
+   The nRF Desktop documentation for this module will be ported in the future.
+   Until then, see the :ref:`CAF Bluetooth LE state <nrf:caf_ble_state>` page for implementation details.
 
 When Shorter Connection Intervals (SCI) are enabled, the |addon| also enables the :option:`CONFIG_CAF_BLE_STATE_EXTENSION` and :option:`CONFIG_CAF_BLE_SCI_CONN_RATE_EVENTS` options to provide the :c:struct:`ble_peer_sci_conn_rate_event` until it is available in the used |NCS| release.
 

@@ -7,13 +7,16 @@ CAF: Bluetooth LE state extension module
    :local:
    :depth: 2
 
-The Bluetooth® LE state extension module extends the :ref:`CAF Bluetooth LE state module <nrf:caf_ble_state>` with functionality that is not yet available in the used |NCS| release.
+The Bluetooth® LE state extension module extends the :ref:`nRF Desktop Bluetooth LE state <nrf_desktop_ble_state>` module.
+It is kept as a separate module for historical reasons.
+It used to extend the :ref:`CAF Bluetooth LE state module <nrf:caf_ble_state>` with functionality that was not yet available in the used |NCS| release.
+The module will be merged into the :ref:`nRF Desktop Bluetooth LE state <nrf_desktop_ble_state>` module and removed in the future.
 
 Configuration
 *************
 
 The module is enabled by the :option:`CONFIG_CAF_BLE_STATE_EXTENSION` Kconfig option.
-The option depends on :kconfig:option:`CONFIG_CAF_BLE_STATE` and is enabled by default if prerequisites are met.
+The option depends on :kconfig:option:`CONFIG_CAF_BLE_STATE_SUPPORTED` and is enabled by default if prerequisites are met.
 
 When Shorter Connection Intervals (SCI) is used, the :option:`CONFIG_CAF_BLE_SCI_CONN_RATE_EVENTS` option is also required.
 The option is enabled by default if prerequisites are met.
@@ -29,7 +32,7 @@ Implementation details
 
 The module is used by both Bluetooth Peripheral and Bluetooth Central devices.
 
-It extends the :ref:`CAF Bluetooth LE state module <nrf:caf_ble_state>` by adding additional :ref:`nrf:app_event_manager` events.
+It extends the :ref:`nRF Desktop Bluetooth LE state <nrf_desktop_ble_state>` with additional :ref:`nrf:app_event_manager` events.
 
 Connection parameter change
 ===========================

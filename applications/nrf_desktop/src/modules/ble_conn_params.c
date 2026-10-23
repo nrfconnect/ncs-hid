@@ -8,9 +8,9 @@
 #include <zephyr/bluetooth/hci.h>
 #include <bluetooth/gatt_dm.h>
 
-#ifdef CONFIG_CAF_BLE_USE_LLPM
+#ifdef CONFIG_DESKTOP_BLE_USE_LLPM
 #include <bluetooth/hci_vs_sdc.h>
-#endif /* CONFIG_CAF_BLE_USE_LLPM */
+#endif /* CONFIG_DESKTOP_BLE_USE_LLPM */
 
 #define MODULE ble_conn_params
 #include <caf/events/module_state_event.h>
@@ -25,7 +25,7 @@
 LOG_MODULE_REGISTER(MODULE, CONFIG_DESKTOP_BLE_CONN_PARAMS_LOG_LEVEL);
 
 #define CONN_INTERVAL_LLPM_US		1000   /* 1 ms */
-#if (CONFIG_CAF_BLE_USE_LLPM && (CONFIG_BT_MAX_CONN >= 2))
+#if (CONFIG_DESKTOP_BLE_USE_LLPM && (CONFIG_BT_MAX_CONN >= 2))
  #define CONN_INTERVAL_BLE_US		10000 /* 10 ms */
 #else
  #define CONN_INTERVAL_BLE_US		7500 /* 7.5 ms */
@@ -96,7 +96,7 @@ static int strip_llpm_encoding_to_us(uint32_t interval_us)
 
 static int set_llpm_conn_param(struct bt_conn *conn, uint16_t latency)
 {
-#ifdef CONFIG_CAF_BLE_USE_LLPM
+#ifdef CONFIG_DESKTOP_BLE_USE_LLPM
 	sdc_hci_cmd_vs_conn_update_t cmd_conn_update;
 	uint16_t conn_handle;
 
@@ -116,7 +116,7 @@ static int set_llpm_conn_param(struct bt_conn *conn, uint16_t latency)
 #else
 	__ASSERT_NO_MSG(false);
 	return -ENOTSUP;
-#endif /* CONFIG_CAF_BLE_USE_LLPM */
+#endif /* CONFIG_DESKTOP_BLE_USE_LLPM */
 }
 
 static int set_conn_params(struct connected_peer *peer)
@@ -129,7 +129,7 @@ static int set_conn_params(struct connected_peer *peer)
 		err = set_le_conn_param(peer->conn, CONN_INTERVAL_USB_SUSPEND,
 					CONN_LATENCY_USB_SUSPEND);
 	} else if (peer->use_llpm) {
-		__ASSERT_NO_MSG(IS_ENABLED(CONFIG_CAF_BLE_USE_LLPM));
+		__ASSERT_NO_MSG(IS_ENABLED(CONFIG_DESKTOP_BLE_USE_LLPM));
 
 		struct bt_conn_info info;
 
@@ -620,7 +620,7 @@ static void peer_discovered(struct bt_conn *conn, bool peer_llpm_support, bool p
 		 */
 		peer->use_sci = IS_ENABLED(CONFIG_DESKTOP_BLE_CONN_PARAMS_HID_SCI_ENABLE)
 				&& peer_sci_support;
-		peer->use_llpm = IS_ENABLED(CONFIG_CAF_BLE_USE_LLPM) && peer_llpm_support
+		peer->use_llpm = IS_ENABLED(CONFIG_DESKTOP_BLE_USE_LLPM) && peer_llpm_support
 				 && !peer->use_sci;
 		peer->discovered = true;
 		(void)k_work_reschedule(&conn_params_update, K_NO_WAIT);

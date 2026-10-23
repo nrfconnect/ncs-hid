@@ -95,7 +95,7 @@ The suggested values are:
 * ``750`` for configurations enabling HID SCI support (:option:`CONFIG_DESKTOP_HID_FORWARD_HID_SCI_ENABLE`).
   This is needed to achieve a connection interval of 750 µs.
 * ``3000`` for configurations enabling the LLPM (:kconfig:option:`CONFIG_BT_CTLR_SDC_LLPM`).
-  For these configurations, the :kconfig:option:`CONFIG_CAF_BLE_USE_LLPM` is also enabled by default.
+  For these configurations, the :option:`CONFIG_DESKTOP_BLE_USE_LLPM` is also enabled by default.
   The value of ``3000`` allows to avoid scheduling conflicts in the Bluetooth Link Layer.
   Such conflicts could lead to a drop in HID input report rate or a disconnection.
   If the nRF Desktop central supports LLPM and more than one simultaneous Bluetooth connection, it also uses 10 ms connection interval instead of 7.5 ms.
@@ -166,7 +166,7 @@ The configurations that enable Fast Pair are specified in the files with filenam
    Both the Fast Pair integration in the nRF Desktop and the Fast Pair support in the |NCS| for the HID use case are :ref:`experimental <nrf:software_maturity_fast_pair>`.
    See :ref:`nrf:ug_bt_fast_pair` for details.
 
-These configurations support multiple bonds for each Bluetooth local identity (:kconfig:option:`CONFIG_CAF_BLE_STATE_MAX_LOCAL_ID_BONDS` is set to ``3``) and erase advertising (:option:`CONFIG_DESKTOP_BLE_PEER_ERASE`), but Bluetooth peer selection (:option:`CONFIG_DESKTOP_BLE_PEER_SELECT`) is disabled.
+These configurations support multiple bonds for each Bluetooth local identity (:option:`CONFIG_DESKTOP_BLE_STATE_MAX_LOCAL_ID_BONDS` is set to ``3``) and erase advertising (:option:`CONFIG_DESKTOP_BLE_PEER_ERASE`), but Bluetooth peer selection (:option:`CONFIG_DESKTOP_BLE_PEER_SELECT`) is disabled.
 You can now pair with your other hosts without switching the peripheral back in pairing mode (without triggering the erase advertising).
 The nRF Desktop peripheral that integrates Fast Pair behaves as follows:
 
@@ -181,7 +181,7 @@ The nRF Desktop peripheral that integrates Fast Pair behaves as follows:
   * If the used Bluetooth local identity already has a bond, the device is no longer in the pairing mode and the Fast Pair not discoverable advertising is used.
     This allows to pair only with the Fast Pair Seekers linked to Google Accounts that are already associated with the nRF Desktop device.
     In this mode, the device rejects normal Bluetooth pairing by default (:option:`CONFIG_DESKTOP_FAST_PAIR_LIMIT_NORMAL_PAIRING` option is enabled).
-    The Fast Pair UI indication is hidden after the Provider reaches :kconfig:option:`CONFIG_CAF_BLE_STATE_MAX_LOCAL_ID_BONDS` bonded peers on the used local identity.
+    The Fast Pair UI indication is hidden after the Provider reaches :option:`CONFIG_DESKTOP_BLE_STATE_MAX_LOCAL_ID_BONDS` bonded peers on the used local identity.
   * The :ref:`nrf_desktop_factory_reset` is enabled by default if the :ref:`nrf_desktop_config_channel` is supported by the device.
     The factory reset operation removes both Fast Pair and Bluetooth non-volatile data.
     The factory reset operation is triggered using the configuration channel.

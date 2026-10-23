@@ -169,7 +169,7 @@ After the scan filter match, the following happens:
    At this point, the scanning can be restarted.
 
 .. important::
-   If the dongle supports Low Latency Packet Mode (:kconfig:option:`CONFIG_CAF_BLE_USE_LLPM`) and more than one Bluetooth connection (:kconfig:option:`CONFIG_BT_MAX_CONN`), a 10-ms connection interval is used instead of 7.5 ms.
+   If the dongle supports Low Latency Packet Mode (:option:`CONFIG_DESKTOP_BLE_USE_LLPM`) and more than one Bluetooth connection (:kconfig:option:`CONFIG_BT_MAX_CONN`), a 10-ms connection interval is used instead of 7.5 ms.
    This is done to avoid Bluetooth scheduling issues that may lead to HID input report rate drops and disconnections.
 
 .. note::

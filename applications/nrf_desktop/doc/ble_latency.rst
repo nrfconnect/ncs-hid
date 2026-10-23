@@ -42,7 +42,7 @@ With this option set, the module handles HID SCI mode change requests and adjust
 See the :ref:`nrf_desktop_hids` documentation for details about enabling HID SCI support on the peripheral.
 
 You can set the option :option:`CONFIG_DESKTOP_BLE_LOW_LATENCY_LOCK` to keep the connection latency low for the LLPM connections.
-The option requires :kconfig:option:`CONFIG_CAF_BLE_USE_LLPM`.
+The option requires :option:`CONFIG_DESKTOP_BLE_USE_LLPM`.
 This speeds up sending the first HID report after not sending a report for some connection intervals.
 Enabling this option increases the power consumption - the connection latency is kept low unless the device is in the low power mode.
 
