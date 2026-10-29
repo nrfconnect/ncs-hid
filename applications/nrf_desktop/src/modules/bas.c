@@ -20,6 +20,7 @@ LOG_MODULE_REGISTER(MODULE, CONFIG_DESKTOP_BAS_LOG_LEVEL);
 
 
 static bool active;
+static bool ble_active;
 static uint8_t battery = 100;
 
 static void blvl_ccc_cfg_changed(const struct bt_gatt_attr *attr,
@@ -55,7 +56,7 @@ static bool app_event_handler(const struct app_event_header *aeh)
 
 		battery = event->level;
 
-		if (active) {
+		if (active && ble_active) {
 			int err = bt_gatt_notify(NULL, &bas_svc.attrs[1],
 						 &battery, sizeof(battery));
 
@@ -72,12 +73,11 @@ static bool app_event_handler(const struct app_event_header *aeh)
 	if (is_module_state_event(aeh)) {
 		struct module_state_event *event = cast_module_state_event(aeh);
 
-		if (check_state(event, MODULE_ID(ble_state), MODULE_STATE_READY)) {
-			static bool initialized;
-
-			__ASSERT_NO_MSG(!initialized);
-			initialized = true;
-
+		if (check_state(event, MODULE_ID(ble_state), MODULE_STATE_SUSPENDED)) {
+			ble_active = false;
+			module_set_state(MODULE_STATE_SUSPENDED);
+		} else if (check_state(event, MODULE_ID(ble_state), MODULE_STATE_READY)) {
+			ble_active = true;
 			module_set_state(MODULE_STATE_READY);
 		}
 		return false;

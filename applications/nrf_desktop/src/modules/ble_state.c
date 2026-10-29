@@ -7,6 +7,7 @@
 #include <zephyr/types.h>
 #include <zephyr/sys/reboot.h>
 #include <zephyr/sys/byteorder.h>
+#include <zephyr/settings/settings.h>
 
 #include <zephyr/bluetooth/bluetooth.h>
 #include <zephyr/bluetooth/conn.h>
@@ -20,6 +21,7 @@
 
 #define MODULE ble_state
 #include <caf/events/module_state_event.h>
+#include <caf/events/module_suspend_event.h>
 
 #include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(MODULE, CONFIG_DESKTOP_BLE_STATE_LOG_LEVEL);
@@ -30,6 +32,20 @@ struct bond_find_data {
 	bool peer_bonded;
 	uint8_t bond_cnt;
 };
+
+enum state {
+	STATE_MODULE_OFF,
+	STATE_MODULE_OFF_SUSPENDED,
+	STATE_UNINITIALIZED_SUSPENDED,
+	STATE_INITIALIZING,
+	STATE_RESUMING,
+	STATE_SUSPENDED,
+	STATE_ACTIVE,
+	STATE_ERROR,
+};
+
+static enum state state = STATE_MODULE_OFF;
+static bool suspend_pending;
 
 static void bond_check_cb(const struct bt_bond_info *info, void *user_data)
 {
@@ -291,7 +307,109 @@ static void bt_ready(int err)
 	}
 #endif /* CONFIG_DESKTOP_BLE_USE_LLPM */
 
-	module_set_state(MODULE_STATE_READY);
+	/* Loading settings both before and after Bluetooth enable can cause unexpected behavior.
+	 * Do not load settings on first initialization, as they are already loaded by
+	 * the settings loader.
+	 */
+	if (state == STATE_RESUMING) {
+		/* Settings must be reloaded after Bluetooth is suspended. */
+		if (settings_load_subtree("bt")) {
+			LOG_ERR("Bluetooth settings load failed");
+			module_set_state(MODULE_STATE_ERROR);
+			state = STATE_ERROR;
+			return;
+		}
+	}
+
+	state = STATE_ACTIVE;
+
+	if (suspend_pending) {
+		suspend_pending = false;
+
+		struct module_suspend_req_event *event = new_module_suspend_req_event();
+
+		event->sink_module_id = MODULE_ID(ble_state);
+		event->src_module_id = MODULE_ID(ble_state);
+		APP_EVENT_SUBMIT(event);
+	} else {
+		module_set_state(MODULE_STATE_READY);
+	}
+}
+
+static bool handle_module_suspend_req_event(const struct module_suspend_req_event *event)
+{
+	if (event->sink_module_id != MODULE_ID(ble_state)) {
+		/* Not us. */
+		return false;
+	}
+
+	switch (state) {
+	case STATE_MODULE_OFF:
+		state = STATE_MODULE_OFF_SUSPENDED;
+		break;
+	case STATE_INITIALIZING:
+	case STATE_RESUMING:
+		suspend_pending = true;
+		break;
+	case STATE_ACTIVE:
+		int err = bt_disable();
+
+		if (err) {
+			LOG_ERR("bt_disable failed (err: %d)", err);
+			state = STATE_ERROR;
+			module_set_state(MODULE_STATE_ERROR);
+		} else {
+			state = STATE_SUSPENDED;
+			module_set_state(MODULE_STATE_SUSPENDED);
+		}
+		break;
+	default:
+		break;
+	}
+
+	return false;
+}
+
+static bool handle_module_resume_req_event(const struct module_resume_req_event *event)
+{
+	if (event->sink_module_id != MODULE_ID(ble_state)) {
+		/* Not us. */
+		return false;
+	}
+
+	int err = 0;
+
+	switch (state) {
+	case STATE_MODULE_OFF_SUSPENDED:
+		state = STATE_MODULE_OFF;
+		break;
+	case STATE_UNINITIALIZED_SUSPENDED:
+		err = bt_enable(bt_ready);
+		state = STATE_INITIALIZING;
+		break;
+	case STATE_INITIALIZING:
+	case STATE_RESUMING:
+		suspend_pending = false;
+		break;
+	case STATE_SUSPENDED:
+		err = bt_enable(bt_ready);
+		state = STATE_RESUMING;
+		break;
+	case STATE_ACTIVE:
+		break;
+	case STATE_ERROR:
+		break;
+	default:
+		break;
+	}
+
+	if (err) {
+		LOG_ERR("bt_enable failed (err: %d)", err);
+		module_set_state(MODULE_STATE_ERROR);
+		state = STATE_ERROR;
+	}
+
+	return false;
 }
 
 static int ble_state_init(void)
@@ -305,6 +423,14 @@ static int ble_state_init(void)
 	};
 	bt_conn_cb_register(&conn_callbacks);
 
+	if (state == STATE_MODULE_OFF_SUSPENDED) {
+		/* bt_enable was never called, so no need to disable Bluetooth */
+		state = STATE_UNINITIALIZED_SUSPENDED;
+		module_set_state(MODULE_STATE_SUSPENDED);
+		return 0;
+	}
+
+	state = STATE_INITIALIZING;
 	return bt_enable(bt_ready);
 }
 
@@ -315,11 +441,9 @@ static bool app_event_handler(const struct app_event_header *aeh)
 			cast_module_state_event(aeh);
 
 		if (check_state(event, MODULE_ID(main), MODULE_STATE_READY)) {
-			static bool initialized;
 
-			__ASSERT_NO_MSG(!initialized);
-			initialized = true;
-
+			__ASSERT_NO_MSG(state == STATE_MODULE_OFF
+					|| state == STATE_MODULE_OFF_SUSPENDED);
 			if (ble_state_init()) {
 				LOG_ERR("Cannot initialize");
 				module_set_state(MODULE_STATE_ERROR);
@@ -347,11 +471,26 @@ static bool app_event_handler(const struct app_event_header *aeh)
 		return false;
 	}
 
+	if (IS_ENABLED(CONFIG_DESKTOP_BLE_STATE_MODULE_SUSPEND_EVENTS) &&
+	    is_module_suspend_req_event(aeh)) {
+		return handle_module_suspend_req_event(cast_module_suspend_req_event(aeh));
+	}
+
+	if (IS_ENABLED(CONFIG_DESKTOP_BLE_STATE_MODULE_SUSPEND_EVENTS) &&
+	    is_module_resume_req_event(aeh)) {
+		return handle_module_resume_req_event(cast_module_resume_req_event(aeh));
+	}
+
 	/* If event is unhandled, unsubscribe. */
 	__ASSERT_NO_MSG(false);
 
 	return false;
 }
+
 APP_EVENT_LISTENER(MODULE, app_event_handler);
 APP_EVENT_SUBSCRIBE(MODULE, module_state_event);
 APP_EVENT_SUBSCRIBE_FINAL(MODULE, ble_peer_event);
+#if CONFIG_DESKTOP_BLE_STATE_MODULE_SUSPEND_EVENTS
+APP_EVENT_SUBSCRIBE(MODULE, module_suspend_req_event);
+APP_EVENT_SUBSCRIBE(MODULE, module_resume_req_event);
+#endif /* CONFIG_DESKTOP_BLE_STATE_MODULE_SUSPEND_EVENTS */
