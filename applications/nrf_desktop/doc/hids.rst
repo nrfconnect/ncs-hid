@@ -65,6 +65,14 @@ The default HID SCI mode transport parameters for nRF Desktop peripherals are de
    At the same time, the current consumption in Bluetooth LE connected idle state increases - for nRF54L15DK in the release configuration from around 250 µA to around 1 mA.
    You can choose other maximum peripheral latency values to balance the first-packet latency and power consumption for your application.
 
+.. note::
+   The default maximum subrate factor for the FAST mode is ``4``.
+   If a lower overall latency is required (for example, when measuring click latency), set :kconfig:option:`CONFIG_BT_HIDS_SCI_FAST_SUBRATE_MAX` to ``1``.
+   This prevents the link from using a subrate factor greater than ``1``, so connection events are not skipped because of subrating.
+   You must also set :kconfig:option:`CONFIG_BT_HIDS_SCI_FAST_CONTINUATION_NUM` to ``0`` (otherwise the build will fail).
+   Lower subrate limits improve responsiveness at the cost of higher power consumption.
+   You can choose other maximum subrate factor values to balance latency and power consumption for your application.
+
 Mode change requests received through the HID control point characteristic are handled by the :ref:`nrf_desktop_ble_latency`.
 See the documentation page for implementation details.
 
