@@ -24,8 +24,9 @@ Implementation details
 **********************
 
 nRF Desktop uses a buttons module from :ref:`nrf:lib_caf` (CAF).
-Currently, all of the configurations use the standard :ref:`CAF buttons module <nrf:caf_buttons>` from the |NCS|.
-To ensure lower latency, you can enable the :ref:`CAF buttons ISR module <caf_buttons_isr>` (:option:`CONFIG_CAF_BUTTONS_ISR`).
+Most configurations use the standard :ref:`CAF buttons module <nrf:caf_buttons>` from the |NCS|.
+The HID SCI peripheral build types (``hid_sci``, ``release_hid_sci``, ``hid_sci_keyboard``, and ``release_hid_sci_keyboard``) use the :ref:`CAF buttons ISR module <caf_buttons_isr>` (:option:`CONFIG_CAF_BUTTONS_ISR`).
+For other configurations, you can enable the CAF buttons ISR module to ensure lower overall click latency.
 See the linked documentation pages for implementation details.
 
 Key ID

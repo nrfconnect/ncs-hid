@@ -48,6 +48,7 @@ Sample mouse or keyboard (``nrf54l15dk/nrf54l05/cpuapp``)
         Bluetooth LE is configured to use Nordic Semiconductor's SoftDevice Link Layer.
         Most of the configurations use the Low Latency Packet Mode (LLPM).
         Only the ``hid_sci``, ``release_hid_sci``, ``hid_sci_keyboard``, and ``release_hid_sci_keyboard`` configurations use HID SCI (Shorter Connection Intervals) and disable LLPM.
+        These configurations use the :ref:`CAF buttons ISR module <caf_buttons_isr>`.
       * The preconfigured ``debug`` configurations do not use the bootloader due to memory size limits.
         In the ``debug`` configurations, logs are provided through the UART.
         For detailed information on working with the nRF54L15 DK, see the :ref:`nrf:ug_nrf54l` documentation.
@@ -70,6 +71,7 @@ Sample mouse or keyboard (``nrf54l15dk/nrf54l10/cpuapp``)
         Bluetooth LE is configured to use Nordic Semiconductor's SoftDevice Link Layer.
         Most of the configurations use the Low Latency Packet Mode (LLPM).
         Only the ``hid_sci``, ``release_hid_sci``, ``hid_sci_keyboard``, and ``release_hid_sci_keyboard`` configurations use HID SCI (Shorter Connection Intervals) and disable LLPM.
+        These configurations use the :ref:`CAF buttons ISR module <caf_buttons_isr>`.
       * In ``debug`` configurations, logs are provided through the UART.
         For detailed information on working with the nRF54L15 DK, see the :ref:`nrf:ug_nrf54l` documentation.
       * The configurations use the MCUboot bootloader built in the direct-xip mode (``MCUBOOT+XIP``) and support firmware updates using the :ref:`nrf_desktop_dfu`.
@@ -92,6 +94,7 @@ Sample mouse or keyboard (``nrf54l15dk/nrf54l15/cpuapp``)
         Bluetooth LE is configured to use Nordic Semiconductor's SoftDevice Link Layer.
         Most of the configurations use the Low Latency Packet Mode (LLPM).
         Only the ``hid_sci``, ``release_hid_sci``, ``hid_sci_keyboard``, and ``release_hid_sci_keyboard`` configurations use HID SCI (Shorter Connection Intervals) and disable LLPM.
+        These configurations use the :ref:`CAF buttons ISR module <caf_buttons_isr>`.
       * In ``debug`` configurations, logs are provided through the UART.
         For detailed information on working with the nRF54L15 DK, see the :ref:`nrf:ug_nrf54l` documentation.
       * The configurations use the MCUboot bootloader built in the direct-xip mode (``MCUBOOT+XIP``) and support firmware updates using the :ref:`nrf_desktop_dfu`.
@@ -110,6 +113,7 @@ Sample mouse, LLPM dongle, or HID SCI dongle (``nrf54lm20dk/nrf54lm20a/cpuapp``,
         Bluetooth LE is configured to use Nordic Semiconductor's SoftDevice Link Layer.
         Most of the mouse configurations use the Low Latency Packet Mode (LLPM).
         The ``hid_sci`` and ``release_hid_sci`` configurations use HID SCI (Shorter Connection Intervals) and disable LLPM.
+        The HID SCI configurations use the :ref:`CAF buttons ISR module <caf_buttons_isr>`.
         USB High-Speed is configured to use the USB next stack (:kconfig:option:`CONFIG_USB_DEVICE_STACK_NEXT`).
         The :option:`CONFIG_DESKTOP_BLE_ADV_CTRL_ENABLE` and :option:`CONFIG_DESKTOP_BLE_ADV_CTRL_SUSPEND_ON_USB` Kconfig options are enabled in mouse configurations to improve the HID report rate over USB.
       * In ``dongle`` and ``release_dongle`` configurations, the application is configured to act as a dongle that forwards data from both mouse and keyboard.
@@ -142,6 +146,7 @@ Sample mouse or keyboard (``nrf54ls05dk/nrf54ls05a/cpuapp``, ``nrf54ls05dk/nrf54
         Bluetooth LE is configured to use Nordic Semiconductor's SoftDevice Link Layer.
         Most of the configurations use the Low Latency Packet Mode (LLPM).
         Only the ``hid_sci``, ``release_hid_sci``, ``hid_sci_keyboard``, and ``release_hid_sci_keyboard`` configurations use HID SCI (Shorter Connection Intervals) and disable LLPM.
+        These configurations use the :ref:`CAF buttons ISR module <caf_buttons_isr>`.
       * The nRF54LS05 SoC does not have hardware cryptography acceleration or Key Management Unit (KMU).
         Software-based cryptography is used instead.
       * The ``debug`` configurations do not use the bootloader due to memory size limits (508 KB RRAM).
