@@ -47,6 +47,8 @@ This speeds up sending the first HID report after not sending a report for some 
 Enabling this option increases the power consumption - the connection latency is kept low unless the device is in the low power mode.
 
 For HID SCI connections, you can achieve a similar result to using the :option:`CONFIG_DESKTOP_BLE_LOW_LATENCY_LOCK` option by setting :kconfig:option:`CONFIG_BT_HIDS_SCI_FAST_MAX_LATENCY` to ``0``.
+You can further reduce the latency by setting :kconfig:option:`CONFIG_BT_HIDS_SCI_FAST_SUBRATE_MAX` to ``1``.
+When the maximum subrate factor is ``1``, you must also set :kconfig:option:`CONFIG_BT_HIDS_SCI_FAST_CONTINUATION_NUM` to ``0``, because otherwise the build fails.
 
 You can use the :option:`CONFIG_DESKTOP_BLE_LATENCY_PM_EVENTS` Kconfig option to enable or disable handling of the power management events, such as :c:struct:`power_down_event` and :c:struct:`wake_up_event`.
 The option depends on the :kconfig:option:`CONFIG_CAF_PM_EVENTS` Kconfig option.
