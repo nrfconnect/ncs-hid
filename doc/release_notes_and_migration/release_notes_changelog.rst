@@ -59,3 +59,5 @@ Common Application Framework (CAF) extensions
 
 * Added the :ref:`caf_buttons_isr` module (:option:`CONFIG_CAF_BUTTONS_ISR`), an alternative to :ref:`nrf:caf_buttons` that emits a :c:struct:`button_event` with minimal latency using GPIO interrupts.
   The module supports directly connected buttons, optional power management integration, and an optional dedicated workqueue for debouncing (:option:`CONFIG_CAF_BUTTONS_WQ`).
+* Added the :option:`CONFIG_CAF_BUTTONS_NRF54LS05_SPURIOUS_PRESSES_WORKAROUND` Kconfig option to the :ref:`caf_buttons_isr` module.
+  The option is available on nRF54LS05 SoCs and mitigates spurious button presses caused by GPIOTE PORT callbacks on shared GPIO ports (``NCSDK-41091``).

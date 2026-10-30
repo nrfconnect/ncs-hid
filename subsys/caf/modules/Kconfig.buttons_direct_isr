@@ -48,6 +48,16 @@ config CAF_BUTTONS_POLARITY_INVERSED
 	  When this option is enabled, button is pressed when the GPIO state
 	  is low.
 
+config CAF_BUTTONS_NRF54LS05_SPURIOUS_PRESSES_WORKAROUND
+	bool "Filter spurious GPIOTE PORT callbacks (nRF54LS05)"
+	depends on (SOC_NRF54LS05A || SOC_NRF54LS05B)
+	help
+	  Workaround for a known nRF54LS05 issue (NCSDK-41091): a GPIOTE PORT
+	  interrupt can invoke the GPIO callback for multiple pins on the same
+	  port when only one button is pressed.
+	  If enabled, the module reads each pin in the ISR and ignores
+	  callbacks that do not match the expected pressed or released level.
+
 config CAF_BUTTONS_WQ
 	bool "Use dedicated workqueue for button debouncing works"
 	help

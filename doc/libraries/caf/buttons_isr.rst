@@ -79,6 +79,10 @@ The following Kconfig options are available for this module:
 * :option:`CONFIG_CAF_BUTTONS_WQ_PRIO` - Priority of the dedicated workqueue (if :option:`CONFIG_CAF_BUTTONS_WQ` is enabled).
   The default value is ``-1``.
   Only cooperative priorities are supported.
+* :option:`CONFIG_CAF_BUTTONS_NRF54LS05_SPURIOUS_PRESSES_WORKAROUND` - Filter spurious GPIOTE PORT callbacks on nRF54LS05.
+  Workaround for ``NCSDK-41091``: when one button on a GPIO port is pressed, the ISR can still be invoked for other pins on the same port.
+  If enabled, the module reads each pin in the ISR and ignores callbacks that do not match the expected pressed or released level.
+  This GPIO read on the interrupt path can slightly increase click latency compared to trusting the PORT callback alone.
 
 .. _caf_buttons_isr_pm_configuration:
 

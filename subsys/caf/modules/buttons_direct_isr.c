@@ -464,6 +464,18 @@ static void reset_button_pin_hw(size_t row_idx)
 }
 #endif
 
+static __maybe_unused bool is_pin_pressed(size_t row_idx)
+{
+	uint32_t abs_pin = NRF_GPIO_PIN_MAP(row[row_idx].port, row[row_idx].pin);
+	int val = nrf_gpio_pin_read(abs_pin);
+
+	if (IS_ENABLED(CONFIG_CAF_BUTTONS_POLARITY_INVERSED)) {
+		val = !val;
+	}
+
+	return val != 0;
+}
+
 static int activate_listeners(void)
 {
 	int err = 0;
@@ -515,6 +527,10 @@ static void button_isr_in_active_state_handle(size_t dev_idx, uint32_t pins)
 		}
 		switch (atomic_get(&buttons[idx].state)) {
 		case BTN_STATE_LISTEN_PRESS:
+			if (IS_ENABLED(CONFIG_CAF_BUTTONS_NRF54LS05_SPURIOUS_PRESSES_WORKAROUND) &&
+			    !is_pin_pressed(idx)) {
+				break;
+			}
 			if (arm_press_confirmed_listener(idx)) {
 				go_to_error_state_from_isr();
 			} else {
@@ -522,6 +538,10 @@ static void button_isr_in_active_state_handle(size_t dev_idx, uint32_t pins)
 			}
 			break;
 		case BTN_STATE_LISTEN_RELEASE:
+			if (IS_ENABLED(CONFIG_CAF_BUTTONS_NRF54LS05_SPURIOUS_PRESSES_WORKAROUND) &&
+			    is_pin_pressed(idx)) {
+				break;
+			}
 			if (arm_release_confirmed_listener(idx)) {
 				go_to_error_state_from_isr();
 			} else {
