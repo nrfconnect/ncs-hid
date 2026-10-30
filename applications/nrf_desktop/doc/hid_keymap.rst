@@ -23,6 +23,9 @@ For that purpose, you must create a configuration file with a ``hid_keymap`` arr
 Every element of the array contains mapping from a single application-specific key ID to HID report ID and HID usage ID pair.
 The location of the file is specified using the :option:`CONFIG_DESKTOP_HID_KEYMAP_DEF_PATH` Kconfig option.
 
+In the available nRF Desktop DK mouse configurations, all buttons simulate motion, so the default keymap file (:file:`hid_keymap_def.h`) intentionally leaves the ``hid_keymap`` array empty.
+The ``ncs_hid.applications.nrf_desktop.zrelease_hid_sci_mouse_click`` test case defined in the :file:`sample.yaml` file uses :file:`hid_keymap_def_mouse_click.h`, which maps buttons to mouse clicks instead of motion.
+
 Make sure that :c:struct:`hid_keymap` entries defined in the ``hid_keymap`` array are sorted ascending by the key ID (:c:member:`hid_keymap.key_id`).
 This is required, because the utility uses binary search (:c:func:`bsearch`) to speed up searching through the array.
 
