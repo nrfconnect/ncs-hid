@@ -15,7 +15,7 @@
 #include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(MODULE, CONFIG_CAF_BLE_STATE_EXTENSION_LOG_LEVEL);
 
-#if CONFIG_CAF_BLE_SCI_CONN_RATE_EVENTS
+#ifdef CONFIG_CAF_BLE_SCI_CONN_RATE_EVENTS
 
 static void conn_rate_changed(struct bt_conn *conn, uint8_t status,
 			      const struct bt_conn_le_conn_rate_changed *params)
@@ -41,7 +41,7 @@ static int register_conn_cbs(void)
 {
 	static struct bt_conn_cb conn_callbacks;
 
-#if CONFIG_CAF_BLE_SCI_CONN_RATE_EVENTS
+#ifdef CONFIG_CAF_BLE_SCI_CONN_RATE_EVENTS
 	conn_callbacks.conn_rate_changed = conn_rate_changed;
 #endif
 

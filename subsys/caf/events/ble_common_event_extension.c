@@ -8,7 +8,7 @@
 
 #include <caf/events/ble_common_event_extension.h>
 
-#if CONFIG_CAF_BLE_SCI_CONN_RATE_EVENTS
+#ifdef CONFIG_CAF_BLE_SCI_CONN_RATE_EVENTS
 
 #include <zephyr/bluetooth/hci.h>
 
