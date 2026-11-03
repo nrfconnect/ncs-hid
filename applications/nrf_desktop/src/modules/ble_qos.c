@@ -768,6 +768,7 @@ static void ble_qos_thread_fn(void)
 		chmap = chmap_filter_suggested_map_get(chmap_inst);
 
 		struct ble_qos_event *event = new_ble_qos_event();
+
 		BUILD_ASSERT(sizeof(event->chmap) == CHMAP_BLE_BITMASK_SIZE, "");
 		memcpy(event->chmap, chmap, CHMAP_BLE_BITMASK_SIZE);
 		APP_EVENT_SUBMIT(event);

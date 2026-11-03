@@ -111,6 +111,7 @@ static void set_init_conn_params(void)
 	};
 
 	int err = bt_conn_le_param_update(active_conn, &param);
+
 	last_requested_latency_is_low = true;
 
 	if (!err) {

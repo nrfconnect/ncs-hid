@@ -41,11 +41,13 @@ static ssize_t read_chmap(struct bt_conn *conn, const struct bt_gatt_attr *attr,
 			  void *buf, uint16_t len, uint16_t offset)
 {
 	const void *value = attr->user_data;
+
 	__ASSERT_NO_MSG(value == &chmap);
 
 	uint8_t chmap_local[sizeof(chmap)];
 
 	k_spinlock_key_t key = k_spin_lock(&lock);
+
 	memcpy(chmap_local, chmap, sizeof(chmap));
 	k_spin_unlock(&lock, key);
 
@@ -71,6 +73,7 @@ static bool app_event_handler(const struct app_event_header *aeh)
 		BUILD_ASSERT(sizeof(chmap) == sizeof(event->chmap));
 
 		k_spinlock_key_t key = k_spin_lock(&lock);
+
 		memcpy(chmap, event->chmap, sizeof(chmap));
 		k_spin_unlock(&lock, key);
 

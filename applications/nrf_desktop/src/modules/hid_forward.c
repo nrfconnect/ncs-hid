@@ -256,6 +256,7 @@ static void forward_hid_report(struct hids_peripheral *per, uint8_t report_id,
 	if (suspended) {
 		/* If suspended, report should wake up the board. */
 		struct wake_up_event *event = new_wake_up_event();
+
 		APP_EVENT_SUBMIT(event);
 	}
 }
@@ -269,6 +270,7 @@ static uint8_t hogp_read(struct bt_hogp *hids_c,
 	__ASSERT_NO_MSG(!k_is_preempt_thread());
 
 	struct hids_peripheral *per = CONTAINER_OF(hids_c, struct hids_peripheral, hogp);
+
 	__ASSERT_NO_MSG(per);
 
 	if (!data) {
@@ -371,6 +373,7 @@ static bool handle_ble_discovery_complete_event(struct ble_discovery_complete_ev
 	__ASSERT_NO_MSG(sub_id < ARRAY_SIZE(subscribers));
 
 	size_t per_id;
+
 	for (per_id = 0; per_id < ARRAY_SIZE(peripherals); per_id++) {
 		if (!is_peripheral_connected(&peripherals[per_id])) {
 			break;
@@ -381,7 +384,8 @@ static bool handle_ble_discovery_complete_event(struct ble_discovery_complete_ev
 	struct hids_peripheral *per = &peripherals[per_id];
 
 	/* Handles can be assigned now as we are in cooperative thread
-	 * and won't be preempted. */
+	 * and won't be preempted.
+	 */
 	__ASSERT_NO_MSG(!k_is_preempt_thread());
 
 	int err = bt_hogp_handles_assign(event->dm, &per->hogp);

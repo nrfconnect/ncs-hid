@@ -110,6 +110,7 @@ static bool set_option(enum motion_sensor_option option, uint32_t value)
 {
 	if (motion_sensor_option_attr[option] != -ENOTSUP) {
 		k_spinlock_key_t key = k_spin_lock(&state.lock);
+
 		state.option[option] = value;
 		WRITE_BIT(state.option_mask, option, true);
 		k_spin_unlock(&state.lock, key);
@@ -365,6 +366,7 @@ static void fetch_config(const uint8_t opt_id, uint8_t *data, size_t *size)
 
 		if (option < MOTION_SENSOR_OPTION_COUNT) {
 			k_spinlock_key_t key = k_spin_lock(&state.lock);
+
 			sys_put_le32(state.option[option], data);
 			k_spin_unlock(&state.lock, key);
 			*size = sizeof(state.option[option]);
@@ -423,6 +425,7 @@ static void write_config(void)
 	BUILD_ASSERT(sizeof(option) == sizeof(state.option), "");
 
 	k_spinlock_key_t key = k_spin_lock(&state.lock);
+
 	mask = state.option_mask;
 	memcpy(option, state.option, sizeof(option));
 	state.option_mask = 0;
@@ -476,6 +479,7 @@ static void motion_thread_fn(void)
 		k_sem_take(&sem, K_FOREVER);
 
 		k_spinlock_key_t key = k_spin_lock(&state.lock);
+
 		send_event = (state.state == STATE_FETCHING) && state.sample;
 		state.sample = false;
 		option_bm = state.option_mask;
@@ -572,6 +576,7 @@ static bool app_event_handler(const struct app_event_header *aeh)
 		if ((event->report_id == REPORT_ID_MOUSE) ||
 		    (event->report_id == REPORT_ID_BOOT_MOUSE)) {
 			k_spinlock_key_t key = k_spin_lock(&state.lock);
+
 			if (state.state == STATE_FETCHING) {
 				state.sample = true;
 				k_sem_give(&sem);
@@ -601,6 +606,7 @@ static bool app_event_handler(const struct app_event_header *aeh)
 			set_sampling_time_in_sleep3(is_connected);
 
 			k_spinlock_key_t key = k_spin_lock(&state.lock);
+
 			switch (state.state) {
 			case STATE_DISCONNECTED:
 				if (is_connected) {
@@ -664,6 +670,7 @@ static bool app_event_handler(const struct app_event_header *aeh)
 	if (IS_ENABLED(CONFIG_DESKTOP_MOTION_PM_EVENTS) &&
 	    is_wake_up_event(aeh)) {
 		k_spinlock_key_t key = k_spin_lock(&state.lock);
+
 		if ((state.state == STATE_SUSPENDED) ||
 		    (state.state == STATE_SUSPENDED_DISCONNECTED)) {
 			disable_trigger();
