@@ -28,7 +28,7 @@ LOG_MODULE_REGISTER(MODULE, CONFIG_DESKTOP_BATTERY_MEAS_LOG_LEVEL);
 #define ADC_NODE		DT_NODELABEL(adc)
 #define ADC_RESOLUTION		12
 #define ADC_OVERSAMPLING	4 /* 2^ADC_OVERSAMPLING samples are averaged */
-#define ADC_MAX 		4096
+#define ADC_MAX			4096
 #define ADC_GAIN		BATTERY_MEAS_ADC_GAIN
 #define ADC_REFERENCE		ADC_REF_INTERNAL
 #define ADC_REF_INTERNAL_MV	600UL
@@ -41,13 +41,13 @@ LOG_MODULE_REGISTER(MODULE, CONFIG_DESKTOP_BATTERY_MEAS_LOG_LEVEL);
 #define BATTERY_WORK_INTERVAL	(CONFIG_DESKTOP_BATTERY_MEAS_POLL_INTERVAL_MS / 2)
 
 #if IS_ENABLED(CONFIG_DESKTOP_BATTERY_MEAS_HAS_VOLTAGE_DIVIDER)
-#define BATTERY_VOLTAGE(sample)	(sample * BATTERY_MEAS_VOLTAGE_GAIN	\
-		* ADC_REF_INTERNAL_MV					\
-		* (CONFIG_DESKTOP_BATTERY_MEAS_VOLTAGE_DIVIDER_UPPER	\
-		+ CONFIG_DESKTOP_BATTERY_MEAS_VOLTAGE_DIVIDER_LOWER)	\
+#define BATTERY_VOLTAGE(sample)	(sample * BATTERY_MEAS_VOLTAGE_GAIN			\
+		* ADC_REF_INTERNAL_MV							\
+		* (CONFIG_DESKTOP_BATTERY_MEAS_VOLTAGE_DIVIDER_UPPER			\
+		+ CONFIG_DESKTOP_BATTERY_MEAS_VOLTAGE_DIVIDER_LOWER)			\
 		/ CONFIG_DESKTOP_BATTERY_MEAS_VOLTAGE_DIVIDER_LOWER / ADC_MAX)
 #else
-#define BATTERY_VOLTAGE(sample) (sample * BATTERY_MEAS_VOLTAGE_GAIN	\
+#define BATTERY_VOLTAGE(sample) (sample * BATTERY_MEAS_VOLTAGE_GAIN			\
 				 * ADC_REF_INTERNAL_MV / ADC_MAX)
 #endif
 
@@ -84,6 +84,7 @@ static int init_adc(void)
 #endif
 	};
 	int err = adc_channel_setup(adc_dev, &channel_cfg);
+
 	if (err) {
 		LOG_ERR("Setting up the ADC channel failed");
 		return err;
@@ -106,8 +107,8 @@ static int battery_monitor_start(void)
 					   CONFIG_DESKTOP_BATTERY_MEAS_ENABLE_PIN,
 					   1);
 		if (err) {
-			 LOG_ERR("Cannot enable battery monitor circuit");
-			 return err;
+			LOG_ERR("Cannot enable battery monitor circuit");
+			return err;
 		}
 	}
 
@@ -159,6 +160,7 @@ static void battery_lvl_process(void)
 	}
 
 	struct battery_level_event *event = new_battery_level_event();
+
 	event->level = level;
 
 	APP_EVENT_SUBMIT(event);

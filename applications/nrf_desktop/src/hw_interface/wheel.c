@@ -26,7 +26,7 @@
 LOG_MODULE_REGISTER(MODULE, CONFIG_DESKTOP_WHEEL_LOG_LEVEL);
 
 #define PINS_PER_GPIO_PORT	32
-#define SENSOR_IDLE_TIMEOUT \
+#define SENSOR_IDLE_TIMEOUT								\
 	(CONFIG_DESKTOP_WHEEL_SENSOR_IDLE_TIMEOUT * MSEC_PER_SEC) /* ms */
 
 
@@ -45,7 +45,7 @@ enum state {
   #error DT node for QDEC must be specified.
 #endif
 
-#define QDEC_PIN_INIT(node_id, prop, idx) \
+#define QDEC_PIN_INIT(node_id, prop, idx)						\
 	NRF_GET_PIN(DT_PROP_BY_IDX(node_id, prop, idx)),
 
 /* obtan qdec pins from default state */
@@ -228,6 +228,7 @@ static int setup_wakeup(void)
 	gpio_pin_t pin = map_gpio_pin(enable_pin);
 
 	int err = gpio_pin_configure(port, pin, GPIO_OUTPUT);
+
 	if (err) {
 		LOG_ERR("Cannot configure enable pin");
 		return err;

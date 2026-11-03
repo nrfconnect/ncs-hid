@@ -273,6 +273,7 @@ static void report_issued(const void *subscriber_id, uint8_t report_id, bool err
 	}
 
 	bool subscriber_unblocked = (subscriber->report_cnt == subscriber->report_max);
+
 	subscriber->report_cnt--;
 
 	struct report_state *rs = get_report_state(subscriber, report_id);

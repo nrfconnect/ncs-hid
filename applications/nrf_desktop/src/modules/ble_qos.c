@@ -33,7 +33,7 @@ LOG_MODULE_REGISTER(MODULE, CONFIG_DESKTOP_BLE_QOS_LOG_LEVEL);
 
 #if CONFIG_DESKTOP_BLE_QOS_STATS_PRINTOUT_ENABLE
 # if DT_PROP(DT_NODELABEL(usbd), num_in_endpoints) < 4
-# error Too few USB IN Endpoints enabled. \
+# error Too few USB IN Endpoints enabled.						\
 	Modify appropriate dts.overlay to increase num-in-endpoints to 4 or more
 # endif
 #endif
@@ -43,8 +43,8 @@ LOG_MODULE_REGISTER(MODULE, CONFIG_DESKTOP_BLE_QOS_LOG_LEVEL);
 #endif /* ROUNDED_DIV */
 
 #if CONFIG_DESKTOP_BLE_QOS_STATS_PRINTOUT_ENABLE
-#define THREAD_STACK_SIZE		     \
-	(CONFIG_DESKTOP_BLE_QOS_STACK_SIZE + \
+#define THREAD_STACK_SIZE								\
+	(CONFIG_DESKTOP_BLE_QOS_STACK_SIZE +						\
 	 CONFIG_DESKTOP_BLE_QOS_STATS_PRINT_STACK_SIZE)
 #else
 #define THREAD_STACK_SIZE CONFIG_DESKTOP_BLE_QOS_STACK_SIZE
@@ -768,6 +768,7 @@ static void ble_qos_thread_fn(void)
 		chmap = chmap_filter_suggested_map_get(chmap_inst);
 
 		struct ble_qos_event *event = new_ble_qos_event();
+
 		BUILD_ASSERT(sizeof(event->chmap) == CHMAP_BLE_BITMASK_SIZE, "");
 		memcpy(event->chmap, chmap, CHMAP_BLE_BITMASK_SIZE);
 		APP_EVENT_SUBMIT(event);

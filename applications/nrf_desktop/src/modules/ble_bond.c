@@ -292,6 +292,7 @@ static int remove_peers(uint8_t identity)
 	LOG_INF("Remove peers on identity %u", identity);
 
 	int err = bt_unpair(get_bt_stack_peer_id(identity), BT_ADDR_LE_ANY);
+
 	if (err) {
 		LOG_ERR("Failed to remove");
 	}
@@ -659,10 +660,10 @@ static void load_identities(void)
 			LOG_ERR("Cannot create identity (err:%d)", err);
 			module_set_state(MODULE_STATE_ERROR);
 			break;
-		} else {
-			__ASSERT_NO_MSG(err == count);
-			LOG_DBG("Identity %zu created", count);
 		}
+
+		__ASSERT_NO_MSG(err == count);
+		LOG_DBG("Identity %zu created", count);
 	}
 }
 

@@ -144,6 +144,7 @@ static bool button_event_handler(const struct button_event *event)
 		fn_key_pressed_count++;
 
 		struct button_event *new_event = new_button_event();
+
 		new_event->pressed = true;
 		new_event->key_id = FN_KEY_ID(KEY_COL(event->key_id),
 					      KEY_ROW(event->key_id));
@@ -169,6 +170,7 @@ static bool button_event_handler(const struct button_event *event)
 			fn_key_pressed_count--;
 
 			struct button_event *new_event = new_button_event();
+
 			new_event->pressed = false;
 			new_event->key_id = FN_KEY_ID(KEY_COL(event->key_id),
 						      KEY_ROW(event->key_id));
