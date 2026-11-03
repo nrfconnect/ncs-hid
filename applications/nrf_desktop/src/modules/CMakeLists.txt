@@ -82,8 +82,6 @@ target_sources_ifdef(CONFIG_DESKTOP_DEV_DESCR_ENABLE app PRIVATE dev_descr.c)
 
 target_sources_ifdef(CONFIG_DESKTOP_HIDS_ENABLE app PRIVATE hids.c)
 
-target_sources_ifdef(CONFIG_DESKTOP_HFCLK_LOCK_ENABLE app PRIVATE hfclk_lock.c)
-
 target_sources_ifdef(CONFIG_DESKTOP_CONSTLAT_ENABLE app PRIVATE constlat.c)
 
 target_sources_ifdef(CONFIG_DESKTOP_FAILSAFE_ENABLE app PRIVATE failsafe.c)

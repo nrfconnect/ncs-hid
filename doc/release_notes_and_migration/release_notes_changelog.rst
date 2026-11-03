@@ -34,17 +34,25 @@ Applications
 nRF Desktop
 -----------
 
-* Added an experimental application-specific :ref:`nrf_desktop_ble_state` implementation.
-  The module ports the :ref:`CAF Bluetooth LE state <nrf:caf_ble_state>` implementation into nRF Desktop so that BLE state handling can be maintained as part of the application and extended with application-specific features in the future.
-  nRF Desktop still uses the CAF module by default.
-  Enable the :option:`CONFIG_DESKTOP_BLE_STATE_APP_SPECIFIC` Kconfig option to build with the application-specific implementation instead.
-* Added the :option:`CONFIG_DESKTOP_CPU_LOAD_EVENT` Kconfig option.
-  This option enables the :c:struct:`cpu_load_event`.
+* Added:
+
+  * An experimental application-specific :ref:`nrf_desktop_ble_state` implementation.
+    The module ports the :ref:`CAF Bluetooth LE state <nrf:caf_ble_state>` implementation into the nRF Desktop so that Bluetooth LE state handling can be maintained as part of the application and extended with application-specific features in the future.
+    nRF Desktop still uses the CAF module by default.
+    Enable the :option:`CONFIG_DESKTOP_BLE_STATE_APP_SPECIFIC` Kconfig option to build with the application-specific implementation instead.
+  * The :option:`CONFIG_DESKTOP_CPU_LOAD_EVENT` Kconfig option.
+    This option enables the :c:struct:`cpu_load_event`.
+
 * Updated the :ref:`nrf_desktop_cpu_meas` to allow emitting the measured CPU load directly through the :ref:`nrf:nrf_profiler` API (:option:`CONFIG_DESKTOP_CPU_MEAS_RESULT_NRF_PROFILER`), which minimizes the impact on the measured CPU load.
   The option is enabled by default if the nRF Profiler (:kconfig:option:`CONFIG_NRF_PROFILER`) is enabled.
 
   Submitting CPU load as a :c:struct:`cpu_load_event` is controlled through the newly introduced :option:`CONFIG_DESKTOP_CPU_MEAS_RESULT_EVENT` Kconfig option.
   The feature is disabled by default if the :option:`CONFIG_DESKTOP_CPU_MEAS_RESULT_NRF_PROFILER` option is enabled.
+
+* Removed the deprecated ``hfclk_lock`` module and the ``CONFIG_DESKTOP_HFCLK_LOCK_ENABLE`` Kconfig option.
+  For Low Latency Packet Mode (LLPM) configurations, use the :option:`CONFIG_DESKTOP_BLE_LOW_LATENCY_LOCK` Kconfig option instead.
+  For HID Shorter Connection Intervals (HID SCI), you can achieve a similar effect by disabling connection subrating and setting the maximum peripheral latency to ``0`` for the active HID SCI mode (see the ``CONFIG_BT_HIDS_SCI_*_MAX_LATENCY`` Kconfig options and :ref:`nrf_desktop_ble_latency`).
+  A concrete Twister example that applies these settings for the FAST mode is the ``ncs_hid.applications.nrf_desktop.zrelease_hid_sci_mouse_click`` scenario in the :file:`applications/nrf_desktop/sample.yaml` file.
 
 Host tools
 ==========
