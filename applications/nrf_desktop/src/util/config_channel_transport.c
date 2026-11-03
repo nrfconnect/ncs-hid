@@ -77,6 +77,7 @@ int config_channel_report_parse(const uint8_t *buffer, size_t length,
 	pos += sizeof(event->status);
 
 	uint8_t config_data_len = buffer[pos];
+
 	pos += sizeof(config_data_len);
 
 	__ASSERT_NO_MSG(pos == TRANSPORT_HEADER_SIZE);
@@ -108,6 +109,7 @@ int config_channel_report_fill(uint8_t *buffer, const size_t length,
 			       const struct config_event *event)
 {
 	int err = frame_length_check(length);
+
 	if (!err) {
 		err = data_len_check(event->dyndata.size);
 	}

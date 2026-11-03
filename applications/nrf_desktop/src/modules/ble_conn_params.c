@@ -213,6 +213,7 @@ static bool conn_params_update_required(struct connected_peer *peer)
 	__ASSERT_NO_MSG(info.role == BT_CONN_ROLE_CENTRAL);
 
 	uint32_t interval_us = strip_llpm_encoding_to_us(info.le.interval_us);
+
 	if (IS_ENABLED(CONFIG_DESKTOP_BLE_USB_MANAGED_CI) && usb_suspended) {
 		if ((interval_us != BT_CONN_INTERVAL_TO_US(CONN_INTERVAL_USB_SUSPEND)) ||
 		    (info.le.latency != CONN_LATENCY_USB_SUSPEND)) {

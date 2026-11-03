@@ -49,6 +49,7 @@ static void error_check_handler(struct k_work *work)
 	unsigned int cnt;
 
 	k_spinlock_key_t key = k_spin_lock(&lock);
+
 	cnt = cso_counter;
 	cso_counter = 0;
 	k_spin_unlock(&lock, key);
@@ -57,6 +58,7 @@ static void error_check_handler(struct k_work *work)
 
 	if (cnt <= CSO_CHANGE_MAX) {
 		int val = gpio_pin_get_dt(&cso_gpio);
+
 		if (val < 0) {
 			LOG_ERR("Cannot get CSO pin value");
 			state = BATTERY_STATE_ERROR;
@@ -78,6 +80,7 @@ static void error_check_handler(struct k_work *work)
 		battery_state = state;
 
 		struct battery_state_event *event = new_battery_state_event();
+
 		event->state = battery_state;
 
 		APP_EVENT_SUBMIT(event);
@@ -93,6 +96,7 @@ static void cs_change(const struct device *gpio_dev, struct gpio_callback *cb,
 	}
 
 	k_spinlock_key_t key = k_spin_lock(&lock);
+
 	if (cso_counter == 0) {
 		k_work_reschedule(&error_check,
 				      K_MSEC(ERROR_CHECK_TIMEOUT_MS));
@@ -216,6 +220,7 @@ static bool app_event_handler(const struct app_event_header *aeh)
 			atomic_set(&active, true);
 
 			int err = cso_pin_control(true);
+
 			if (!err) {
 				err = start_battery_state_check();
 			}

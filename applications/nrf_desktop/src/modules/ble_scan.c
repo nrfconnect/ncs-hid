@@ -227,6 +227,7 @@ static size_t count_bond(void)
 static void broadcast_scan_state(bool active)
 {
 	struct ble_peer_search_event *event = new_ble_peer_search_event();
+
 	event->active = active;
 	APP_EVENT_SUBMIT(event);
 }

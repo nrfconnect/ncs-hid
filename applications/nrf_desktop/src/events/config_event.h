@@ -115,49 +115,43 @@ extern const uint8_t __start_config_channel_modules[];
 		bool consume = false;								\
 												\
 		/* Not for us. */								\
-		if (event->recipient != CFG_CHAN_RECIPIENT_LOCAL) {				\
+		if ((event->recipient != CFG_CHAN_RECIPIENT_LOCAL) ||				\
+		    (MOD_FIELD_GET(event->event_id) != config_module_id)) {			\
 			return false;								\
 		}										\
 												\
 		if (event->status == CONFIG_STATUS_SET) {					\
-			if (MOD_FIELD_GET(event->event_id) == config_module_id) {		\
-				BUILD_ASSERT(config_set_fn != NULL); 				\
-				(*config_set_fn)(OPT_ID_GET(OPT_FIELD_GET(event->event_id)),	\
-						 event->dyndata.data,				\
-						 event->dyndata.size);				\
-				consume = true;							\
-			}									\
+			BUILD_ASSERT(config_set_fn != NULL);					\
+			(*config_set_fn)(OPT_ID_GET(OPT_FIELD_GET(event->event_id)),		\
+					 event->dyndata.data,					\
+					 event->dyndata.size);					\
+			consume = true;								\
 		} else if (event->status == CONFIG_STATUS_FETCH) {				\
-			if (MOD_FIELD_GET(event->event_id) == config_module_id) {		\
-				if (OPT_FIELD_GET(event->event_id) == MODULE_OPT_MODULE_DESCR) {\
-					if (cur_opt_descr < ARRAY_SIZE(opt_descr) + 1) {	\
-						const char *data_ptr;				\
+			if (OPT_FIELD_GET(event->event_id) == MODULE_OPT_MODULE_DESCR) {	\
+				if (cur_opt_descr < ARRAY_SIZE(opt_descr) + 1) {		\
+					const char *data_ptr;					\
 												\
-						if (cur_opt_descr == 0) {			\
-							data_ptr = mod_name;			\
-						} else {					\
-							data_ptr = opt_descr[cur_opt_descr - 1];\
-						}						\
-						rsp_data_size = strlen(data_ptr);		\
-						__ASSERT_NO_MSG(rsp_data_size <=		\
-								sizeof(rsp_data_buf));		\
-						memcpy(rsp_data_buf, data_ptr,			\
-								rsp_data_size);			\
-						cur_opt_descr++;				\
+					if (cur_opt_descr == 0) {				\
+						data_ptr = mod_name;				\
 					} else {						\
-						rsp_data_size = sizeof(uint8_t);		\
-						rsp_data_buf[0] = MODULE_DESCR_END_CHAR;	\
-						cur_opt_descr = 0;				\
+						data_ptr = opt_descr[cur_opt_descr - 1];	\
 					}							\
+					rsp_data_size = strlen(data_ptr);			\
+					__ASSERT_NO_MSG(rsp_data_size <= sizeof(rsp_data_buf));\
+					memcpy(rsp_data_buf, data_ptr, rsp_data_size);		\
+					cur_opt_descr++;					\
 				} else {							\
-					BUILD_ASSERT(config_fetch_fn != NULL);			\
-					(*config_fetch_fn)(OPT_ID_GET(				\
-							      OPT_FIELD_GET(event->event_id)),	\
-							   rsp_data_buf,			\
-							   &rsp_data_size);			\
+					rsp_data_size = sizeof(uint8_t);			\
+					rsp_data_buf[0] = MODULE_DESCR_END_CHAR;		\
+					cur_opt_descr = 0;					\
 				}								\
-				consume = true;							\
+			} else {								\
+				BUILD_ASSERT(config_fetch_fn != NULL);				\
+				(*config_fetch_fn)(OPT_ID_GET(OPT_FIELD_GET(event->event_id)),	\
+						   rsp_data_buf,				\
+						   &rsp_data_size);				\
 			}									\
+			consume = true;								\
 		}										\
 												\
 		if (consume) {									\
@@ -173,7 +167,7 @@ extern const uint8_t __start_config_channel_modules[];
 				memcpy(rsp->dyndata.data, rsp_data_buf, rsp_data_size);		\
 			}									\
 												\
-			APP_EVENT_SUBMIT(rsp);						\
+			APP_EVENT_SUBMIT(rsp);							\
 		}										\
 												\
 		return consume;									\
