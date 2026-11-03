@@ -73,16 +73,16 @@ LOG_MODULE_REGISTER(MODULE, CONFIG_DESKTOP_CONFIG_CHANNEL_DFU_LOG_LEVEL);
 	  !IS_ENABLED(CONFIG_MCUBOOT_BOOTLOADER_MODE_RAM_LOAD)) || \
 	 IS_ENABLED(CONFIG_SECURE_BOOT))
 
-#if CONFIG_USE_DT_CODE_PARTITION
+#ifdef CONFIG_USE_DT_CODE_PARTITION
 	BUILD_ASSERT(DT_HAS_CHOSEN(zephyr_code_partition),
 		     "Missing 'zephyr,code-partition' in /chosen.");
 
 	#define CODE_PARTITION_NODE DT_CHOSEN(zephyr_code_partition)
 
-	#if CONFIG_SECURE_BOOT
+	#ifdef CONFIG_SECURE_BOOT
 		#define SLOT_0_DT_NODELABEL s0_partition
 		#define SLOT_1_DT_NODELABEL s1_partition
-	#elif CONFIG_BOOTLOADER_MCUBOOT
+	#elif defined(CONFIG_BOOTLOADER_MCUBOOT)
 		#define SLOT_0_DT_NODELABEL slot0_partition
 		#define SLOT_1_DT_NODELABEL slot1_partition
 	#else
@@ -111,12 +111,12 @@ LOG_MODULE_REGISTER(MODULE, CONFIG_DESKTOP_CONFIG_CHANNEL_DFU_LOG_LEVEL);
 	#error Unsupported partitioning scheme.
 #endif
 
-#if CONFIG_SECURE_BOOT
+#ifdef CONFIG_SECURE_BOOT
 	#include <fw_info.h>
 	#define BOOTLOADER_NAME "B0"
-#elif CONFIG_BOOTLOADER_MCUBOOT
+#elif defined(CONFIG_BOOTLOADER_MCUBOOT)
 	#include <zephyr/dfu/mcuboot.h>
-	#if CONFIG_MCUBOOT_BOOTLOADER_MODE_DIRECT_XIP
+	#ifdef CONFIG_MCUBOOT_BOOTLOADER_MODE_DIRECT_XIP
 		#define BOOTLOADER_NAME "MCUBOOT+XIP"
 	#else
 		#define BOOTLOADER_NAME "MCUBOOT"
@@ -736,7 +736,7 @@ static void handle_reboot_request(uint8_t *data, size_t *size)
 	}
 }
 
-#if CONFIG_SECURE_BOOT
+#ifdef CONFIG_SECURE_BOOT
 static void handle_image_info_request(uint8_t *data, size_t *size)
 {
 	const struct fw_info *info;
@@ -793,7 +793,7 @@ static void handle_image_info_request(uint8_t *data, size_t *size)
 		LOG_ERR("Cannot obtain image information");
 	}
 }
-#elif CONFIG_BOOTLOADER_MCUBOOT
+#elif defined(CONFIG_BOOTLOADER_MCUBOOT)
 static void handle_image_info_request(uint8_t *data, size_t *size)
 {
 	struct mcuboot_img_header header;

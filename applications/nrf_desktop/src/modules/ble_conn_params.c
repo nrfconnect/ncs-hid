@@ -25,7 +25,7 @@
 LOG_MODULE_REGISTER(MODULE, CONFIG_DESKTOP_BLE_CONN_PARAMS_LOG_LEVEL);
 
 #define CONN_INTERVAL_LLPM_US		1000   /* 1 ms */
-#if (CONFIG_DESKTOP_BLE_USE_LLPM && (CONFIG_BT_MAX_CONN >= 2))
+#if defined(CONFIG_DESKTOP_BLE_USE_LLPM) && (CONFIG_BT_MAX_CONN >= 2)
  #define CONN_INTERVAL_BLE_US		10000 /* 10 ms */
 #else
  #define CONN_INTERVAL_BLE_US		7500 /* 7.5 ms */
@@ -366,7 +366,7 @@ static uint8_t get_sci_peer_count(void)
 	return sci_peer_count;
 }
 
-#if CONFIG_DESKTOP_BLE_CONN_PARAMS_HID_SCI_ENABLE
+#ifdef CONFIG_DESKTOP_BLE_CONN_PARAMS_HID_SCI_ENABLE
 BUILD_ASSERT((CONFIG_DESKTOP_BLE_CONN_PARAMS_SCI_INTERVAL_MIN_125US * CONFIG_BT_MAX_CONN) <=
 	     UINT16_MAX,
 	     "Minimum SCI connection interval times max connections exceeds uint16_t");
@@ -381,7 +381,7 @@ static int get_allowed_sci_conn_rate_params(uint8_t sci_peers_count,
 {
 	__ASSERT_NO_MSG(sci_peers_count > 0);
 
-#if CONFIG_DESKTOP_BLE_CONN_PARAMS_HID_SCI_ENABLE
+#ifdef CONFIG_DESKTOP_BLE_CONN_PARAMS_HID_SCI_ENABLE
 	static const uint16_t sci_interval_min_125us =
 		CONFIG_DESKTOP_BLE_CONN_PARAMS_SCI_INTERVAL_MIN_125US;
 	static const uint16_t sci_interval_max_125us =

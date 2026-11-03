@@ -25,7 +25,7 @@ APP_EVENT_TYPE_DEFINE(hid_notification_event,
 			IF_ENABLED(CONFIG_DESKTOP_INIT_LOG_HID_NOTIFICATION_EVENT,
 				(APP_EVENT_TYPE_FLAGS_INIT_LOG_ENABLE))));
 
-#if CONFIG_DESKTOP_HIDS_SCI_ENABLE
+#ifdef CONFIG_DESKTOP_HIDS_SCI_ENABLE
 static void log_hid_sci_mode_request_event(const struct app_event_header *aeh)
 {
 	const struct hid_sci_mode_request_event *event =
