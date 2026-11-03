@@ -151,7 +151,6 @@ Source modules for module_state_event
 * :ref:`nrf_desktop_failsafe`
 * :ref:`nrf_desktop_fast_pair_app`
 * :ref:`nrf_desktop_fn_keys`
-* :ref:`nrf_desktop_hfclk_lock`
 * :ref:`nrf_desktop_hid_forward`
 * :ref:`nrf_desktop_hids`
 * :ref:`nrf_desktop_info`
@@ -201,7 +200,6 @@ Sink modules for module_state_event
 * :ref:`nrf_desktop_factory_reset`
 * :ref:`nrf_desktop_fast_pair_app`
 * :ref:`nrf_desktop_fn_keys`
-* :ref:`nrf_desktop_hfclk_lock`
 * :ref:`nrf_desktop_hid_forward`
 * :ref:`nrf_desktop_hid_provider_consumer_ctrl`
 * :ref:`nrf_desktop_hid_provider_keyboard`
@@ -240,7 +238,6 @@ Sink modules for power_down_event
 * :ref:`nrf_desktop_battery_meas`
 * :ref:`nrf_desktop_buttons`
 * :ref:`nrf_desktop_constlat`
-* :ref:`nrf_desktop_hfclk_lock`
 * :ref:`nrf_desktop_motion`
 * :ref:`nrf_desktop_wheel`
 * :ref:`nrf_desktop_ble_adv`
@@ -285,7 +282,6 @@ Sink modules for wake_up_event
 * :ref:`nrf_desktop_buttons_sim`
 * :ref:`nrf_desktop_click_detector`
 * :ref:`nrf_desktop_constlat`
-* :ref:`nrf_desktop_hfclk_lock`
 * :ref:`nrf_desktop_hid_forward`
 * :ref:`nrf_desktop_leds`
 * :ref:`nrf_desktop_motion`

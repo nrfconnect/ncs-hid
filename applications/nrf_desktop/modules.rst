@@ -68,5 +68,4 @@ These are valid for events that have many listeners or sources, and are gathered
    doc/watchdog.rst
    doc/wheel.rst
    doc/constlat.rst
-   doc/hfclk_lock.rst
    doc/event_rel_modules.rst
