@@ -6,25 +6,6 @@
 
 menu "Hotfix set"
 
-config DESKTOP_HFCLK_LOCK_ENABLE
-	bool "Keep HF clock enabled [DEPRECATED]"
-	depends on DESKTOP_BLE_USE_LLPM
-	select DEPRECATED
-	help
-	  The HF clock needs to be enabled during data transmission over BLE.
-	  Enabling the HF clock right before the data transmission adds an extra
-	  latency of around 1.4 ms (0.85 ms in case of nRF54L Series SoCs) for
-	  the first packet (in a row) that is transmitted. The extra latency is
-	  caused by the HF clock startup latency. Keeping the HF clock enabled
-	  all the time removes the extra latency caused by the clock startup at
-	  the cost of increased power consumption.
-
-	  The hotfix is deprecated and will be removed in the future. Use the
-	  CONFIG_DESKTOP_BLE_LOW_LATENCY_LOCK instead. Setting the peripheral
-	  latency LLPM connection parameter to `0` on a peripheral leads to
-	  keeping the HF clock enabled. That mitigates the extra HID report
-	  latency caused by the HF clock startup delay.
-
 config DESKTOP_CONSTLAT_ENABLE
 	bool "Constant latency interrupts"
 	select NRFX_POWER
