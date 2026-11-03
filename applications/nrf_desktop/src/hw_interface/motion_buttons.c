@@ -75,6 +75,7 @@ static void motion_event_send(int16_t dx, int16_t dy, bool active)
 static enum dir key_to_dir(uint16_t key_id)
 {
 	enum dir dir = DIR_COUNT;
+
 	switch (key_id) {
 	case CONFIG_DESKTOP_MOTION_BUTTONS_UP_KEY_ID:
 		dir = DIR_UP;

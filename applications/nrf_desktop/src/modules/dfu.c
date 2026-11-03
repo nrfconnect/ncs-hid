@@ -56,9 +56,9 @@ LOG_MODULE_REGISTER(MODULE, CONFIG_DESKTOP_CONFIG_CHANNEL_DFU_LOG_LEVEL);
  * Currently, the revert feature is only supported by the MCUboot bootloader that is not
  * configured for the standard direct-xip or RAM load mode.
  */
- #define MCUBOOT_REVERT_FEATURE_IS_SUPPORTED                       \
-	 (IS_ENABLED(CONFIG_BOOTLOADER_MCUBOOT) &&                 \
-	 !IS_ENABLED(CONFIG_MCUBOOT_BOOTLOADER_MODE_DIRECT_XIP) && \
+#define MCUBOOT_REVERT_FEATURE_IS_SUPPORTED				\
+	 (IS_ENABLED(CONFIG_BOOTLOADER_MCUBOOT) &&			\
+	 !IS_ENABLED(CONFIG_MCUBOOT_BOOTLOADER_MODE_DIRECT_XIP) &&	\
 	 !IS_ENABLED(CONFIG_MCUBOOT_BOOTLOADER_MODE_RAM_LOAD))
 
 /* This value denotes whether it is possible to resolve the DFU slot ID at build time.
@@ -68,9 +68,9 @@ LOG_MODULE_REGISTER(MODULE, CONFIG_DESKTOP_CONFIG_CHANNEL_DFU_LOG_LEVEL);
  * to support the new bootloader mode. To support the dynamic resolution for the MCUboot
  * bootloader, the user must define the SLOT_0_ID and SLOT_1_ID macros.
  */
-#define BUILD_TIME_DFU_SLOT_ID_INFO_IS_AVAILABLE                   \
-	 ((IS_ENABLED(CONFIG_BOOTLOADER_MCUBOOT) &&                \
-	  !IS_ENABLED(CONFIG_MCUBOOT_BOOTLOADER_MODE_RAM_LOAD)) || \
+#define BUILD_TIME_DFU_SLOT_ID_INFO_IS_AVAILABLE			\
+	 ((IS_ENABLED(CONFIG_BOOTLOADER_MCUBOOT) &&			\
+	  !IS_ENABLED(CONFIG_MCUBOOT_BOOTLOADER_MODE_RAM_LOAD)) ||	\
 	 IS_ENABLED(CONFIG_SECURE_BOOT))
 
 #ifdef CONFIG_USE_DT_CODE_PARTITION
@@ -380,6 +380,7 @@ static void complete_dfu_data_store(void)
 		LOG_INF("DFU image written");
 #if MCUBOOT_REVERT_FEATURE_IS_SUPPORTED
 		int err = boot_request_upgrade(false);
+
 		if (err) {
 			LOG_ERR("Cannot request the image upgrade (err:%d)", err);
 		}
@@ -482,8 +483,6 @@ static void handle_dfu_data(const uint8_t *data, size_t size)
 	LOG_DBG("DFU chunk collected");
 
 	k_work_reschedule(&dfu_timeout, DFU_TIMEOUT);
-
-	return;
 }
 
 static void handle_dfu_start(const uint8_t *data, const size_t size)
@@ -566,9 +565,9 @@ static void handle_dfu_start(const uint8_t *data, const size_t size)
 			}
 
 			return;
-		} else {
-			LOG_INF("Restart DFU");
 		}
+
+		LOG_INF("Restart DFU");
 	} else {
 		if (cur_offset != 0) {
 			k_work_reschedule(&background_erase, K_NO_WAIT);
@@ -578,10 +577,10 @@ static void handle_dfu_start(const uint8_t *data, const size_t size)
 			img_csum = 0;
 
 			return;
-		} else {
-			img_length = length;
-			img_csum = csum;
 		}
+
+		img_length = length;
+		img_csum = csum;
 	}
 
 	__ASSERT_NO_MSG(flash_area == NULL);

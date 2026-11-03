@@ -228,6 +228,7 @@ static int setup_wakeup(void)
 	gpio_pin_t pin = map_gpio_pin(enable_pin);
 
 	int err = gpio_pin_configure(port, pin, GPIO_OUTPUT);
+
 	if (err) {
 		LOG_ERR("Cannot configure enable pin");
 		return err;

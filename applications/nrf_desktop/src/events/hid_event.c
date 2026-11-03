@@ -35,8 +35,9 @@ static void log_hid_report_event(const struct app_event_header *aeh)
 
 			pos += tmp;
 
-			if (pos >= sizeof(log_buf))
+			if (pos >= sizeof(log_buf)) {
 				break;
+			}
 		}
 	}
 	if (pos < 0) {

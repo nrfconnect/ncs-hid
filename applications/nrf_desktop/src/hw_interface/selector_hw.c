@@ -169,8 +169,9 @@ static int read_state_and_enable_interrupts(struct selector *selector)
 {
 	int err = read_state(selector);
 
-	if (!err)
+	if (!err) {
 		enable_interrupts_lock(selector);
+	}
 
 	return err;
 }

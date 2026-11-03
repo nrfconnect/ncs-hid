@@ -56,6 +56,7 @@ static void update_fast_pair_ui_indication(void)
 	}
 
 	bool show_ui_pairing = can_pair(selected_stack_id);
+
 	bt_le_adv_prov_fast_pair_show_ui_pairing(show_ui_pairing);
 
 	if (in_pairing_mode(selected_stack_id)) {
