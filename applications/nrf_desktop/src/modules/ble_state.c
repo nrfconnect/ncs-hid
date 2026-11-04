@@ -7,6 +7,7 @@
 #include <zephyr/types.h>
 #include <zephyr/sys/reboot.h>
 #include <zephyr/sys/byteorder.h>
+#include <zephyr/settings/settings.h>
 
 #include <zephyr/bluetooth/bluetooth.h>
 #include <zephyr/bluetooth/conn.h>
@@ -20,16 +21,42 @@
 
 #define MODULE ble_state
 #include <caf/events/module_state_event.h>
+#include <caf/events/module_suspend_event.h>
 
 #include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(MODULE, CONFIG_DESKTOP_BLE_STATE_LOG_LEVEL);
 
+BUILD_ASSERT(!IS_ENABLED(CONFIG_BT_SETTINGS) ||
+	     IS_ENABLED(CONFIG_CAF_SETTINGS_LOADER),
+	     "CAF Settings loader is required when Bluetooth settings are enabled");
+
+#define BT_SETTINGS_LOADED_BY_LOADER_MODULE \
+	(IS_ENABLED(CONFIG_CAF_SETTINGS_LOADER) && IS_ENABLED(CONFIG_BT_SETTINGS))
 
 struct bond_find_data {
 	const bt_addr_le_t *peer_address;
 	bool peer_bonded;
 	uint8_t bond_cnt;
 };
+
+enum state {
+	STATE_DISABLED,
+	STATE_DISABLED_SUSPEND_PENDING,
+	STATE_INITIALIZING,
+	STATE_INITIALIZING_SUSPEND_PENDING,
+	STATE_RESUMING,
+	STATE_RESUMING_SUSPEND_PENDING,
+	STATE_SUSPENDED,
+	STATE_ACTIVE,
+	STATE_ERROR,
+};
+
+static enum state state = STATE_DISABLED;
+
+static bool settings_loader_ready;
+static bool ble_bond_ready;
+
+static void update_state(enum state new_state);
 
 static void bond_check_cb(const struct bt_bond_info *info, void *user_data)
 {
@@ -54,7 +81,7 @@ static void disconnect_peer(struct bt_conn *conn)
 
 	if (err && (err != -ENOTCONN)) {
 		LOG_ERR("Failed to disconnect peer (err=%d)", err);
-		module_set_state(MODULE_STATE_ERROR);
+		update_state(STATE_ERROR);
 	} else {
 		LOG_INF("Peer disconnected");
 	}
@@ -269,6 +296,71 @@ static void le_param_updated(struct bt_conn *conn, uint16_t interval,
 	APP_EVENT_SUBMIT(event);
 }
 
+static const char *state2str(enum state s)
+{
+	switch (s) {
+	case STATE_DISABLED:
+		return "DISABLED";
+	case STATE_DISABLED_SUSPEND_PENDING:
+		return "DISABLED_SUSPEND_PENDING";
+	case STATE_INITIALIZING:
+		return "INITIALIZING";
+	case STATE_INITIALIZING_SUSPEND_PENDING:
+		return "INITIALIZING_SUSPEND_PENDING";
+	case STATE_RESUMING:
+		return "RESUMING";
+	case STATE_RESUMING_SUSPEND_PENDING:
+		return "RESUMING_SUSPEND_PENDING";
+	case STATE_SUSPENDED:
+		return "SUSPENDED";
+	case STATE_ACTIVE:
+		return "ACTIVE";
+	case STATE_ERROR:
+		return "ERROR";
+	default:
+		__ASSERT_NO_MSG(false);
+		return "UNKNOWN";
+	}
+}
+
+static void broadcast_module_state(enum state new_state)
+{
+	static enum module_state last_notified_state = MODULE_STATE_COUNT;
+	enum module_state module_state = last_notified_state;
+
+	switch (new_state) {
+	case STATE_DISABLED:
+	case STATE_DISABLED_SUSPEND_PENDING:
+	case STATE_INITIALIZING:
+	case STATE_INITIALIZING_SUSPEND_PENDING:
+	case STATE_RESUMING:
+	case STATE_RESUMING_SUSPEND_PENDING:
+		/* No module state broadcast needed. */
+		break;
+
+	case STATE_ACTIVE:
+		module_state = MODULE_STATE_READY;
+		break;
+
+	case STATE_SUSPENDED:
+		module_state = MODULE_STATE_SUSPENDED;
+		break;
+
+	case STATE_ERROR:
+		module_state = MODULE_STATE_ERROR;
+		break;
+
+	default:
+		__ASSERT_NO_MSG(false);
+		break;
+	}
+
+	if (module_state != last_notified_state) {
+		module_set_state(module_state);
+		last_notified_state = module_state;
+	}
+}
+
 static void bt_ready(int err)
 {
 	if (err) {
@@ -291,10 +383,257 @@ static void bt_ready(int err)
 	}
 #endif /* CONFIG_DESKTOP_BLE_USE_LLPM */
 
-	module_set_state(MODULE_STATE_READY);
+	switch (state) {
+	case STATE_INITIALIZING:
+		update_state(STATE_ACTIVE);
+		break;
+	case STATE_INITIALIZING_SUSPEND_PENDING:
+		update_state(STATE_ACTIVE);
+		update_state(STATE_SUSPENDED);
+		break;
+	case STATE_RESUMING:
+		update_state(STATE_ACTIVE);
+		break;
+	case STATE_RESUMING_SUSPEND_PENDING:
+		update_state(STATE_ACTIVE);
+		update_state(STATE_SUSPENDED);
+		break;
+	default:
+		__ASSERT_NO_MSG(false);
+		break;
+	}
 }
 
-static int ble_state_init(void)
+static void verify_state_transition(enum state prev_state, enum state new_state)
+{
+	switch (new_state) {
+	case STATE_INITIALIZING:
+		__ASSERT_NO_MSG((prev_state == STATE_DISABLED) ||
+				(prev_state == STATE_INITIALIZING_SUSPEND_PENDING));
+		break;
+	case STATE_INITIALIZING_SUSPEND_PENDING:
+		__ASSERT_NO_MSG((prev_state == STATE_DISABLED_SUSPEND_PENDING) ||
+				(prev_state == STATE_INITIALIZING));
+		break;
+	case STATE_RESUMING:
+		__ASSERT_NO_MSG((prev_state == STATE_SUSPENDED) ||
+				(prev_state == STATE_RESUMING_SUSPEND_PENDING));
+		break;
+	case STATE_ACTIVE:
+		__ASSERT_NO_MSG((prev_state == STATE_RESUMING) ||
+				(prev_state == STATE_RESUMING_SUSPEND_PENDING) ||
+				(prev_state == STATE_INITIALIZING) ||
+				(prev_state == STATE_INITIALIZING_SUSPEND_PENDING));
+		break;
+	case STATE_SUSPENDED:
+		__ASSERT_NO_MSG(prev_state == STATE_ACTIVE);
+		__ASSERT(!BT_SETTINGS_LOADED_BY_LOADER_MODULE || settings_loader_ready,
+			 "The Bluetooth LE state module cannot be suspended "
+			 "before Bluetooth settings are fully loaded");
+		__ASSERT(!IS_ENABLED(CONFIG_DESKTOP_BLE_BOND_ENABLE) || ble_bond_ready,
+			 "The Bluetooth LE state module cannot be suspended "
+			 "before the Bluetooth LE bond module is ready");
+
+		break;
+	case STATE_DISABLED:
+		__ASSERT_NO_MSG(prev_state == STATE_DISABLED_SUSPEND_PENDING);
+		break;
+	case STATE_DISABLED_SUSPEND_PENDING:
+		__ASSERT_NO_MSG(prev_state == STATE_DISABLED);
+		break;
+	case STATE_RESUMING_SUSPEND_PENDING:
+		__ASSERT_NO_MSG(prev_state == STATE_RESUMING);
+		break;
+	case STATE_ERROR:
+		break;
+	default:
+		__ASSERT_NO_MSG(false);
+		break;
+	}
+}
+
+static int notify_ble_stack(enum state prev_state, enum state new_state)
+{
+	bool bt_enable_needed = false;
+	bool bt_disable_needed = false;
+	int err = 0;
+
+	switch (new_state) {
+	case STATE_INITIALIZING:
+		if (prev_state == STATE_DISABLED) {
+			bt_enable_needed = true;
+		}
+		break;
+	case STATE_INITIALIZING_SUSPEND_PENDING:
+		if (prev_state == STATE_DISABLED_SUSPEND_PENDING) {
+			bt_enable_needed = true;
+		}
+		break;
+	case STATE_RESUMING:
+		if (prev_state == STATE_SUSPENDED) {
+			bt_enable_needed = true;
+		}
+		break;
+
+	case STATE_ERROR:
+		bt_disable_needed = true;
+		break;
+
+	case STATE_SUSPENDED:
+		if (prev_state == STATE_ACTIVE) {
+			bt_disable_needed = true;
+		}
+		break;
+
+	case STATE_ACTIVE:
+		break;
+	case STATE_DISABLED:
+	case STATE_DISABLED_SUSPEND_PENDING:
+	case STATE_RESUMING_SUSPEND_PENDING:
+		break;
+	default:
+		__ASSERT_NO_MSG(false);
+		break;
+	}
+
+	if (bt_enable_needed) {
+		err = bt_enable(bt_ready);
+		if (err) {
+			LOG_ERR("Bluetooth enable failed (err: %d)", err);
+		}
+	} else if (bt_disable_needed) {
+		err = bt_disable();
+		if (err) {
+			LOG_ERR("Bluetooth disable failed (err: %d)", err);
+		}
+	}
+
+	return err;
+}
+
+static int handle_bt_settings(enum state prev_state, enum state new_state)
+{
+	int err = 0;
+
+	if (new_state != STATE_ACTIVE) {
+		return 0;
+	}
+
+	/* On first initialization, loading settings is handled globally
+	 * by the CAF Settings loader.
+	 * Only reload settings when resuming the module.
+	 */
+	if ((prev_state == STATE_RESUMING) ||
+	    (prev_state == STATE_RESUMING_SUSPEND_PENDING)) {
+		/* Settings must be reloaded after Bluetooth is reenabled. */
+		err = settings_load_subtree("bt");
+		if (err) {
+			LOG_ERR("Bluetooth settings load failed (err: %d)", err);
+		}
+	}
+
+	return err;
+}
+
+static void update_state(enum state new_state)
+{
+	if (state == STATE_ERROR) {
+		return;
+	}
+
+	if (state == new_state) {
+		return;
+	}
+
+	int err = 0;
+	enum state prev_state = state;
+
+	LOG_DBG("Entering state %s (from %s)", state2str(new_state), state2str(prev_state));
+	verify_state_transition(prev_state, new_state);
+
+	err = notify_ble_stack(prev_state, new_state);
+	if (!err) {
+		err = handle_bt_settings(prev_state, new_state);
+	}
+
+	if (err) {
+		LOG_ERR("State transition failed. Entering ERROR state.");
+		state = STATE_ERROR;
+	} else {
+		state = new_state;
+		LOG_DBG("Entered state: %s", state2str(state));
+	}
+
+	broadcast_module_state(state);
+}
+
+static bool handle_module_suspend_req_event(const struct module_suspend_req_event *event)
+{
+	if (event->sink_module_id != MODULE_ID(ble_state)) {
+		/* Not us. */
+		return false;
+	}
+
+	switch (state) {
+	case STATE_DISABLED:
+		update_state(STATE_DISABLED_SUSPEND_PENDING);
+		break;
+	case STATE_INITIALIZING:
+		update_state(STATE_INITIALIZING_SUSPEND_PENDING);
+		break;
+	case STATE_RESUMING:
+		update_state(STATE_RESUMING_SUSPEND_PENDING);
+		break;
+	case STATE_ACTIVE:
+		update_state(STATE_SUSPENDED);
+		break;
+	case STATE_DISABLED_SUSPEND_PENDING:
+	case STATE_INITIALIZING_SUSPEND_PENDING:
+	case STATE_RESUMING_SUSPEND_PENDING:
+	case STATE_SUSPENDED:
+	case STATE_ERROR:
+		break;
+	default:
+		__ASSERT_NO_MSG(false);
+		break;
+	}
+
+	return false;
+}
+
+static bool handle_module_resume_req_event(const struct module_resume_req_event *event)
+{
+	if (event->sink_module_id != MODULE_ID(ble_state)) {
+		/* Not us. */
+		return false;
+	}
+
+	switch (state) {
+	case STATE_DISABLED_SUSPEND_PENDING:
+		update_state(STATE_DISABLED);
+		break;
+	case STATE_INITIALIZING_SUSPEND_PENDING:
+		update_state(STATE_INITIALIZING);
+		break;
+	case STATE_RESUMING_SUSPEND_PENDING:
+	case STATE_SUSPENDED:
+		update_state(STATE_RESUMING);
+		break;
+	case STATE_INITIALIZING:
+	case STATE_DISABLED:
+	case STATE_RESUMING:
+	case STATE_ACTIVE:
+	case STATE_ERROR:
+		break;
+	default:
+		__ASSERT_NO_MSG(false);
+		break;
+	}
+
+	return false;
+}
+
+static void ble_state_init(void)
 {
 	static struct bt_conn_cb conn_callbacks = {
 		.connected = connected,
@@ -305,7 +644,30 @@ static int ble_state_init(void)
 	};
 	bt_conn_cb_register(&conn_callbacks);
 
-	return bt_enable(bt_ready);
+	switch (state) {
+	case STATE_DISABLED:
+		update_state(STATE_INITIALIZING);
+		break;
+	case STATE_DISABLED_SUSPEND_PENDING:
+		update_state(STATE_INITIALIZING_SUSPEND_PENDING);
+		break;
+	default:
+		__ASSERT_NO_MSG(false);
+		break;
+	}
+}
+
+static void track_dependents_ready(const struct module_state_event *event)
+{
+	if (BT_SETTINGS_LOADED_BY_LOADER_MODULE &&
+	    check_state(event, MODULE_ID(settings_loader), MODULE_STATE_READY)) {
+		settings_loader_ready = true;
+	}
+
+	if (IS_ENABLED(CONFIG_DESKTOP_BLE_BOND_ENABLE) &&
+	    check_state(event, MODULE_ID(ble_bond), MODULE_STATE_READY)) {
+		ble_bond_ready = true;
+	}
 }
 
 static bool app_event_handler(const struct app_event_header *aeh)
@@ -315,16 +677,13 @@ static bool app_event_handler(const struct app_event_header *aeh)
 			cast_module_state_event(aeh);
 
 		if (check_state(event, MODULE_ID(main), MODULE_STATE_READY)) {
-			static bool initialized;
 
-			__ASSERT_NO_MSG(!initialized);
-			initialized = true;
-
-			if (ble_state_init()) {
-				LOG_ERR("Cannot initialize");
-				module_set_state(MODULE_STATE_ERROR);
-			}
+			__ASSERT_NO_MSG((state == STATE_DISABLED)
+					|| (state == STATE_DISABLED_SUSPEND_PENDING));
+			ble_state_init();
 		}
+
+		track_dependents_ready(event);
 
 		return false;
 	}
@@ -347,11 +706,26 @@ static bool app_event_handler(const struct app_event_header *aeh)
 		return false;
 	}
 
+	if (IS_ENABLED(CONFIG_DESKTOP_BLE_STATE_MODULE_SUSPEND_EVENTS) &&
+	    is_module_suspend_req_event(aeh)) {
+		return handle_module_suspend_req_event(cast_module_suspend_req_event(aeh));
+	}
+
+	if (IS_ENABLED(CONFIG_DESKTOP_BLE_STATE_MODULE_SUSPEND_EVENTS) &&
+	    is_module_resume_req_event(aeh)) {
+		return handle_module_resume_req_event(cast_module_resume_req_event(aeh));
+	}
+
 	/* If event is unhandled, unsubscribe. */
 	__ASSERT_NO_MSG(false);
 
 	return false;
 }
+
 APP_EVENT_LISTENER(MODULE, app_event_handler);
 APP_EVENT_SUBSCRIBE(MODULE, module_state_event);
 APP_EVENT_SUBSCRIBE_FINAL(MODULE, ble_peer_event);
+#ifdef CONFIG_DESKTOP_BLE_STATE_MODULE_SUSPEND_EVENTS
+APP_EVENT_SUBSCRIBE(MODULE, module_suspend_req_event);
+APP_EVENT_SUBSCRIBE(MODULE, module_resume_req_event);
+#endif /* CONFIG_DESKTOP_BLE_STATE_MODULE_SUSPEND_EVENTS */
