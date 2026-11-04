@@ -116,6 +116,7 @@ def send_continuous_led_stream(dev, led_id, freq, substep_cnt = 10):
     except Exception as e:
         print(e)
     except KeyboardInterrupt:
+        # Ctrl+C is the expected way to stop the stream.
         pass
 
     print('LED stream ended')

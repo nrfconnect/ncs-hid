@@ -161,11 +161,8 @@ class MusicLedStream:
             DURATION_INCREMENT_CONST_FACTOR = 0.01
             DURATION_INCREMENT_VARIABLE_FACTOR = 0.1
 
-            if in_buf_speaker != 0:
-                duration_inc_variable = (in_buf_speaker - in_buf_dev) / \
-                            abs(in_buf_speaker) * DURATION_INCREMENT_VARIABLE_FACTOR
-            else:
-                duration_inc_variable = 0
+            duration_inc_variable = (in_buf_speaker - in_buf_dev) / \
+                        abs(in_buf_speaker) * DURATION_INCREMENT_VARIABLE_FACTOR
 
             self.led_effects['duration_increment'] = duration_inc_variable
             if in_buf_speaker > in_buf_dev:
