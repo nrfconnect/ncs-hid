@@ -12,7 +12,6 @@ import tempfile
 import time
 import zipfile
 import zlib
-from zipfile import ZipFile
 
 import imgtool.image
 from NrfHidDevice import EVENT_DATA_LEN_MAX
@@ -303,7 +302,7 @@ class DfuImage:
         MANIFEST_FILE = "manifest.json"
 
         try:
-            with ZipFile(dfu_package, 'r') as zip_file:
+            with zipfile.ZipFile(dfu_package, 'r') as zip_file:
                 zip_file.extractall(self.temp_dir.name)
 
             with open(os.path.join(self.temp_dir.name, MANIFEST_FILE)) as f:
@@ -569,18 +568,15 @@ def file_crc(dfu_image):
     crc32 = 1
 
     try:
-        img_file = open(dfu_image, 'rb')
+        with open(dfu_image, 'rb') as img_file:
+            while True:
+                chunk_data = img_file.read(512)
+                if len(chunk_data) == 0:
+                    break
+                crc32 = zlib.crc32(chunk_data, crc32)
     except FileNotFoundError:
         print("Wrong file or file path")
         return None
-
-    while True:
-        chunk_data = img_file.read(512)
-        if len(chunk_data) == 0:
-            break
-        crc32 = zlib.crc32(chunk_data, crc32)
-
-    img_file.close()
 
     return crc32
 
@@ -735,7 +731,8 @@ def get_dfu_operation_offset(dfu_image, dfu_info, img_csum):
     if not img_csum:
         return None
 
-    if (dfu_info.get_img_length() == img_length) and (dfu_info.get_img_csum() == img_csum) and (dfu_info.get_offset() <= img_length):
+    if (dfu_info.get_img_csum() == img_csum
+            and dfu_info.get_offset() <= img_length == dfu_info.get_img_length()):
         print(f'Resume DFU at {dfu_info.get_offset()}')
         offset = dfu_info.get_offset()
     else:
