@@ -1,0 +1,35 @@
+version = 1
+
+# Declare default license and copyright text for files that typically do not or cannot include them.
+[[annotations]]
+path = [
+    "**/*.a",
+    "**/*.css",
+    "**/*.in",
+    "**/*.js",
+    "**/*.json",
+    "**/*.ld",
+    "**/*.pem",
+    "**/*.rst",
+    "**/*.rules",
+    "**/*.svg",
+    "**/*.txt",
+    "**/*.yaml",
+    "**/*.yml",
+    "**/Makefile",
+    "**/VERSION",
+    # checkpatch(1) flag file; prj/sysbuild *.conf already use SPDX headers.
+    ".checkpatch.conf",
+    ".editorconfig",
+    ".gitignore",
+    "CODEOWNERS",
+    "Jenkinsfile",
+    "doc/conf.py",
+]
+SPDX-License-Identifier = "LicenseRef-Nordic-5-Clause"
+SPDX-FileCopyrightText = "Copyright (c) Nordic Semiconductor ASA"
+
+[[annotations]]
+path = ".clang-format"
+SPDX-License-Identifier = "Apache-2.0"
+SPDX-FileCopyrightText = "Copyright The Zephyr Project Contributors"
