@@ -68,7 +68,6 @@ jobs:
             -e ClangFormat \
             -e KconfigBasicNoModules \
             -e SysbuildKconfigBasicNoModules \
-            -e LicenseAndCopyrightCheck \
             -e BinaryFiles \
             -e Ruff
 
