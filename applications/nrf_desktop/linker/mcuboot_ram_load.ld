@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2025-2026 Nordic Semiconductor ASA
+ *
+ * SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
+ */
+
 /* Validate that the ROM section from the application RAM region does not overlap with the
  * MCUboot RAM region. This ROM section defines the memory space where MCUboot copies the
  * application image. If this copied data overlaps with the MCUboot RAM region, MCUboot may
