@@ -1,0 +1,40 @@
+version = 1
+
+# Declare default license and copyright text for files that typically do not or cannot include them.
+[[annotations]]
+path = [
+    # zephyr-keep-sorted-start
+    "**/*.a",
+    "**/*.css",
+    "**/*.pem",
+    "**/*.rst",
+    "**/*.svg",
+    "**/VERSION",
+    ".checkpatch.conf",
+    ".editorconfig",
+    ".github/**/*.yml",
+    ".gitignore",
+    "CODEOWNERS",
+    "applications/nrf_desktop/doc/includes/*.txt",
+    "applications/nrf_desktop/sample.yaml",
+    "doc/Makefile",
+    "doc/_extensions/static/page_filter.js",
+    "doc/doxyfile.in",
+    "doc/includes/*.txt",
+    "doc/links.txt",
+    "doc/requirements.txt",
+    "doc/requirements_ci.txt",
+    "doc/shortcuts.txt",
+    "doc/versions.json",
+    "scripts/hid_configurator/60-hid.rules",
+    "scripts/hid_configurator/requirements.txt",
+    "scripts/hid_configurator/requirements_music_led_stream.txt",
+    # zephyr-keep-sorted-stop
+]
+SPDX-License-Identifier = "LicenseRef-Nordic-5-Clause"
+SPDX-FileCopyrightText = "Copyright (c) Nordic Semiconductor ASA"
+
+[[annotations]]
+path = ".clang-format"
+SPDX-License-Identifier = "Apache-2.0"
+SPDX-FileCopyrightText = "Copyright The Zephyr Project Contributors"
