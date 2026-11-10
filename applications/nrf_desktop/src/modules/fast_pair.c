@@ -213,7 +213,7 @@ static bool app_event_handler(const struct app_event_header *aeh)
 }
 
 APP_EVENT_LISTENER(MODULE, app_event_handler);
-#if IS_ENABLED(CONFIG_DESKTOP_BLE_DONGLE_PEER_ID_INFO)
+#ifdef CONFIG_DESKTOP_BLE_DONGLE_PEER_ID_INFO
 APP_EVENT_SUBSCRIBE(MODULE, ble_dongle_peer_event);
 #endif
 APP_EVENT_SUBSCRIBE(MODULE, module_state_event);
