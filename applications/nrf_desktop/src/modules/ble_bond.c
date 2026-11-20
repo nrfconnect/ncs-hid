@@ -1112,7 +1112,8 @@ static bool app_event_handler(const struct app_event_header *aeh)
 
 			if (!err) {
 				module_set_state(MODULE_STATE_READY);
-				if (state == STATE_STANDBY) {
+				if ((state == STATE_STANDBY) ||
+				    (state == STATE_DONGLE_STANDBY)) {
 					module_set_state(MODULE_STATE_OFF);
 				}
 			} else {
