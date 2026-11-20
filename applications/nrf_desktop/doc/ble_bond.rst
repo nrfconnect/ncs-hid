@@ -79,8 +79,8 @@ The following diagram shows states and transitions between these states after th
    nRF Desktop Bluetooth LE bond module state diagram
 
 .. note::
-  The diagram does not present the states related to module going into standby (:c:enum:`STATE_STANDBY`, :c:enum:`STATE_DISABLED_STANDBY`, :c:enum:`STATE_DONGLE_STANDBY`).
-  For more information about the standby states, see `Standby states`_.
+  The diagram does not present the states related to the module going into standby or suspend (:c:enum:`STATE_STANDBY`, :c:enum:`STATE_DISABLED_STANDBY`, :c:enum:`STATE_DONGLE_STANDBY`, and related suspend states).
+  For more information, see `Standby and suspend states`_.
 
 Receiving ``click_event`` with a click type that is not included in the schematic will result in cancelling the ongoing operation and returning to :c:enumerator:`STATE_IDLE` or :c:enumerator:`STATE_DONGLE`.
 This does not apply to :c:enumerator:`STATE_DONGLE`.
@@ -160,14 +160,20 @@ The module can go into one of the following dongle states:
 
 .. _ble_bond_standby_states:
 
-Standby states
-==============
+Standby and suspend states
+==========================
+
+The module can go into one of the **standby** (triggered by :ref:`nrf_desktop_power_manager` events) or **module suspend** (triggered by CAF module suspend and resume request events) states.
+In these states, the peer operations are not triggered.
+
+Standby states (``power_down_event`` / ``wake_up_event``)
+-------------------------------------------------------------
 
 The module can go into one of the following standby states to make sure that the peer operations are not triggered when the device is suspended by :ref:`nrf_desktop_power_manager`:
 
-* :c:enumerator:`STATE_DISABLED_STANDBY` - The module is suspended before initialization.
-* :c:enumerator:`STATE_DONGLE_STANDBY` - The module is suspended when the dongle peer is selected.
-* :c:enumerator:`STATE_STANDBY` - The module is suspended when other Bluetooth peers are selected.
+* :c:enumerator:`STATE_DISABLED_STANDBY` - The module enters standby before initialization.
+* :c:enumerator:`STATE_DONGLE_STANDBY` - The module enters standby while the dongle peer is selected.
+* :c:enumerator:`STATE_STANDBY` - The module enters standby while other Bluetooth peers are selected.
 
 Going into the standby states and leaving these states happens in reaction to the following events:
 
@@ -179,11 +185,35 @@ Going into the standby states and leaving these states happens in reaction to th
 
    nRF Desktop Bluetooth LE bond module standby state diagram
 
+Module suspend states (``module_suspend_req_event`` / ``module_resume_req_event``)
+----------------------------------------------------------------------------------
+
+When :option:`CONFIG_DESKTOP_BLE_BOND_MODULE_SUSPEND_EVENTS` is enabled, the module can be suspended and resumed using :c:struct:`module_suspend_req_event` and :c:struct:`module_resume_req_event` directed at this module.
+When the :option:`CONFIG_DESKTOP_BLE_BOND_SUSPEND_ON_READY` Kconfig option is enabled, the module is suspended automatically right after initialization.
+
+The suspend-only states mirror the standby states:
+
+* :c:enumerator:`STATE_DISABLED_SUSPENDED`
+* :c:enumerator:`STATE_DONGLE_SUSPENDED`
+* :c:enumerator:`STATE_SUSPENDED`
+
+When both standby and suspend are active, the module uses the following combined states:
+
+* :c:enumerator:`STATE_DISABLED_STANDBY_SUSPENDED`
+* :c:enumerator:`STATE_DONGLE_STANDBY_SUSPENDED`
+* :c:enumerator:`STATE_STANDBY_SUSPENDED`
+
+If the module is suspended but not in standby, it reports :c:enum:`MODULE_STATE_SUSPENDED`.
+If both standby and suspend are active, behavior matches standby and the module reports :c:enum:`MODULE_STATE_OFF`.
+In order to resume peer operations, the module must exit both standby and suspend states.
+
 Configuration
 *************
 
 The module requires the basic Bluetooth configuration, as described in :ref:`nrf_desktop_bluetooth_guide`.
 Set the :option:`CONFIG_DESKTOP_BLE_BOND_ENABLE` option to enable the module.
+Set the :option:`CONFIG_DESKTOP_BLE_BOND_MODULE_SUSPEND_EVENTS` option to handle module suspend and resume request events.
+Set the :option:`CONFIG_DESKTOP_BLE_BOND_SUSPEND_ON_READY` option to automatically suspend the module after initialization.
 
 You can control the connected peers using the following methods:
 
