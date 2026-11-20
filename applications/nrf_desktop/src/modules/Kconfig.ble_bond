@@ -133,6 +133,18 @@ config DESKTOP_BLE_DONGLE_PEER_SELECTOR_POS
 
 endif # !DESKTOP_BLE_DONGLE_PEER_ENABLE
 
+config DESKTOP_BLE_BOND_MODULE_SUSPEND_EVENTS
+	bool "Module suspend/resume request events support"
+	depends on CAF_MODULE_SUSPEND_EVENTS
+	default y
+	help
+	  Allow suspending and resuming the module at runtime using CAF module
+	  suspend and resume request events.
+
+config DESKTOP_BLE_BOND_SUSPEND_ON_READY
+	bool "Automatically suspend module right after initialization"
+	depends on DESKTOP_BLE_BOND_MODULE_SUSPEND_EVENTS
+
 module = DESKTOP_BLE_BOND
 module-str = BLE bonds
 source "subsys/logging/Kconfig.template.log_config"

@@ -17,6 +17,7 @@
 #include "selector_event.h"
 #include "config_event.h"
 #include <caf/events/power_event.h>
+#include <caf/events/module_suspend_event.h>
 
 #include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(MODULE, CONFIG_DESKTOP_BLE_BOND_LOG_LEVEL);
@@ -41,13 +42,19 @@ LOG_MODULE_REGISTER(MODULE, CONFIG_DESKTOP_BLE_BOND_LOG_LEVEL);
 enum state {
 	STATE_DISABLED,
 	STATE_DISABLED_STANDBY,
+	STATE_DISABLED_SUSPENDED,
+	STATE_DISABLED_STANDBY_SUSPENDED,
 	STATE_IDLE,
 	STATE_STANDBY,
+	STATE_SUSPENDED,
+	STATE_STANDBY_SUSPENDED,
 	STATE_ERASE_PEER,
 	STATE_ERASE_ADV,
 	STATE_SELECT_PEER,
 	STATE_DONGLE,
 	STATE_DONGLE_STANDBY,
+	STATE_DONGLE_SUSPENDED,
+	STATE_DONGLE_STANDBY_SUSPENDED,
 	STATE_DONGLE_ERASE_PEER,
 	STATE_DONGLE_ERASE_ADV
 };
@@ -115,7 +122,8 @@ const static char * const opt_descr[] = {
 #endif /* CONFIG_DESKTOP_BT_CENTRAL */
 };
 
-static enum state state;
+static enum state state = IS_ENABLED(CONFIG_DESKTOP_BLE_BOND_SUSPEND_ON_READY) ?
+			  STATE_DISABLED_SUSPENDED : STATE_DISABLED;
 static uint8_t cur_ble_peer_id;
 static bool cur_peer_id_valid;
 static uint8_t tmp_peer_id;
@@ -156,10 +164,24 @@ static bool bt_stack_id_lut_valid;
 
 static struct k_work_delayable timeout;
 
+static bool is_dongle_state(enum state s)
+{
+	switch (s) {
+	case STATE_DONGLE:
+	case STATE_DONGLE_STANDBY:
+	case STATE_DONGLE_SUSPENDED:
+	case STATE_DONGLE_STANDBY_SUSPENDED:
+	case STATE_DONGLE_ERASE_PEER:
+	case STATE_DONGLE_ERASE_ADV:
+		return true;
+	default:
+		return false;
+	}
+}
+
 static uint8_t get_app_id(void)
 {
-	if ((state == STATE_DONGLE) || (state == STATE_DONGLE_ERASE_PEER) ||
-	    (state == STATE_DONGLE_ERASE_ADV) || (state == STATE_DONGLE_STANDBY)) {
+	if (is_dongle_state(state)) {
 		return DONGLE_PEER_ID;
 	} else {
 		return cur_ble_peer_id;
@@ -332,8 +354,7 @@ static int shell_remove_peers(const struct shell *shell, size_t argc,
 {
 	int err;
 
-	if ((state != STATE_DONGLE) && (state != STATE_DONGLE_STANDBY) &&
-	(state != STATE_DONGLE_ERASE_PEER) && (state != STATE_DONGLE_ERASE_ADV)) {
+	if (!is_dongle_state(state)) {
 		err = remove_peers(cur_ble_peer_id);
 	} else {
 		shell_print(shell,
@@ -534,11 +555,22 @@ static void erase_adv_confirm(void)
 
 static void select_dongle_peer(void)
 {
-	if (state == STATE_IDLE) {
+	switch (state) {
+	case STATE_IDLE:
 		state = STATE_DONGLE;
-	} else {
-		__ASSERT_NO_MSG(state == STATE_STANDBY);
+		break;
+	case STATE_STANDBY:
 		state = STATE_DONGLE_STANDBY;
+		break;
+	case STATE_SUSPENDED:
+		state = STATE_DONGLE_SUSPENDED;
+		break;
+	case STATE_STANDBY_SUSPENDED:
+		state = STATE_DONGLE_STANDBY_SUSPENDED;
+		break;
+	default:
+		__ASSERT_NO_MSG(false);
+		break;
 	}
 
 	LOG_INF("Selected dongle peer");
@@ -554,13 +586,28 @@ static void select_dongle_peer(void)
 static void select_ble_peers(void)
 {
 	LOG_INF("Selected Bluetooth LE peers");
-	if (state == STATE_DONGLE) {
+	switch (state) {
+	case STATE_DONGLE:
 		state = STATE_IDLE;
-	} else if (state == STATE_DONGLE_STANDBY) {
+		break;
+	case STATE_DONGLE_STANDBY:
 		state = STATE_STANDBY;
-	} else {
-		__ASSERT_NO_MSG((state == STATE_STANDBY) ||
-				(state == STATE_IDLE));
+		break;
+	case STATE_DONGLE_SUSPENDED:
+		state = STATE_SUSPENDED;
+		break;
+	case STATE_DONGLE_STANDBY_SUSPENDED:
+		state = STATE_STANDBY_SUSPENDED;
+		break;
+	case STATE_STANDBY:
+	case STATE_IDLE:
+	case STATE_SUSPENDED:
+	case STATE_STANDBY_SUSPENDED:
+		/* No action. */
+		break;
+	default:
+		__ASSERT_NO_MSG(false);
+		break;
 	}
 
 	struct ble_peer_operation_event *event = new_ble_peer_operation_event();
@@ -767,10 +814,22 @@ static int init(void)
 {
 	silence_unused();
 
-	if (state == STATE_DISABLED) {
+	switch (state) {
+	case STATE_DISABLED:
 		state = STATE_IDLE;
-	} else {
+		break;
+	case STATE_DISABLED_STANDBY:
 		state = STATE_STANDBY;
+		break;
+	case STATE_DISABLED_SUSPENDED:
+		state = STATE_SUSPENDED;
+		break;
+	case STATE_DISABLED_STANDBY_SUSPENDED:
+		state = STATE_STANDBY_SUSPENDED;
+		break;
+	default:
+		__ASSERT_NO_MSG(false);
+		break;
 	}
 
 	if ((IS_ENABLED(CONFIG_DESKTOP_BLE_PEER_CONTROL)) ||
@@ -908,10 +967,14 @@ static void selector_event_handler(const struct selector_event *event)
 		switch (state) {
 		case STATE_DISABLED:
 		case STATE_DISABLED_STANDBY:
+		case STATE_DISABLED_SUSPENDED:
+		case STATE_DISABLED_STANDBY_SUSPENDED:
 			dongle_peer_selected_on_init = true;
 			break;
 		case STATE_DONGLE:
 		case STATE_DONGLE_STANDBY:
+		case STATE_DONGLE_SUSPENDED:
+		case STATE_DONGLE_STANDBY_SUSPENDED:
 		case STATE_DONGLE_ERASE_PEER:
 		case STATE_DONGLE_ERASE_ADV:
 			/* Ignore */
@@ -923,6 +986,8 @@ static void selector_event_handler(const struct selector_event *event)
 			/* Fall-through */
 		case STATE_IDLE:
 		case STATE_STANDBY:
+		case STATE_SUSPENDED:
+		case STATE_STANDBY_SUSPENDED:
 			select_dongle_peer();
 			break;
 		default:
@@ -933,10 +998,14 @@ static void selector_event_handler(const struct selector_event *event)
 		switch (state) {
 		case STATE_DISABLED:
 		case STATE_DISABLED_STANDBY:
+		case STATE_DISABLED_SUSPENDED:
+		case STATE_DISABLED_STANDBY_SUSPENDED:
 			dongle_peer_selected_on_init = false;
 			break;
 		case STATE_IDLE:
 		case STATE_STANDBY:
+		case STATE_SUSPENDED:
+		case STATE_STANDBY_SUSPENDED:
 			/* Ignore */
 			break;
 		case STATE_ERASE_PEER:
@@ -948,6 +1017,8 @@ static void selector_event_handler(const struct selector_event *event)
 			/* Fall-through */
 		case STATE_DONGLE:
 		case STATE_DONGLE_STANDBY:
+		case STATE_DONGLE_SUSPENDED:
+		case STATE_DONGLE_STANDBY_SUSPENDED:
 			select_ble_peers();
 			break;
 		default:
@@ -1017,6 +1088,10 @@ static bool handle_power_down_event(const struct power_down_event *event)
 		state = STATE_DISABLED_STANDBY;
 		break;
 
+	case STATE_DISABLED_SUSPENDED:
+		state = STATE_DISABLED_STANDBY_SUSPENDED;
+		break;
+
 	case STATE_ERASE_PEER:
 	case STATE_ERASE_ADV:
 	case STATE_SELECT_PEER:
@@ -1025,6 +1100,11 @@ static bool handle_power_down_event(const struct power_down_event *event)
 
 	case STATE_IDLE:
 		state = STATE_STANDBY;
+		module_set_state(MODULE_STATE_OFF);
+		break;
+
+	case STATE_SUSPENDED:
+		state = STATE_STANDBY_SUSPENDED;
 		module_set_state(MODULE_STATE_OFF);
 		break;
 
@@ -1038,11 +1118,22 @@ static bool handle_power_down_event(const struct power_down_event *event)
 		module_set_state(MODULE_STATE_OFF);
 		break;
 
+	case STATE_DONGLE_SUSPENDED:
+		state = STATE_DONGLE_STANDBY_SUSPENDED;
+		module_set_state(MODULE_STATE_OFF);
+		break;
+
 	case STATE_STANDBY:
 		/* Fall-through */
 	case STATE_DISABLED_STANDBY:
 		/* Fall-through */
 	case STATE_DONGLE_STANDBY:
+		/* Fall-through */
+	case STATE_STANDBY_SUSPENDED:
+		/* Fall-through */
+	case STATE_DISABLED_STANDBY_SUSPENDED:
+		/* Fall-through */
+	case STATE_DONGLE_STANDBY_SUSPENDED:
 		/* No action. */
 		break;
 
@@ -1061,14 +1152,28 @@ static bool handle_wake_up_event(const struct wake_up_event *event)
 		state = STATE_DISABLED;
 		break;
 
+	case STATE_DISABLED_STANDBY_SUSPENDED:
+		state = STATE_DISABLED_SUSPENDED;
+		break;
+
 	case STATE_STANDBY:
 		state = STATE_IDLE;
 		module_set_state(MODULE_STATE_READY);
 		break;
 
+	case STATE_STANDBY_SUSPENDED:
+		state = STATE_SUSPENDED;
+		module_set_state(MODULE_STATE_SUSPENDED);
+		break;
+
 	case STATE_DONGLE_STANDBY:
 		state = STATE_DONGLE;
 		module_set_state(MODULE_STATE_READY);
+		break;
+
+	case STATE_DONGLE_STANDBY_SUSPENDED:
+		state = STATE_DONGLE_SUSPENDED;
+		module_set_state(MODULE_STATE_SUSPENDED);
 		break;
 
 	case STATE_DISABLED:
@@ -1086,6 +1191,145 @@ static bool handle_wake_up_event(const struct wake_up_event *event)
 	case STATE_DONGLE_ERASE_ADV:
 		/* Fall-through */
 	case STATE_DONGLE:
+		/* Fall-through */
+	case STATE_DISABLED_SUSPENDED:
+		/* Fall-through */
+	case STATE_SUSPENDED:
+		/* Fall-through */
+	case STATE_DONGLE_SUSPENDED:
+		/* No action. */
+		break;
+
+	default:
+		__ASSERT_NO_MSG(false);
+		break;
+	}
+
+	return false;
+}
+
+static bool handle_module_suspend_req_event(const struct module_suspend_req_event *event)
+{
+	if (event->sink_module_id != MODULE_ID(ble_bond)) {
+		return false;
+	}
+
+	switch (state) {
+	case STATE_DISABLED:
+		state = STATE_DISABLED_SUSPENDED;
+		break;
+
+	case STATE_DISABLED_STANDBY:
+		state = STATE_DISABLED_STANDBY_SUSPENDED;
+		break;
+
+	case STATE_ERASE_PEER:
+	case STATE_ERASE_ADV:
+	case STATE_SELECT_PEER:
+		cancel_operation();
+		/* Fall-through */
+
+	case STATE_IDLE:
+		state = STATE_SUSPENDED;
+		module_set_state(MODULE_STATE_SUSPENDED);
+		break;
+
+	case STATE_STANDBY:
+		state = STATE_STANDBY_SUSPENDED;
+		break;
+
+	case STATE_DONGLE_ERASE_PEER:
+	case STATE_DONGLE_ERASE_ADV:
+		cancel_operation();
+		/* Fall-through */
+
+	case STATE_DONGLE:
+		state = STATE_DONGLE_SUSPENDED;
+		module_set_state(MODULE_STATE_SUSPENDED);
+		break;
+
+	case STATE_DONGLE_STANDBY:
+		state = STATE_DONGLE_STANDBY_SUSPENDED;
+		break;
+
+	case STATE_DISABLED_SUSPENDED:
+		/* Fall-through */
+	case STATE_SUSPENDED:
+		/* Fall-through */
+	case STATE_STANDBY_SUSPENDED:
+		/* Fall-through */
+	case STATE_DONGLE_SUSPENDED:
+		/* Fall-through */
+	case STATE_DISABLED_STANDBY_SUSPENDED:
+		/* Fall-through */
+	case STATE_DONGLE_STANDBY_SUSPENDED:
+		/* No action. */
+		break;
+
+	default:
+		__ASSERT_NO_MSG(false);
+		break;
+	}
+
+	return false;
+}
+
+static bool handle_module_resume_req_event(const struct module_resume_req_event *event)
+{
+	if (event->sink_module_id != MODULE_ID(ble_bond)) {
+		return false;
+	}
+
+	switch (state) {
+	case STATE_DISABLED_SUSPENDED:
+		state = STATE_DISABLED;
+		break;
+
+	case STATE_DISABLED_STANDBY_SUSPENDED:
+		state = STATE_DISABLED_STANDBY;
+		break;
+
+	case STATE_SUSPENDED:
+		state = STATE_IDLE;
+		module_set_state(MODULE_STATE_READY);
+		break;
+
+	case STATE_STANDBY_SUSPENDED:
+		state = STATE_STANDBY;
+		module_set_state(MODULE_STATE_OFF);
+		break;
+
+	case STATE_DONGLE_SUSPENDED:
+		state = STATE_DONGLE;
+		module_set_state(MODULE_STATE_READY);
+		break;
+
+	case STATE_DONGLE_STANDBY_SUSPENDED:
+		state = STATE_DONGLE_STANDBY;
+		module_set_state(MODULE_STATE_OFF);
+		break;
+
+	case STATE_DISABLED:
+		/* Fall-through */
+	case STATE_IDLE:
+		/* Fall-through */
+	case STATE_ERASE_PEER:
+		/* Fall-through */
+	case STATE_ERASE_ADV:
+		/* Fall-through */
+	case STATE_SELECT_PEER:
+		/* Fall-through */
+	case STATE_STANDBY:
+		/* Fall-through */
+	case STATE_DONGLE_ERASE_PEER:
+		/* Fall-through */
+	case STATE_DONGLE_ERASE_ADV:
+		/* Fall-through */
+	case STATE_DONGLE:
+		/* Fall-through */
+	case STATE_DONGLE_STANDBY:
+		/* Fall-through */
+	case STATE_DISABLED_STANDBY:
 		/* No action. */
 		break;
 
@@ -1106,15 +1350,22 @@ static bool app_event_handler(const struct app_event_header *aeh)
 		if (check_state(event, MODULE_ID(settings_loader),
 				MODULE_STATE_READY)) {
 			__ASSERT_NO_MSG((state == STATE_DISABLED) ||
-					(state == STATE_DISABLED_STANDBY));
+					(state == STATE_DISABLED_STANDBY) ||
+					(state == STATE_DISABLED_SUSPENDED) ||
+					(state == STATE_DISABLED_STANDBY_SUSPENDED));
 
 			int err = init();
 
 			if (!err) {
 				module_set_state(MODULE_STATE_READY);
-				if ((state == STATE_STANDBY) ||
-				    (state == STATE_DONGLE_STANDBY)) {
+				if (state == STATE_STANDBY ||
+				    state == STATE_STANDBY_SUSPENDED ||
+				    state == STATE_DONGLE_STANDBY ||
+				    state == STATE_DONGLE_STANDBY_SUSPENDED) {
 					module_set_state(MODULE_STATE_OFF);
+				} else if (state == STATE_SUSPENDED ||
+					   state == STATE_DONGLE_SUSPENDED) {
+					module_set_state(MODULE_STATE_SUSPENDED);
 				}
 			} else {
 				module_set_state(MODULE_STATE_ERROR);
@@ -1150,6 +1401,16 @@ static bool app_event_handler(const struct app_event_header *aeh)
 		return handle_wake_up_event(cast_wake_up_event(aeh));
 	}
 
+	if (IS_ENABLED(CONFIG_DESKTOP_BLE_BOND_MODULE_SUSPEND_EVENTS) &&
+	    is_module_suspend_req_event(aeh)) {
+		return handle_module_suspend_req_event(cast_module_suspend_req_event(aeh));
+	}
+
+	if (IS_ENABLED(CONFIG_DESKTOP_BLE_BOND_MODULE_SUSPEND_EVENTS) &&
+	    is_module_resume_req_event(aeh)) {
+		return handle_module_resume_req_event(cast_module_resume_req_event(aeh));
+	}
+
 	GEN_CONFIG_EVENT_HANDLERS(STRINGIFY(MODULE), opt_descr, config_set,
 				  config_fetch);
 
@@ -1175,6 +1436,10 @@ APP_EVENT_SUBSCRIBE(MODULE, selector_event);
 #ifdef CONFIG_CAF_POWER_MANAGER
 APP_EVENT_SUBSCRIBE(MODULE, power_down_event);
 APP_EVENT_SUBSCRIBE(MODULE, wake_up_event);
+#endif
+#if IS_ENABLED(CONFIG_DESKTOP_BLE_BOND_MODULE_SUSPEND_EVENTS)
+APP_EVENT_SUBSCRIBE(MODULE, module_suspend_req_event);
+APP_EVENT_SUBSCRIBE(MODULE, module_resume_req_event);
 #endif
 
 #ifdef CONFIG_SHELL
